@@ -648,6 +648,7 @@ class Mew (Pokemon):
 class Dresseur():
     Pokemons_depart=3
     def __init__(self, nom):
+        
         self.nom=nom
         self.inventaire={}
         for i in range(Dresseur.Pokemons_depart):
@@ -658,6 +659,24 @@ class Dresseur():
             
         self.pokemons_attrappes=list(self.inventaire)
         print(self.pokemons_attrappes)
+        
+        
+        self.pokemons_combats={}
+    
+    def choix_pokemons_combats(self):
+        if len(self)<=3:
+            self.pokemons_combats=self.inventaire
+        else:
+            for choix in range(Dresseur.Pokemons_depart):
+                possibilites=self.pokemons_attrappes
+                selection =str(input("Choississez un pokemon parmi " +str(possibilites)+" : "))
+                if selection in possibilites:
+                    self.pokemons_combats[selection]=dict_pokemons[selection]
+                    possibilites.remove(selection)
+                    
+            print(str(list(self.pokemons_combats)))
+                
+                
         
     def __len__(self):
         return len(self.inventaire)
@@ -685,6 +704,11 @@ class Dresseur():
              + "\nPokemons attrappés : "+str(self.pokemons_attrappes) + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
         return txt
     
+    def attrape_pokemon(self,pokemon):
+        self.inventaire[str(pokemon.nom)]=pokemon
+        self.pokemons_attrappes.append(pokemon.nom)
+    
+    
         
 if __name__=='__main__':
 
@@ -693,6 +717,8 @@ if __name__=='__main__':
     pi=Pikachu()
     Mewtou=Mew()
     Drac=Drowzee()
-    
+    pika=dict_pokemons["Pikachu"]
     Sacha = Dresseur("Sacha")
+    Sacha.attrape_pokemon(pika)
     print(Sacha)
+    Sacha.choix_pokemons_combats()
