@@ -28,24 +28,17 @@ class Pokemon(metaclass=ABCMeta):
     def attaque_elementaire(self,pokemon,choix=False):
         if choix==False:
             element=self.type1
-            coeff =Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type1]]
-            if pokemon.type2=='null':
-                Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
-                return Dommage
-            else:
-                coeff = coeff * Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type2]]
-                Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
-                return Dommage
         else:
             element=self.type2
-            coeff =Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type1]]
-            if pokemon.type2=='null':
-                Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
-                return Dommage
-            else:
-                coeff = coeff * Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type2]]
-                Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
-                return Dommage
+
+        coeff =Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type1]]
+        if pokemon.type2=='null':
+            Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
+            return Dommage
+        else:
+            coeff = coeff * Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type2]]
+            Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
+            return Dommage
 
 
 class Bulbasaur (Pokemon):
