@@ -15,28 +15,29 @@ modele=("class {nom} (Pokemon):\n"+"    def __init__(self, nom='{nom}', type1='{
 def generateur_pokemon(fichier):
     
     Classes_Pokemons=[]
+    List_pokemons="{ "
+    
     with open(fichier,mode="r") as file:
         csvfile= csv.reader(file)
         next(csvfile)
         for ligne in csvfile:
-            Classe= modele.format( nom=ligne[1], type1=ligne[2], type2=ligne[3], Total=ligne[4], HP=ligne[5], Attack=ligne[6], Defense=ligne[7], Sp_Atk=ligne[8], Sp_Def=ligne[9],Speed=ligne[10] , Generation=ligne[11] , Legendary=ligne[12])
-            
+            nom_pokemon=ligne[1]
+            nom_pokemon = nom_pokemon.replace("h'd","hd").replace("Nidoranâ™€","Nidoran_male").replace(". ","_").replace("Nidoranâ™‚","Nidoranâ™").replace("Nidoranâ™","Nidoran_female")
+            Classe= modele.format( nom=nom_pokemon, type1=ligne[2], type2=ligne[3], Total=ligne[4], HP=ligne[5], Attack=ligne[6], Defense=ligne[7], Sp_Atk=ligne[8], Sp_Def=ligne[9],Speed=ligne[10] , Generation=ligne[11] , Legendary=ligne[12])
+            List_pokemons+="'"+nom_pokemon+"' : "+nom_pokemon+"(), "
             #Fait en sorte que l'absence d'information soit retourné par null et non par le string None
             Classe = Classe.replace("''","'null'")
-            Classe = Classe.replace("h'd","hd")
-            Classe = Classe.replace(". ","_")
-            Classe = Classe.replace("â™€","_male")
-            Classe = Classe.replace("Nidoranâ™‚","Nidoranâ™")
-            Classe = Classe.replace("Nidoranâ™","Nidoran_female")
             Classes_Pokemons.append(Classe)
-        return Classes_Pokemons
+        List_pokemons+="}"
+        
+        return Classes_Pokemons,List_pokemons
         
 if __name__=='__main__':
     Types={"Steel":0, "Fighting":1 ,"Dragon":2 ,"Water":3, "Fire":4 ,"Electrik":5, "Fairy":6, "Ice":7, "Bug":8 ,"Normal":9 ,"Grass":10, "Poison":11 ,"Psychic":12, "Ground":13, "Rock":14, "Ghost":15, "Darness":16, "Flying":17}
     
     
     fichier="../data/pokemon_first_gen.csv"
-    Pokemons=generateur_pokemon(fichier)
+    Pokemons,List_pokemons=generateur_pokemon(fichier)
     #Création du fichier sql de sortie
     Fichier_Classes_Pokemons = open("Pokemons.py", "w")
     #creation de la classe mere
@@ -57,8 +58,8 @@ if __name__=='__main__':
                    +"        self.Legendary= Legendary \n\n\n")
     
     Fichier_Classes_Pokemons.write(Classe_mere)
-    for ligne in Pokemons:
+    for ligne in Pokemons :
         Fichier_Classes_Pokemons.write(ligne)
         
-    Fichier_Classes_Pokemons.write("if __name__=='__main__':\n\n    pi=Pikachu()\n    Mewtou=Mew()\n    Drac=Drowzee()")
+    Fichier_Classes_Pokemons.write("if __name__=='__main__':\n\n    List_pokemon="+List_pokemons+"\n    pi=Pikachu()\n    Mewtou=Mew()\n    Drac=Drowzee()")
     Fichier_Classes_Pokemons.close()
