@@ -1,12 +1,23 @@
 from abc import ABCMeta 
 import numpy as np 
+import random as rd
+
+##############################################################
+
+       ########## Classe Parente pokemon ###########
+
+##############################################################                
+
 
 class Pokemon(metaclass=ABCMeta):
 
+    # Dictionnaire associant un type a un numero 
     Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electrik': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17}
 
+    #Matrice de relations d'affinites des types des pokemons 
     Affinites = np.genfromtxt ('../data/Donnees_crees/Affinites.csv', delimiter =';',skip_header=1,usecols=range(1,19))
 
+    #Constructeur
     def __init__(self, ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees ):
         self.ID=ID
         self.nom=nom
@@ -23,6 +34,16 @@ class Pokemon(metaclass=ABCMeta):
         self.Legendary= Legendary 
         self.Image= Image 
         self.Coordonnees= Coordonnees 
+
+
+       ########## Methodes ###########
+
+
+##############################################################
+
+       ########## Sous-classes pokemons ###########
+
+##############################################################                
 
 
 class Bulbasaur (Pokemon):
@@ -495,115 +516,110 @@ class Seadra (Pokemon):
 
 class Goldeen (Pokemon):
     def __init__(self, ID ='118',nom='Goldeen', type1='Water', type2='null', Total=320,HP=45, Attack=67, Defense=60, Sp_Atk=35, Sp_Def=50, Speed=63, Generation='1', Legendary=False,Image='../data/Pokemon_images/Goldeen.PNG', Coordonnees=[32.58347161448271, 8.98601337229347]):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Lclass Electabuzz (Pokemon):
-    def __init__(self, ID ='125',nom='Electabuzz', type1='Electric', type2='null', Total=490,HP=65, Attack=83, Defense=57, Sp_Atk=95, Sp_Def=85, Speed=105, Generation='1', Legendary=False,Image=../data/Pokemon_images/Electabuzz.PNG, Coordonnees=[1.6701894808154805):
+        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
+
+class Seaking (Pokemon):
+    def __init__(self, ID ='119',nom='Seaking', type1='Water', type2='null', Total=450,HP=80, Attack=92, Defense=65, Sp_Atk=65, Sp_Def=80, Speed=68, Generation='1', Legendary=False,Image='../data/Pokemon_images/Seaking.PNG', Coordonnees=[0.6866283139286722, 0.891467016709403]):
+        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
+
+class Staryu (Pokemon):
+    def __init__(self, ID ='120',nom='Staryu', type1='Water', type2='null', Total=340,HP=30, Attack=45, Defense=55, Sp_Atk=70, Sp_Def=55, Speed=85, Generation='1', Legendary=False,Image='../data/Pokemon_images/Staryu.PNG', Coordonnees=[23.16598957832367, 5.391677590978713]):
+        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
+
+class Starmie (Pokemon):
+    def __init__(self, ID ='121',nom='Starmie', type1='Water', type2='Psychic', Total=520,HP=60, Attack=75, Defense=85, Sp_Atk=100, Sp_Def=85, Speed=115, Generation='1', Legendary=False,Image='../data/Pokemon_images/Starmie.PNG', Coordonnees=[32.024340524779745, 1.9592907458932163]):
+        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
+
+class Mr_Mime (Pokemon):
+    def __init__(self, ID ='122',nom='Mr_Mime', type1='Psychic', type2='Fairy', Total=460,HP=40, Attack=45, Defense=65, Sp_Atk=100, Sp_Def=120, Speed=90, Generation='1', Legendary=False,Image='../data/Pokemon_images/Mr_Mime.PNG', Coordonnees=[31.343599031300467, 2.0451965379226236]):
+        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
+
+class Scyther (Pokemon):
+    def __init__(self, ID ='123',nom='Scyther', type1='Bug', type2='Flying', Total=500,HP=70, Attack=110, Defense=80, Sp_Atk=55, Sp_Def=80, Speed=105, Generation='1', Legendary=False,Image='../data/Pokemon_images/Scyther.PNG', Coordonnees=[0.37643904084805335, 1.7229072567102366]):
+        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
+
+class Jynx (Pokemon):
+    def __init__(self, ID ='124',nom='Jynx', type1='Ice', type2='Psychic', Total=455,HP=65, Attack=50, Defense=35, Sp_Atk=115, Sp_Def=95, Speed=95, Generation='1', Legendary=False,Image='../data/Pokemon_images/Jynx.PNG', Coordonnees=[39.959151788451024, 2.141117145583703]):
+        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
+
+class Electabuzz (Pokemon):
+    def __init__(self, ID ='125',nom='Electabuzz', type1='Electric', type2='null', Total=490,HP=65, Attack=83, Defense=57, Sp_Atk=95, Sp_Def=85, Speed=105, Generation='1', Legendary=False,Image='../data/Pokemon_images/Electabuzz.PNG', Coordonnees=[1.6701894808154805, 8.752556688776673]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Magmar (Pokemon):
-    def __init__(self, ID ='126',nom='Magmar', type1='Fire', type2='null', Total=495,HP=65, Attack=95, Defense=57, Sp_Atk=100, Sp_Def=85, Speed=93, Generation='1', Legendary=False,Image=../data/Pokemon_images/Magmar.PNG, Coordonnees=[25.43694616602974):
+    def __init__(self, ID ='126',nom='Magmar', type1='Fire', type2='null', Total=495,HP=65, Attack=95, Defense=57, Sp_Atk=100, Sp_Def=85, Speed=93, Generation='1', Legendary=False,Image='../data/Pokemon_images/Magmar.PNG', Coordonnees=[25.43694616602974, 8.66287871104866]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Pinsir (Pokemon):
-    def __init__(self, ID ='127',nom='Pinsir', type1='Bug', type2='null', Total=500,HP=65, Attack=125, Defense=100, Sp_Atk=55, Sp_Def=70, Speed=85, Generation='1', Legendary=False,Image=../data/Pokemon_images/Pinsir.PNG, Coordonnees=[4.787685079099844):
+    def __init__(self, ID ='127',nom='Pinsir', type1='Bug', type2='null', Total=500,HP=65, Attack=125, Defense=100, Sp_Atk=55, Sp_Def=70, Speed=85, Generation='1', Legendary=False,Image='../data/Pokemon_images/Pinsir.PNG', Coordonnees=[4.787685079099844, 7.2382842411877935]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Tauros (Pokemon):
-    def __init__(self, ID ='128',nom='Tauros', type1='Normal', type2='null', Total=490,HP=75, Attack=100, Defense=95, Sp_Atk=40, Sp_Def=70, Speed=110, Generation='1', Legendary=False,Image=../data/Pokemon_images/Tauros.PNG, Coordonnees=[35.90711800752034):
+    def __init__(self, ID ='128',nom='Tauros', type1='Normal', type2='null', Total=490,HP=75, Attack=100, Defense=95, Sp_Atk=40, Sp_Def=70, Speed=110, Generation='1', Legendary=False,Image='../data/Pokemon_images/Tauros.PNG', Coordonnees=[35.90711800752034, 6.241716153641189]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Magikarp (Pokemon):
-    def __init__(self, ID ='129',nom='Magikarp', type1='Water', type2='null', Total=200,HP=20, Attack=10, Defense=55, Sp_Atk=15, Sp_Def=20, Speed=80, Generation='1', Legendary=False,Image=../data/Pokemon_images/Magikarp.PNG, Coordonnees=[18.538550585681225):
+    def __init__(self, ID ='129',nom='Magikarp', type1='Water', type2='null', Total=200,HP=20, Attack=10, Defense=55, Sp_Atk=15, Sp_Def=20, Speed=80, Generation='1', Legendary=False,Image='../data/Pokemon_images/Magikarp.PNG', Coordonnees=[18.538550585681225, 9.881911887906282]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Gyarados (Pokemon):
-    def __init__(self, ID ='130',nom='Gyarados', type1='Water', type2='Flying', Total=540,HP=95, Attack=125, Defense=79, Sp_Atk=60, Sp_Def=100, Speed=81, Generation='1', Legendary=False,Image=../data/Pokemon_images/Gyarados.PNG, Coordonnees=[3.6498555093793517):
+    def __init__(self, ID ='130',nom='Gyarados', type1='Water', type2='Flying', Total=540,HP=95, Attack=125, Defense=79, Sp_Atk=60, Sp_Def=100, Speed=81, Generation='1', Legendary=False,Image='../data/Pokemon_images/Gyarados.PNG', Coordonnees=[3.6498555093793517, 5.948141157124798]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Lapras (Pokemon):
-    def __init__(self, ID ='131',nom='Lapras', type1='Water', type2='Ice', Total=535,HP=130, Attack=85, Defense=80, Sp_Atk=85, Sp_Def=95, Speed=60, Generation='1', Legendary=False,Image=../data/Pokemon_images/Lapras.PNG, Coordonnees=[27.76021400873266):
+    def __init__(self, ID ='131',nom='Lapras', type1='Water', type2='Ice', Total=535,HP=130, Attack=85, Defense=80, Sp_Atk=85, Sp_Def=95, Speed=60, Generation='1', Legendary=False,Image='../data/Pokemon_images/Lapras.PNG', Coordonnees=[27.76021400873266, 1.27309415151164]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Ditto (Pokemon):
-    def __init__(self, ID ='132',nom='Ditto', type1='Normal', type2='null', Total=288,HP=48, Attack=48, Defense=48, Sp_Atk=48, Sp_Def=48, Speed=48, Generation='1', Legendary=False,Image=../data/Pokemon_images/Ditto.PNG, Coordonnees=[31.905301517456554):
+    def __init__(self, ID ='132',nom='Ditto', type1='Normal', type2='null', Total=288,HP=48, Attack=48, Defense=48, Sp_Atk=48, Sp_Def=48, Speed=48, Generation='1', Legendary=False,Image='../data/Pokemon_images/Ditto.PNG', Coordonnees=[31.905301517456554, 7.881894067343965]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Eevee (Pokemon):
-    def __init__(self, ID ='133',nom='Eevee', type1='Normal', type2='null', Total=325,HP=55, Attack=55, Defense=50, Sp_Atk=45, Sp_Def=65, Speed=55, Generation='1', Legendary=False,Image=../data/Pokemon_images/Eevee.PNG, Coordonnees=[6.662468619644337):
+    def __init__(self, ID ='133',nom='Eevee', type1='Normal', type2='null', Total=325,HP=55, Attack=55, Defense=50, Sp_Atk=45, Sp_Def=65, Speed=55, Generation='1', Legendary=False,Image='../data/Pokemon_images/Eevee.PNG', Coordonnees=[6.662468619644337, 5.64268167282325]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Vaporeon (Pokemon):
-    def __init__(self, ID ='134',nom='Vaporeon', type1='Water', type2='null', Total=525,HP=130, Attack=65, Defense=60, Sp_Atk=110, Sp_Def=95, Speed=65, Generation='1', Legendary=False,Image=../data/Pokemon_images/Vaporeon.PNG, Coordonnees=[37.65011164061983):
+    def __init__(self, ID ='134',nom='Vaporeon', type1='Water', type2='null', Total=525,HP=130, Attack=65, Defense=60, Sp_Atk=110, Sp_Def=95, Speed=65, Generation='1', Legendary=False,Image='../data/Pokemon_images/Vaporeon.PNG', Coordonnees=[37.65011164061983, 7.853948221593856]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Jolteon (Pokemon):
-    def __init__(self, ID ='135',nom='Jolteon', type1='Electric', type2='null', Total=525,HP=65, Attack=65, Defense=60, Sp_Atk=110, Sp_Def=95, Speed=130, Generation='1', Legendary=False,Image=../data/Pokemon_images/Jolteon.PNG, Coordonnees=[2.698446413975457):
+    def __init__(self, ID ='135',nom='Jolteon', type1='Electric', type2='null', Total=525,HP=65, Attack=65, Defense=60, Sp_Atk=110, Sp_Def=95, Speed=130, Generation='1', Legendary=False,Image='../data/Pokemon_images/Jolteon.PNG', Coordonnees=[2.698446413975457, 0.04812852150032021]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Flareon (Pokemon):
-    def __init__(self, ID ='136',nom='Flareon', type1='Fire', type2='null', Total=525,HP=65, Attack=130, Defense=60, Sp_Atk=95, Sp_Def=110, Speed=65, Generation='1', Legendary=False,Image=../data/Pokemon_images/Flareon.PNG, Coordonnees=[4.15453694627411):
+    def __init__(self, ID ='136',nom='Flareon', type1='Fire', type2='null', Total=525,HP=65, Attack=130, Defense=60, Sp_Atk=95, Sp_Def=110, Speed=65, Generation='1', Legendary=False,Image='../data/Pokemon_images/Flareon.PNG', Coordonnees=[4.15453694627411, 5.819244697610185]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Porygon (Pokemon):
-    def __init__(self, ID ='137',nom='Porygon', type1='Normal', type2='null', Total=395,HP=65, Attack=60, Defense=70, Sp_Atk=85, Sp_Def=75, Speed=40, Generation='1', Legendary=False,Image=../data/Pokemon_images/Porygon.PNG, Coordonnees=[6.184260034193216):
+    def __init__(self, ID ='137',nom='Porygon', type1='Normal', type2='null', Total=395,HP=65, Attack=60, Defense=70, Sp_Atk=85, Sp_Def=75, Speed=40, Generation='1', Legendary=False,Image='../data/Pokemon_images/Porygon.PNG', Coordonnees=[6.184260034193216, 8.55360093868772]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Omanyte (Pokemon):
-    def __init__(self, ID ='138',nom='Omanyte', type1='Rock', type2='Water', Total=355,HP=35, Attack=40, Defense=100, Sp_Atk=90, Sp_Def=55, Speed=35, Generation='1', Legendary=False,Image=../data/Pokemon_images/Omanyte.PNG, Coordonnees=[6.053868298494498):
+    def __init__(self, ID ='138',nom='Omanyte', type1='Rock', type2='Water', Total=355,HP=35, Attack=40, Defense=100, Sp_Atk=90, Sp_Def=55, Speed=35, Generation='1', Legendary=False,Image='../data/Pokemon_images/Omanyte.PNG', Coordonnees=[6.053868298494498, 5.999575908015645]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Omastar (Pokemon):
-    def __init__(self, ID ='139',nom='Omastar', type1='Rock', type2='Water', Total=495,HP=70, Attack=60, Defense=125, Sp_Atk=115, Sp_Def=70, Speed=55, Generation='1', Legendary=False,Image=../data/Pokemon_images/Omastar.PNG, Coordonnees=[34.59977746697469):
+    def __init__(self, ID ='139',nom='Omastar', type1='Rock', type2='Water', Total=495,HP=70, Attack=60, Defense=125, Sp_Atk=115, Sp_Def=70, Speed=55, Generation='1', Legendary=False,Image='../data/Pokemon_images/Omastar.PNG', Coordonnees=[34.59977746697469, 9.457286153521828]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Kabuto (Pokemon):
-    def __init__(self, ID ='140',nom='Kabuto', type1='Rock', type2='Water', Total=355,HP=30, Attack=80, Defense=90, Sp_Atk=55, Sp_Def=45, Speed=55, Generation='1', Legendary=False,Image=../data/Pokemon_images/Kabuto.PNG, Coordonnees=[8.694706051455112):
+    def __init__(self, ID ='140',nom='Kabuto', type1='Rock', type2='Water', Total=355,HP=30, Attack=80, Defense=90, Sp_Atk=55, Sp_Def=45, Speed=55, Generation='1', Legendary=False,Image='../data/Pokemon_images/Kabuto.PNG', Coordonnees=[8.694706051455112, 5.278580573388246]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Kabutops (Pokemon):
-    def __init__(self, ID ='141',nom='Kabutops', type1='Rock', type2='Water', Total=495,HP=60, Attack=115, Defense=105, Sp_Atk=65, Sp_Def=70, Speed=80, Generation='1', Legendary=False,Image=../data/Pokemon_images/Kabutops.PNG, Coordonnees=[30.88886156012109):
+    def __init__(self, ID ='141',nom='Kabutops', type1='Rock', type2='Water', Total=495,HP=60, Attack=115, Defense=105, Sp_Atk=65, Sp_Def=70, Speed=80, Generation='1', Legendary=False,Image='../data/Pokemon_images/Kabutops.PNG', Coordonnees=[30.88886156012109, 8.522410369327613]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Aerodactyl (Pokemon):
-    def __init__(self, ID ='142',nom='Aerodactyl', type1='Rock', type2='Flying', Total=515,HP=80, Attack=105, Defense=65, Sp_Atk=60, Sp_Def=75, Speed=130, Generation='1', Legendary=False,Image=../data/Pokemon_images/Aerodactyl.PNG, Coordonnees=[19.868549768587943):
+    def __init__(self, ID ='142',nom='Aerodactyl', type1='Rock', type2='Flying', Total=515,HP=80, Attack=105, Defense=65, Sp_Atk=60, Sp_Def=75, Speed=130, Generation='1', Legendary=False,Image='../data/Pokemon_images/Aerodactyl.PNG', Coordonnees=[19.868549768587943, 8.155710621931844]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Snorlax (Pokemon):
-    def __init__(self, ID ='143',nom='Snorlax', type1='Normal', type2='null', Total=540,HP=160, Attack=110, Defense=65, Sp_Atk=65, Sp_Def=110, Speed=30, Generation='1', Legendary=False,Image=../data/Pokemon_images/Snorlax.PNG, Coordonnees=[16.221013085792034):
+    def __init__(self, ID ='143',nom='Snorlax', type1='Normal', type2='null', Total=540,HP=160, Attack=110, Defense=65, Sp_Atk=65, Sp_Def=110, Speed=30, Generation='1', Legendary=False,Image='../data/Pokemon_images/Snorlax.PNG', Coordonnees=[16.221013085792034, 1.5189970381060958]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Articuno (Pokemon):
-    def __init__(self, ID ='144',nom='Articuno', type1='Ice', type2='Flying', Total=580,HP=90, Attack=85, Defense=100, Sp_Atk=95, Sp_Def=125, Speed=85, Generation='1', Legendary=True,Image=../data/Pokemon_images/Articuno.PNG, Coordonnees=[4.3031467064433615):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-class Zapdos (Pokemon):
-    def __init__(self, ID ='145',nom='Zapdos', type1='Electric', type2='Flying', Total=580,HP=90, Attack=90, Defense=85, Sp_Atk=125, Sp_Def=90, Speed=100, Generation='1', Legendary=True,Image=../data/Pokemon_images/Zapdos.PNG, Coordonnees=[6.0907670355848875):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-class Moltres (Pokemon):
-    def __init__(self, ID ='146',nom='Moltres', type1='Fire', type2='Flying', Total=580,HP=90, Attack=100, Defense=90, Sp_Atk=125, Sp_Def=85, Speed=90, Generation='1', Legendary=True,Image=../data/Pokemon_images/Moltres.PNG, Coordonnees=[7.263334513550195):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-class Dratini (Pokemon):
-    def __init__(self, ID ='147',nom='Dratini', type1='Dragon', type2='null', Total=300,HP=41, Attack=64, Defense=45, Sp_Atk=50, Sp_Def=50, Speed=50, Generation='1', Legendary=False,Image=../data/Pokemon_images/Dratini.PNG, Coordonnees=[35.426160157144196):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-class Dragonair (Pokemon):
-    def __init__(self, ID ='148',nom='Dragonair', type1='Dragon', type2='null', Total=420,HP=61, Attack=84, Defense=65, Sp_Atk=70, Sp_Def=70, Speed=70, Generation='1', Legendary=False,Image=../data/Pokemon_images/Dragonair.PNG, Coordonnees=[14.082682553226938):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-class Dragonite (Pokemon):
-    def __init__(self, ID ='149',nom='Dragonite', type1='Dragon', type2='Flying', Total=600,HP=91, Attack=134, Defense=95, Sp_Atk=100, Sp_Def=100, Speed=80, Generation='1', Legendary=False,Image=../data/Pokemon_images/Dragonite.PNG, Coordonnees=[0.06328498514706293):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-class Mewtwo (Pokemon):
-    def __init__(self, ID ='150',nom='Mewtwo', type1='Psychic', type2='null', Total=680,HP=106, Attack=110, Defense=90, Sp_Atk=154, Sp_Def=90, Speed=130, Generation='1', Legendary=True,Image=../data/Pokemon_images/Mewtwo.PNG, Coordonnees=[6.974622282327214):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-class Mew (Pokemon):
-    def __init__(self, ID ='151',nom='Mew', type1='Psychic', type2='null', Total=600,HP=100, Attack=100, Defense=100, Sp_Atk=100, Sp_Def=100, Speed=100, Generation='1', Legendary=False,Image=../data/Pokemon_images/Mew.PNG, Coordonnees=[23.864233784028617):
-        super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
-
-
+    def __init__(self, ID ='144',nom='Articuno', type1='Ice', type2='Flying', Total=580,HP=90, Attack=85, Defense=100, Sp_Atk=95, Sp_Def=125, Speed=85, Generation='1', Legendary=True,Image='../data/Pokemon_images/Articuno.PNG', Coordonnees=[4.3031467064433615, 6.745773774780339]):
         super().__init__( ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees )
 
 class Zapdos (Pokemon):
@@ -636,9 +652,26 @@ class Mew (Pokemon):
 
 if __name__=='__main__':
 
+##############################################################
+
+       ########## Donnees utiles ###########
+
+##############################################################                
+
     dict_pokemons={ 'Bulbasaur' : Bulbasaur(), 'Ivysaur' : Ivysaur(), 'Venusaur' : Venusaur(), 'Charmander' : Charmander(), 'Charmeleon' : Charmeleon(), 'Charizard' : Charizard(), 'Squirtle' : Squirtle(), 'Wartortle' : Wartortle(), 'Blastoise' : Blastoise(), 'Caterpie' : Caterpie(), 'Metapod' : Metapod(), 'Butterfree' : Butterfree(), 'Weedle' : Weedle(), 'Kakuna' : Kakuna(), 'Beedrill' : Beedrill(), 'Pidgey' : Pidgey(), 'Pidgeotto' : Pidgeotto(), 'Pidgeot' : Pidgeot(), 'Rattata' : Rattata(), 'Raticate' : Raticate(), 'Spearow' : Spearow(), 'Fearow' : Fearow(), 'Ekans' : Ekans(), 'Arbok' : Arbok(), 'Pikachu' : Pikachu(), 'Raichu' : Raichu(), 'Sandshrew' : Sandshrew(), 'Sandslash' : Sandslash(), 'Nidoran_male' : Nidoran_male(), 'Nidorina' : Nidorina(), 'Nidoqueen' : Nidoqueen(), 'Nidoran_female' : Nidoran_female(), 'Nidorino' : Nidorino(), 'Nidoking' : Nidoking(), 'Clefairy' : Clefairy(), 'Clefable' : Clefable(), 'Vulpix' : Vulpix(), 'Ninetales' : Ninetales(), 'Jigglypuff' : Jigglypuff(), 'Wigglytuff' : Wigglytuff(), 'Zubat' : Zubat(), 'Golbat' : Golbat(), 'Oddish' : Oddish(), 'Gloom' : Gloom(), 'Vileplume' : Vileplume(), 'Paras' : Paras(), 'Parasect' : Parasect(), 'Venonat' : Venonat(), 'Venomoth' : Venomoth(), 'Diglett' : Diglett(), 'Dugtrio' : Dugtrio(), 'Meowth' : Meowth(), 'Persian' : Persian(), 'Psyduck' : Psyduck(), 'Golduck' : Golduck(), 'Mankey' : Mankey(), 'Primeape' : Primeape(), 'Growlithe' : Growlithe(), 'Arcanine' : Arcanine(), 'Poliwag' : Poliwag(), 'Poliwhirl' : Poliwhirl(), 'Poliwrath' : Poliwrath(), 'Abra' : Abra(), 'Kadabra' : Kadabra(), 'Alakazam' : Alakazam(), 'Machop' : Machop(), 'Machoke' : Machoke(), 'Machamp' : Machamp(), 'Bellsprout' : Bellsprout(), 'Weepinbell' : Weepinbell(), 'Victreebel' : Victreebel(), 'Tentacool' : Tentacool(), 'Tentacruel' : Tentacruel(), 'Geodude' : Geodude(), 'Graveler' : Graveler(), 'Golem' : Golem(), 'Ponyta' : Ponyta(), 'Rapidash' : Rapidash(), 'Slowpoke' : Slowpoke(), 'Slowbro' : Slowbro(), 'Magnemite' : Magnemite(), 'Magneton' : Magneton(), 'Farfetchd' : Farfetchd(), 'Doduo' : Doduo(), 'Dodrio' : Dodrio(), 'Seel' : Seel(), 'Dewgong' : Dewgong(), 'Grimer' : Grimer(), 'Muk' : Muk(), 'Shellder' : Shellder(), 'Cloyster' : Cloyster(), 'Gastly' : Gastly(), 'Haunter' : Haunter(), 'Gengar' : Gengar(), 'Onix' : Onix(), 'Drowzee' : Drowzee(), 'Hypno' : Hypno(), 'Krabby' : Krabby(), 'Kingler' : Kingler(), 'Voltorb' : Voltorb(), 'Electrode' : Electrode(), 'Exeggcute' : Exeggcute(), 'Exeggutor' : Exeggutor(), 'Cubone' : Cubone(), 'Marowak' : Marowak(), 'Hitmonlee' : Hitmonlee(), 'Hitmonchan' : Hitmonchan(), 'Lickitung' : Lickitung(), 'Koffing' : Koffing(), 'Weezing' : Weezing(), 'Rhyhorn' : Rhyhorn(), 'Rhydon' : Rhydon(), 'Chansey' : Chansey(), 'Tangela' : Tangela(), 'Kangaskhan' : Kangaskhan(), 'Horsea' : Horsea(), 'Seadra' : Seadra(), 'Goldeen' : Goldeen(), 'Seaking' : Seaking(), 'Staryu' : Staryu(), 'Starmie' : Starmie(), 'Mr_Mime' : Mr_Mime(), 'Scyther' : Scyther(), 'Jynx' : Jynx(), 'Electabuzz' : Electabuzz(), 'Magmar' : Magmar(), 'Pinsir' : Pinsir(), 'Tauros' : Tauros(), 'Magikarp' : Magikarp(), 'Gyarados' : Gyarados(), 'Lapras' : Lapras(), 'Ditto' : Ditto(), 'Eevee' : Eevee(), 'Vaporeon' : Vaporeon(), 'Jolteon' : Jolteon(), 'Flareon' : Flareon(), 'Porygon' : Porygon(), 'Omanyte' : Omanyte(), 'Omastar' : Omastar(), 'Kabuto' : Kabuto(), 'Kabutops' : Kabutops(), 'Aerodactyl' : Aerodactyl(), 'Snorlax' : Snorlax(), 'Articuno' : Articuno(), 'Zapdos' : Zapdos(), 'Moltres' : Moltres(), 'Dratini' : Dratini(), 'Dragonair' : Dragonair(), 'Dragonite' : Dragonite(), 'Mewtwo' : Mewtwo(), 'Mew' : Mew(), }
+
+    list_pokemons= list(dict_pokemons.keys()) 
+
     ID_pokemons= { '1' : 'Bulbasaur', '2' : 'Ivysaur', '3' : 'Venusaur', '4' : 'Charmander', '5' : 'Charmeleon', '6' : 'Charizard', '7' : 'Squirtle', '8' : 'Wartortle', '9' : 'Blastoise', '10' : 'Caterpie', '11' : 'Metapod', '12' : 'Butterfree', '13' : 'Weedle', '14' : 'Kakuna', '15' : 'Beedrill', '16' : 'Pidgey', '17' : 'Pidgeotto', '18' : 'Pidgeot', '19' : 'Rattata', '20' : 'Raticate', '21' : 'Spearow', '22' : 'Fearow', '23' : 'Ekans', '24' : 'Arbok', '25' : 'Pikachu', '26' : 'Raichu', '27' : 'Sandshrew', '28' : 'Sandslash', '29' : 'Nidoran_male', '30' : 'Nidorina', '31' : 'Nidoqueen', '32' : 'Nidoran_female', '33' : 'Nidorino', '34' : 'Nidoking', '35' : 'Clefairy', '36' : 'Clefable', '37' : 'Vulpix', '38' : 'Ninetales', '39' : 'Jigglypuff', '40' : 'Wigglytuff', '41' : 'Zubat', '42' : 'Golbat', '43' : 'Oddish', '44' : 'Gloom', '45' : 'Vileplume', '46' : 'Paras', '47' : 'Parasect', '48' : 'Venonat', '49' : 'Venomoth', '50' : 'Diglett', '51' : 'Dugtrio', '52' : 'Meowth', '53' : 'Persian', '54' : 'Psyduck', '55' : 'Golduck', '56' : 'Mankey', '57' : 'Primeape', '58' : 'Growlithe', '59' : 'Arcanine', '60' : 'Poliwag', '61' : 'Poliwhirl', '62' : 'Poliwrath', '63' : 'Abra', '64' : 'Kadabra', '65' : 'Alakazam', '66' : 'Machop', '67' : 'Machoke', '68' : 'Machamp', '69' : 'Bellsprout', '70' : 'Weepinbell', '71' : 'Victreebel', '72' : 'Tentacool', '73' : 'Tentacruel', '74' : 'Geodude', '75' : 'Graveler', '76' : 'Golem', '77' : 'Ponyta', '78' : 'Rapidash', '79' : 'Slowpoke', '80' : 'Slowbro', '81' : 'Magnemite', '82' : 'Magneton', '83' : 'Farfetchd', '84' : 'Doduo', '85' : 'Dodrio', '86' : 'Seel', '87' : 'Dewgong', '88' : 'Grimer', '89' : 'Muk', '90' : 'Shellder', '91' : 'Cloyster', '92' : 'Gastly', '93' : 'Haunter', '94' : 'Gengar', '95' : 'Onix', '96' : 'Drowzee', '97' : 'Hypno', '98' : 'Krabby', '99' : 'Kingler', '100' : 'Voltorb', '101' : 'Electrode', '102' : 'Exeggcute', '103' : 'Exeggutor', '104' : 'Cubone', '105' : 'Marowak', '106' : 'Hitmonlee', '107' : 'Hitmonchan', '108' : 'Lickitung', '109' : 'Koffing', '110' : 'Weezing', '111' : 'Rhyhorn', '112' : 'Rhydon', '113' : 'Chansey', '114' : 'Tangela', '115' : 'Kangaskhan', '116' : 'Horsea', '117' : 'Seadra', '118' : 'Goldeen', '119' : 'Seaking', '120' : 'Staryu', '121' : 'Starmie', '122' : 'Mr_Mime', '123' : 'Scyther', '124' : 'Jynx', '125' : 'Electabuzz', '126' : 'Magmar', '127' : 'Pinsir', '128' : 'Tauros', '129' : 'Magikarp', '130' : 'Gyarados', '131' : 'Lapras', '132' : 'Ditto', '133' : 'Eevee', '134' : 'Vaporeon', '135' : 'Jolteon', '136' : 'Flareon', '137' : 'Porygon', '138' : 'Omanyte', '139' : 'Omastar', '140' : 'Kabuto', '141' : 'Kabutops', '142' : 'Aerodactyl', '143' : 'Snorlax', '144' : 'Articuno', '145' : 'Zapdos', '146' : 'Moltres', '147' : 'Dratini', '148' : 'Dragonair', '149' : 'Dragonite', '150' : 'Mewtwo', '151' : 'Mew', }
-    pokemons_totals_croissants=['150', '149', '151', '144', '145', '146', '59', '130', '143', '131', '6', '9', '3']
+
+    pokemons_13totals_croissants=['150', '149', '151', '144', '145', '146', '59', '130', '143', '131', '6', '9', '3']
+
+##############################################################
+
+       ########## Test ###########
+
+##############################################################                
+
     pokemons_totals_croissants=pi=Pikachu()
     Mewtou=Mew()
     Drac=Drowzee()
