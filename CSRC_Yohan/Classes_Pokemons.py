@@ -12,7 +12,7 @@ import random as rd
 class Pokemon(metaclass=ABCMeta):
 
     # Dictionnaire associant un type a un numero 
-    Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electrik': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17}
+    Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electric': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17}
 
     #Matrice de relations d'affinites des types des pokemons 
     Affinites = np.genfromtxt ('../data/Donnees_crees/Affinites.csv', delimiter =';',skip_header=1,usecols=range(1,19))
@@ -39,30 +39,75 @@ class Pokemon(metaclass=ABCMeta):
        ########## Methodes ###########
 
     def attaque_neutre(self,pokemon):
+        """
+        Fonction qui calcule et applique les dommages que reçoit un pokemon d'une attaque neutre
+
+        Parameters
+        ----------
+        pokemon : sous-classe de pokemon
+            Il s'agit du pokemon qui se fait attaquer.
+
+        Returns
+        -------
+        Dommage : integer
+            Nombre de points de vie retire.
+
+        """
         Dommage=self.Attack-pokemon.Defense
+        # Retour a 0 pour les dommages negatifs 
         if Dommage <0 :
             Dommage=0
+            
+        # Application des dommages
+        pokemon.HP=pokemon.HP-Dommage
         
+        # Retour a 0 pour les points de vie negatifs
+        if pokemon.HP<0:
+            pokemon.HP=0
         return Dommage
 
     def attaque_elementaire(self,pokemon,choix=False):
+        """
+        Fonction qui calcule et applique les dommages que reçoit un pokemon d'une attaque elementaire
+
+        Parameters
+        ----------
+        pokemon : sous-classe de pokemon
+            Il s'agit du pokemon qui se fait attaquer.
+
+        Returns
+        -------
+        Dommage : integer
+            Nombre de points de vie retire.
+
+        """
+        # Definition du type de l'attaque
         if choix==False or self.type2=='null':
             element=self.type1
         else:
             element=self.type2
-
+            
+        # Calcule du coefficient d'affinite de l'attaque elementaire sur un pokemon d'un seul type
         coeff =Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type1]]
         if pokemon.type2=='null':
             Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
-            if Dommage <0 :
-                Dommage=0
-            return Dommage
         else:
+            
+            # Calcule du coefficient d'affinite de l'attaque elementaire sur un pokemon de type double
             coeff = coeff * Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type2]]
             Dommage =self.Sp_Atk*coeff -pokemon.Sp_Def
-            if Dommage <0 :
-                Dommage=0
-            return Dommage
+            
+        # Retour a 0 pour les dommages negatifs 
+        if Dommage <0 :
+            Dommage=0
+            
+        # Application des dommages
+        pokemon.HP=pokemon.HP-Dommage
+        
+        # Retour a 0 pour les points de vie negatifs
+        if pokemon.HP<0:
+            pokemon.HP=0
+        return Dommage
 
 ##############################################################
 
@@ -684,7 +729,7 @@ class Mew (Pokemon):
 class Dresseur():
     Pokemons_depart=3
     
-    #Constructeu
+    #Constructeur
     def __init__(self, nom):
         
         self.nom=nom
@@ -704,64 +749,100 @@ class Dresseur():
             if Choix.ID in pokemons_13totals_croissants:
                 pokemons_13totals_croissants.remove(str(Choix.ID))
         
-        
-       ########## Methodes ###########
+ 
+##############################################################
 
+            ########## Methodes ###########
+
+##############################################################
              
-    def choix_pokemons_combats(self):
+    def choix_pokemons_combattants(self):
+        """
+        
+
+        Returns
+        -------
+        None.
+
+        """
         self.pokemons_combats={}
+        self.nom_pokemons_combattants=[]
+        self.ID_pokemons_combats=[]
         if len(self)==3:
-            self.pokemons_combats=self.inventaire
+            self.pokemons_combats=self.inventaire.copy()
+            self.nom_pokemons_combattants=self.pokemons_attrappes.copy()
+            self.ID_pokemons_combats=self.ID_pokemons_attrappees
         else:
             possibilites=self.pokemons_attrappes.copy()
             ID_possibilites=self.ID_pokemons_attrappees.copy()
             for choix in range(Dresseur.Pokemons_depart):
-                selection =str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
-                while selection not in ID_possibilites:
-                    print("Le choix n'est pas valide")
-                    selection =str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
-                nom=ID_pokemons[selection]
-                self.pokemons_combats[nom]=dict_pokemons[nom]
-                pokemon=nom+" ("+dict_pokemons[nom].ID+")"       
-                possibilites.remove(pokemon)                
-        
-    def __len__(self):
-        return len(self.inventaire)
-    
-    def __getitem__(self,nom):
-        for pokemon in self.inventaire:
-            if (pokemon.__name__)== nom :
-                return pokemon
-            
-            
-    def __contains__(self, nom):
-        if nom in list_pokemons:
-            return True
-        
-    # def __equal__(self, pokemon):
-    #         if pokemon.nom ==(self.nom):
-    #             return True
-        
-    def __delitem__(conteneur,nom):
-        for pokemon in conteneur:
-            if pokemon.name == nom:
-                del conteneur[pokemon.name]
+                nom,pokemon,ID_nom=choix_pokemon(possibilites, ID_possibilites)
+                self.pokemons_combats[nom]= pokemon
+                self.nom_pokemons_combattants.append(pokemon)
+                self.ID_pokemons_combats.append(ID_nom)
+                possibilites.remove(nom+" ("+ID_nom+")")
+                self.nom_pokemons_combattants.apppend(pokemon)        
                 
-    def __str__(self):
-        txt=("- - - - - - - - - - - - - - - - - - - - - - - - - - - - \nNom : "
-             +str(self.nom) +"\nNombre de pokemons : "+str(len(self))
-             
-             +"\nPokemons combattants : "+str(list(self.pokemons_combats.keys())).replace("'","").replace("[","").replace("]","")
-             + "\nPokemons capturés : "+str(self.pokemons_attrappes).replace("'","").replace("[","").replace("]","") + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-        return txt
+
+    def vitesse(self,pokemon):
+        """
+        
+
+        Parameters
+        ----------
+        pokemon : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        TYPE
+            DESCRIPTION.
+
+        """
+        pokemon_nom,choix,ID_nom= choix_pokemon(self.nom_pokemons_combattants,self.ID_pokemons_combats)
+        if choix.Speed >= pokemon.Speed:
+            return choix.nom
+        else:
+            return pokemon.nom
+        
+    def echange_pokemon():
+        return 0
     
+    def fuir(): 
+        return 0
+        
+    def tour():
+        return 0
+        
     def attrape_pokemon(self,pokemon):
+        """
+        
+
+        Parameters
+        ----------
+        pokemon : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         self.inventaire[pokemon.nom]=pokemon
         self.pokemons_attrappes.append(pokemon.nom+" ("+pokemon.ID+")")
         self.ID_pokemons_attrappees.append(pokemon.ID)
         self.pokemons_a_trouver.remove(pokemon.nom)
         
+        
     def pokemons_on_map(self):
+        """
+        
+
+        Returns
+        -------
+        None.
+
+        """
         p_l=10
         p_s=20
         self.pokemons_libres=[]
@@ -779,10 +860,54 @@ class Dresseur():
                 self.pokemons_sauvages.append(nom)
                 ID_nom=dict_pokemons[nom].ID
                 self.pokemons_a_trouver.remove(nom)
+                                
+##############################################################
+
+            ########## Surcharge ###########
+
+##############################################################
+    
+    # Surcharge len()
+    def __len__(self):
+        return len(self.inventaire)
+    
+    # Surcharge X[nom]=valeur
+    def __getitem__(self,nom):
+        for pokemon in self.inventaire:
+            if (pokemon.__name__)== nom :
+                return pokemon       
+            
+    # Surcharge in      
+    def __contains__(self, nom):
+        if nom in list_pokemons:
+            return True
+        
+    # Surcharge del
+    def __delitem__(conteneur,nom):
+        for pokemon in conteneur:
+            if pokemon.name == nom:
+                del conteneur[pokemon.name]
                 
+    # Surcharge print()
+    def __str__(self):
+        txt=("- - - - - - - - - - - - - - - - - - - - - - - - - - - - \nNom : "
+             +str(self.nom) +"\nNombre de pokemons : "+str(len(self))
+             +"\nPokemons combattants : "+str(list(self.pokemons_combats.keys())).replace("'","").replace("[","").replace("]","")
+             + "\nPokemons capturés : "+str(self.pokemons_attrappes).replace("'","").replace("[","").replace("]","") + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+        return txt
+
+        
+
+    
     
 # class  Jeu():
 #     def __ini
+
+def jeu():
+    Joueur= Dresseur(input("Veillez entrer votre Pseudo"))
+    while len(Joueur)!=151:
+        if len(Joueur)==151:
+            print("Félicitation vous avez achevé votre aventure")
         
 if __name__=='__main__':
 
@@ -799,25 +924,65 @@ if __name__=='__main__':
     ID_pokemons= { '1' : 'Bulbasaur', '2' : 'Ivysaur', '3' : 'Venusaur', '4' : 'Charmander', '5' : 'Charmeleon', '6' : 'Charizard', '7' : 'Squirtle', '8' : 'Wartortle', '9' : 'Blastoise', '10' : 'Caterpie', '11' : 'Metapod', '12' : 'Butterfree', '13' : 'Weedle', '14' : 'Kakuna', '15' : 'Beedrill', '16' : 'Pidgey', '17' : 'Pidgeotto', '18' : 'Pidgeot', '19' : 'Rattata', '20' : 'Raticate', '21' : 'Spearow', '22' : 'Fearow', '23' : 'Ekans', '24' : 'Arbok', '25' : 'Pikachu', '26' : 'Raichu', '27' : 'Sandshrew', '28' : 'Sandslash', '29' : 'Nidoran_male', '30' : 'Nidorina', '31' : 'Nidoqueen', '32' : 'Nidoran_female', '33' : 'Nidorino', '34' : 'Nidoking', '35' : 'Clefairy', '36' : 'Clefable', '37' : 'Vulpix', '38' : 'Ninetales', '39' : 'Jigglypuff', '40' : 'Wigglytuff', '41' : 'Zubat', '42' : 'Golbat', '43' : 'Oddish', '44' : 'Gloom', '45' : 'Vileplume', '46' : 'Paras', '47' : 'Parasect', '48' : 'Venonat', '49' : 'Venomoth', '50' : 'Diglett', '51' : 'Dugtrio', '52' : 'Meowth', '53' : 'Persian', '54' : 'Psyduck', '55' : 'Golduck', '56' : 'Mankey', '57' : 'Primeape', '58' : 'Growlithe', '59' : 'Arcanine', '60' : 'Poliwag', '61' : 'Poliwhirl', '62' : 'Poliwrath', '63' : 'Abra', '64' : 'Kadabra', '65' : 'Alakazam', '66' : 'Machop', '67' : 'Machoke', '68' : 'Machamp', '69' : 'Bellsprout', '70' : 'Weepinbell', '71' : 'Victreebel', '72' : 'Tentacool', '73' : 'Tentacruel', '74' : 'Geodude', '75' : 'Graveler', '76' : 'Golem', '77' : 'Ponyta', '78' : 'Rapidash', '79' : 'Slowpoke', '80' : 'Slowbro', '81' : 'Magnemite', '82' : 'Magneton', '83' : 'Farfetchd', '84' : 'Doduo', '85' : 'Dodrio', '86' : 'Seel', '87' : 'Dewgong', '88' : 'Grimer', '89' : 'Muk', '90' : 'Shellder', '91' : 'Cloyster', '92' : 'Gastly', '93' : 'Haunter', '94' : 'Gengar', '95' : 'Onix', '96' : 'Drowzee', '97' : 'Hypno', '98' : 'Krabby', '99' : 'Kingler', '100' : 'Voltorb', '101' : 'Electrode', '102' : 'Exeggcute', '103' : 'Exeggutor', '104' : 'Cubone', '105' : 'Marowak', '106' : 'Hitmonlee', '107' : 'Hitmonchan', '108' : 'Lickitung', '109' : 'Koffing', '110' : 'Weezing', '111' : 'Rhyhorn', '112' : 'Rhydon', '113' : 'Chansey', '114' : 'Tangela', '115' : 'Kangaskhan', '116' : 'Horsea', '117' : 'Seadra', '118' : 'Goldeen', '119' : 'Seaking', '120' : 'Staryu', '121' : 'Starmie', '122' : 'Mr_Mime', '123' : 'Scyther', '124' : 'Jynx', '125' : 'Electabuzz', '126' : 'Magmar', '127' : 'Pinsir', '128' : 'Tauros', '129' : 'Magikarp', '130' : 'Gyarados', '131' : 'Lapras', '132' : 'Ditto', '133' : 'Eevee', '134' : 'Vaporeon', '135' : 'Jolteon', '136' : 'Flareon', '137' : 'Porygon', '138' : 'Omanyte', '139' : 'Omastar', '140' : 'Kabuto', '141' : 'Kabutops', '142' : 'Aerodactyl', '143' : 'Snorlax', '144' : 'Articuno', '145' : 'Zapdos', '146' : 'Moltres', '147' : 'Dratini', '148' : 'Dragonair', '149' : 'Dragonite', '150' : 'Mewtwo', '151' : 'Mew', }
 
     pokemons_13totals_croissants=['150', '149', '151', '144', '145', '146', '59', '130', '143', '131', '6', '9', '3']
+    
+    def choix_pokemon(liste1,liste2):
+        """
+        
 
+        Parameters
+        ----------
+        liste1 : list
+            Liste de noms de pokemon avec leur identifiants entre parentheses.
+        liste2 : list
+            Liste d'identifiants de pokemon.
+
+        Returns
+        -------
+        nom : string
+            DESCRIPTION.
+        pokemon : sous-classe de pokemon
+            Pokemon selectionne.
+        ID_nom : string
+            Identifiant du pokemon selectionne.
+
+        """
+        possibilites= liste1.copy()
+        selection= str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
+        while selection not in liste2:
+            print("Le choix n'est pas valide")
+            selection =str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
+        nom=ID_pokemons[selection]
+        pokemon=dict_pokemons[nom]
+        ID_nom=selection
+        return nom,pokemon,ID_nom
+    
 ##############################################################
 
        ########## Test ###########
 
 ##############################################################                
 
-    pokemons_totals_croissants=pi=Pikachu()
+    pi=Pikachu()
     Mewtou=Mew()
     Drac=Drowzee()
-    x="Magnemite (81)"
-
-    print(Mewtou.attaque_neutre(pi))
+    o=Pokemon.Affinites.copy()
+    
+    # print(Mewtou.attaque_neutre(pi))
+    
     Drac=Drowzee()
     pika=dict_pokemons["Pikachu"]
+    
+    # print(Pokemon.Affinites[Pokemon.Types[pika.type1],Pokemon.Types[pika.type1]])
+    
+    
+    
     Sacha = Dresseur("Sacha")
+    
     # Sacha.attrape_pokemon(pika)
-    Sacha.choix_pokemons_combats()
+    # Sacha.choix_pokemons_combattants()
     # print(Sacha.get_nom_pokemon(25))
+    # print(Sacha.vitesse(Drac))
     print(Sacha)
-    Sacha.pokemons_on_map()
+    
+    # Sacha.pokemons_on_map()
     # <>

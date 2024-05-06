@@ -14,8 +14,7 @@ modele=("class {nom} (Pokemon):\n"+"    def __init__(self, ID ='{ID}',nom='{nom}
 # Fonction qui creera une liste avec toutes les classes de pokemons
 def generateur_pokemon(fichier):
     """
-    
-
+    Fonction qui ecrit les sous-classes pokemons, un dictionnaire renfermant des objets pokemons et un dictionnaire renfermant le nom de chaque pokemon associe a son identifiant
     Parameters
     ----------
     fichier : string
@@ -24,7 +23,7 @@ def generateur_pokemon(fichier):
     Returns
     -------
     Classes_Pokemons : List
-        Liste avec toutes les classes de pokemons.
+        Liste avec toutes les sous-classes de pokemons.
     dict_pokemons : dict
         Dictionnaire renfermant des objets pokemons.
     ID_pokemons : dict
@@ -87,7 +86,7 @@ def generateur_pokemon(fichier):
 if __name__=='__main__':
     
     # Dictionnaire associant un type a un numero
-    Types={"Steel":0, "Fighting":1 ,"Dragon":2 ,"Water":3, "Fire":4 ,"Electrik":5, "Fairy":6, "Ice":7, "Bug":8 ,"Normal":9 ,"Grass":10, "Poison":11 ,"Psychic":12, "Ground":13, "Rock":14, "Ghost":15, "Darness":16, "Flying":17}
+    Types={"Steel":0, "Fighting":1 ,"Dragon":2 ,"Water":3, "Fire":4 ,"Electric":5, "Fairy":6, "Ice":7, "Bug":8 ,"Normal":9 ,"Grass":10, "Poison":11 ,"Psychic":12, "Ground":13, "Rock":14, "Ghost":15, "Darness":16, "Flying":17}
     
     # Listes des 13 pokemons ayant les plus hauts totaux
     pokemons_13totals_croissants=["150","149","151","144","145","146","59","130","143","131","6","9","3"]
@@ -139,7 +138,7 @@ if __name__=='__main__':
                                     +"\n\n    dict_pokemons="+dict_pokemons+"\n\n    list_pokemons= list(dict_pokemons.keys()) \n\n    ID_pokemons= "
                                     +ID_pokemons+"\n\n    pokemons_13totals_croissants="+str(pokemons_13totals_croissants)
                                     +"\n\n##############################################################\n\n       ########## Test ###########\n\n##############################################################                \n"
-                                    +"\n    pokemons_totals_croissants=pi=Pikachu()\n    Mewtou=Mew()\n    Drac=Drowzee()"))
+                                    +"\n    pi=Pikachu()\n    Mewtou=Mew()\n    Drac=Drowzee()"))
     
     # Fermeture du fichier python
     Fichier_Classes_Pokemons.close()
