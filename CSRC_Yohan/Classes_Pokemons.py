@@ -750,7 +750,9 @@ class Dresseur():
                 self.pokemons_sauvages.append(nom)
                 ID_nom=dict_pokemons[nom].ID
                 self.pokemons_a_trouver.remove(nom)
-            # print(self.pokemons_sauvages)
+                
+        print(self.pokemons_libres)        
+        print(self.pokemons_sauvages)
                 
                 
         # <>
