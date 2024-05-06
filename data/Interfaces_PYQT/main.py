@@ -1,3 +1,4 @@
+
 import pygame
 import random
 import os
@@ -13,7 +14,7 @@ class Carte:
     MARGIN = 10  # Taille de la marge autour de la carte
     SCREEN_WIDTH = 800
     SCREEN_HEIGHT = 800
-    GRID_SIZE = 10  # Nombre de cellule de la grille sur une ligne ou sur une colonne.
+    GRID_SIZE = 15  # Nombre de cellule de la grille sur une ligne ou sur une colonne.
     CELL_SIZE = (SCREEN_WIDTH - 2 * MARGIN) // GRID_SIZE  # Taille d'une cellule de la grille
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Affiche l'écran principal
     pygame.display.set_caption("POKEMON")  # Affiche le titre donné en haut du dessin
@@ -57,7 +58,7 @@ class Carte:
             pygame.draw.line(cls.screen, cls.BLACK, (cls.MARGIN + i * cls.CELL_SIZE, cls.MARGIN),
                              (cls.MARGIN + i * cls.CELL_SIZE, cls.SCREEN_HEIGHT - cls.MARGIN), 1)
 
-        # Rafraîchir l'écran
+            # Rafraîchir l'écran
         pygame.display.flip()
 
 
@@ -99,7 +100,7 @@ class Joueur:
             self.col += 1
             self.row += 1
 
-        # Vérification des limites des bords
+            # Vérification des limites des bords
         self.row = max(limit_left // Carte.CELL_SIZE, min(self.row, limit_right // Carte.CELL_SIZE))
         self.col = max(limit_top // Carte.CELL_SIZE, min(self.col, limit_bottom // Carte.CELL_SIZE))
 
@@ -111,13 +112,13 @@ class Joueur:
 
         centre = (Carte.MARGIN + self.row * Carte.CELL_SIZE + Carte.CELL_SIZE // 2,
                   Carte.MARGIN + self.col * Carte.CELL_SIZE + Carte.CELL_SIZE // 2)
-        rayon = Carte.CELL_SIZE // 4
+        rayon = Carte.CELL_SIZE // 8
         pygame.draw.circle(Carte.screen, self.color, centre, rayon)
 
 
 class LesPokemons:
     def __init__(self):
-        self.color = (200, 200, 0)  # Couleur jaune pour les Pokémon
+        self.color = (0, 0, 0)  # Couleur jaune pour les Pokémon
         self.pokemons = {}  # Dictionnaire pour stocker les coordonnées des Pokémon
         # Chargement des coordonnées des Pokémon depuis le fichier Excel
         wb = openpyxl.load_workbook("pokemon_coordinates.xlsx")
@@ -131,19 +132,25 @@ class LesPokemons:
 
     def positionner(self):
         for pokemon_name, (x, y) in self.pokemons.items():
-            rayon = Carte.CELL_SIZE // 8  # Taille du rayon pour les Pokémon (2 fois plus petit que le joueur)
-            pygame.draw.circle(Carte.screen, self.color, (x, y), rayon)
+            rayon = Carte.CELL_SIZE // 16
+            X = x * 19.5 + Carte.MARGIN
+            Y = y * 78 + Carte.MARGIN
+            pygame.draw.circle(Carte.screen, self.color, (X, Y), rayon)
 
 
-# Programme principal
+        # Programme principal
+
+# Dessiner la carte
+Carte.dessiner_grille()
 
 # Création du joueur
 rows, cols = random.randint(1, Carte.GRID_SIZE) - 1, random.randint(1, Carte.GRID_SIZE) - 1  # La position du joueur
 joueur = Joueur(rows, cols)  # Le joueur commence dans une position aléatoire
 
+
 # Création de pokemon
 pokemon = LesPokemons()
-pokemon.positionner()
+
 # Boucle principale du jeu
 running = True
 while running:
@@ -170,8 +177,11 @@ while running:
             elif event.key == pygame.K_RIGHT:
                 joueur.deplacer("droite")
 
-    # Dessiner la carte
-    Carte.dessiner_grille()
+                # Effacer l'écran
+    Carte.screen.fill(Carte.WHITE)
+
+    # Dessiner les pokemons
+    pokemon.positionner()
 
     # Dessiner le joueur
     joueur.dessiner()
@@ -181,3 +191,5 @@ while running:
 
 # Quitter Pygame
 pygame.quit()
+
+
