@@ -740,7 +740,7 @@ class Dresseur():
             if numero <p_l:
                 print(numero)
                 print(pokemons_13totals_croissants)
-                print(pokemons_13totals_croissants[numero])
+                print(pokemons_13totals_croissants[0])
                 nom = ID_pokemons[pokemons_13totals_croissants[numero]]
                 
                 self.pokemons_libres.append(nom)
