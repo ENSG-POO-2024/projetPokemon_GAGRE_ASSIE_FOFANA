@@ -108,6 +108,19 @@ class Pokemon(metaclass=ABCMeta):
         if pokemon.HP<0:
             pokemon.HP=0
         return Dommage
+    
+    def pokemon_KO(self):
+        """
+        Fonction qui signale si un pokemon est hors d'etat de combattre
+
+        Returns
+        -------
+        bool
+
+        """
+        if self.HP==0:
+            return True
+        
 
 ##############################################################
 
@@ -780,6 +793,8 @@ class Dresseur():
                 self.ID_pokemons_combats.append(ID_nom)
                 possibilites.remove(nom+" ("+ID_nom+")")
                 
+        self.pokemon_zone_attente=self.pokemons_combats.copy()
+                
 
     def vitesse(self,pokemon):
         """
@@ -789,21 +804,28 @@ class Dresseur():
         Parameters
         ----------
         pokemon : Sous-classe pokemon
-            DESCRIPTION.
+            Pokemon rencontre.
 
         Returns
         -------
-        TYPE
-            DESCRIPTION.
+        Choix.nom / Pokemon.nom    :  String
+            Nom du pokemon attaquant.
 
         """
+        self.pokemon_zone_combat={}
         pokemon_nom,choix,ID_nom= choix_pokemon(self.nom_pokemons_combattants,self.ID_pokemons_combats)
+        
+        self.pokemon_zone_combat[pokemon_nom]=choix
+        del self.pokemon_zone_attente[pokemon_nom]
         if choix.Speed >= pokemon.Speed:
             return choix.nom
         else:
             return pokemon.nom
         
-    def echange_pokemon():
+    def echange_pokemon(self):
+        choix_pokemon(self., liste2)
+        
+        
         return 0
     
     def fuir(): 
@@ -812,7 +834,8 @@ class Dresseur():
     def tour():
         return 0
     
-    def ajout_pokemon(self):
+    
+    def ajout_pokemon_sauvages(self):
         nom_pokemon=rd.choice(self.pokemons_a_trouver)[-5]
         self.pokemons_sauvages.append(nom_pokemon)
         
@@ -832,6 +855,10 @@ class Dresseur():
         self.pokemons_attrappes.append(pokemon.nom+" ("+pokemon.ID+")")
         self.ID_pokemons_attrappees.append(pokemon.ID)
         self.pokemons_a_trouver.remove(pokemon.nom)
+        if pokemon in self.pokemons_libres:
+            self.pokemons_libres.remove(pokemon)
+        if pokemon in self.pokemons_sauvages:
+            self.pokemons_sauvages.remove(pokemon)
         
         
     def pokemons_on_map(self):
