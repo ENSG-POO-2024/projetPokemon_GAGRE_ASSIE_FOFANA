@@ -742,25 +742,47 @@ class Mew (Pokemon):
 class Dresseur():
     Pokemons_depart=3
     
+##############################################################
+
+           ########## Donnees utiles ###########
+
+##############################################################                
+
+    dict_pokemons={ 'Bulbasaur' : Bulbasaur(), 'Ivysaur' : Ivysaur(), 'Venusaur' : Venusaur(), 'Charmander' : Charmander(), 'Charmeleon' : Charmeleon(), 'Charizard' : Charizard(), 'Squirtle' : Squirtle(), 'Wartortle' : Wartortle(), 'Blastoise' : Blastoise(), 'Caterpie' : Caterpie(), 'Metapod' : Metapod(), 'Butterfree' : Butterfree(), 'Weedle' : Weedle(), 'Kakuna' : Kakuna(), 'Beedrill' : Beedrill(), 'Pidgey' : Pidgey(), 'Pidgeotto' : Pidgeotto(), 'Pidgeot' : Pidgeot(), 'Rattata' : Rattata(), 'Raticate' : Raticate(), 'Spearow' : Spearow(), 'Fearow' : Fearow(), 'Ekans' : Ekans(), 'Arbok' : Arbok(), 'Pikachu' : Pikachu(), 'Raichu' : Raichu(), 'Sandshrew' : Sandshrew(), 'Sandslash' : Sandslash(), 'Nidoran_male' : Nidoran_male(), 'Nidorina' : Nidorina(), 'Nidoqueen' : Nidoqueen(), 'Nidoran_female' : Nidoran_female(), 'Nidorino' : Nidorino(), 'Nidoking' : Nidoking(), 'Clefairy' : Clefairy(), 'Clefable' : Clefable(), 'Vulpix' : Vulpix(), 'Ninetales' : Ninetales(), 'Jigglypuff' : Jigglypuff(), 'Wigglytuff' : Wigglytuff(), 'Zubat' : Zubat(), 'Golbat' : Golbat(), 'Oddish' : Oddish(), 'Gloom' : Gloom(), 'Vileplume' : Vileplume(), 'Paras' : Paras(), 'Parasect' : Parasect(), 'Venonat' : Venonat(), 'Venomoth' : Venomoth(), 'Diglett' : Diglett(), 'Dugtrio' : Dugtrio(), 'Meowth' : Meowth(), 'Persian' : Persian(), 'Psyduck' : Psyduck(), 'Golduck' : Golduck(), 'Mankey' : Mankey(), 'Primeape' : Primeape(), 'Growlithe' : Growlithe(), 'Arcanine' : Arcanine(), 'Poliwag' : Poliwag(), 'Poliwhirl' : Poliwhirl(), 'Poliwrath' : Poliwrath(), 'Abra' : Abra(), 'Kadabra' : Kadabra(), 'Alakazam' : Alakazam(), 'Machop' : Machop(), 'Machoke' : Machoke(), 'Machamp' : Machamp(), 'Bellsprout' : Bellsprout(), 'Weepinbell' : Weepinbell(), 'Victreebel' : Victreebel(), 'Tentacool' : Tentacool(), 'Tentacruel' : Tentacruel(), 'Geodude' : Geodude(), 'Graveler' : Graveler(), 'Golem' : Golem(), 'Ponyta' : Ponyta(), 'Rapidash' : Rapidash(), 'Slowpoke' : Slowpoke(), 'Slowbro' : Slowbro(), 'Magnemite' : Magnemite(), 'Magneton' : Magneton(), 'Farfetchd' : Farfetchd(), 'Doduo' : Doduo(), 'Dodrio' : Dodrio(), 'Seel' : Seel(), 'Dewgong' : Dewgong(), 'Grimer' : Grimer(), 'Muk' : Muk(), 'Shellder' : Shellder(), 'Cloyster' : Cloyster(), 'Gastly' : Gastly(), 'Haunter' : Haunter(), 'Gengar' : Gengar(), 'Onix' : Onix(), 'Drowzee' : Drowzee(), 'Hypno' : Hypno(), 'Krabby' : Krabby(), 'Kingler' : Kingler(), 'Voltorb' : Voltorb(), 'Electrode' : Electrode(), 'Exeggcute' : Exeggcute(), 'Exeggutor' : Exeggutor(), 'Cubone' : Cubone(), 'Marowak' : Marowak(), 'Hitmonlee' : Hitmonlee(), 'Hitmonchan' : Hitmonchan(), 'Lickitung' : Lickitung(), 'Koffing' : Koffing(), 'Weezing' : Weezing(), 'Rhyhorn' : Rhyhorn(), 'Rhydon' : Rhydon(), 'Chansey' : Chansey(), 'Tangela' : Tangela(), 'Kangaskhan' : Kangaskhan(), 'Horsea' : Horsea(), 'Seadra' : Seadra(), 'Goldeen' : Goldeen(), 'Seaking' : Seaking(), 'Staryu' : Staryu(), 'Starmie' : Starmie(), 'Mr_Mime' : Mr_Mime(), 'Scyther' : Scyther(), 'Jynx' : Jynx(), 'Electabuzz' : Electabuzz(), 'Magmar' : Magmar(), 'Pinsir' : Pinsir(), 'Tauros' : Tauros(), 'Magikarp' : Magikarp(), 'Gyarados' : Gyarados(), 'Lapras' : Lapras(), 'Ditto' : Ditto(), 'Eevee' : Eevee(), 'Vaporeon' : Vaporeon(), 'Jolteon' : Jolteon(), 'Flareon' : Flareon(), 'Porygon' : Porygon(), 'Omanyte' : Omanyte(), 'Omastar' : Omastar(), 'Kabuto' : Kabuto(), 'Kabutops' : Kabutops(), 'Aerodactyl' : Aerodactyl(), 'Snorlax' : Snorlax(), 'Articuno' : Articuno(), 'Zapdos' : Zapdos(), 'Moltres' : Moltres(), 'Dratini' : Dratini(), 'Dragonair' : Dragonair(), 'Dragonite' : Dragonite(), 'Mewtwo' : Mewtwo(), 'Mew' : Mew(), }
+
+    list_pokemons= list(dict_pokemons.keys()) 
+
+    ID_pokemons= { '1' : 'Bulbasaur', '2' : 'Ivysaur', '3' : 'Venusaur', '4' : 'Charmander', '5' : 'Charmeleon', '6' : 'Charizard', '7' : 'Squirtle', '8' : 'Wartortle', '9' : 'Blastoise', '10' : 'Caterpie', '11' : 'Metapod', '12' : 'Butterfree', '13' : 'Weedle', '14' : 'Kakuna', '15' : 'Beedrill', '16' : 'Pidgey', '17' : 'Pidgeotto', '18' : 'Pidgeot', '19' : 'Rattata', '20' : 'Raticate', '21' : 'Spearow', '22' : 'Fearow', '23' : 'Ekans', '24' : 'Arbok', '25' : 'Pikachu', '26' : 'Raichu', '27' : 'Sandshrew', '28' : 'Sandslash', '29' : 'Nidoran_male', '30' : 'Nidorina', '31' : 'Nidoqueen', '32' : 'Nidoran_female', '33' : 'Nidorino', '34' : 'Nidoking', '35' : 'Clefairy', '36' : 'Clefable', '37' : 'Vulpix', '38' : 'Ninetales', '39' : 'Jigglypuff', '40' : 'Wigglytuff', '41' : 'Zubat', '42' : 'Golbat', '43' : 'Oddish', '44' : 'Gloom', '45' : 'Vileplume', '46' : 'Paras', '47' : 'Parasect', '48' : 'Venonat', '49' : 'Venomoth', '50' : 'Diglett', '51' : 'Dugtrio', '52' : 'Meowth', '53' : 'Persian', '54' : 'Psyduck', '55' : 'Golduck', '56' : 'Mankey', '57' : 'Primeape', '58' : 'Growlithe', '59' : 'Arcanine', '60' : 'Poliwag', '61' : 'Poliwhirl', '62' : 'Poliwrath', '63' : 'Abra', '64' : 'Kadabra', '65' : 'Alakazam', '66' : 'Machop', '67' : 'Machoke', '68' : 'Machamp', '69' : 'Bellsprout', '70' : 'Weepinbell', '71' : 'Victreebel', '72' : 'Tentacool', '73' : 'Tentacruel', '74' : 'Geodude', '75' : 'Graveler', '76' : 'Golem', '77' : 'Ponyta', '78' : 'Rapidash', '79' : 'Slowpoke', '80' : 'Slowbro', '81' : 'Magnemite', '82' : 'Magneton', '83' : 'Farfetchd', '84' : 'Doduo', '85' : 'Dodrio', '86' : 'Seel', '87' : 'Dewgong', '88' : 'Grimer', '89' : 'Muk', '90' : 'Shellder', '91' : 'Cloyster', '92' : 'Gastly', '93' : 'Haunter', '94' : 'Gengar', '95' : 'Onix', '96' : 'Drowzee', '97' : 'Hypno', '98' : 'Krabby', '99' : 'Kingler', '100' : 'Voltorb', '101' : 'Electrode', '102' : 'Exeggcute', '103' : 'Exeggutor', '104' : 'Cubone', '105' : 'Marowak', '106' : 'Hitmonlee', '107' : 'Hitmonchan', '108' : 'Lickitung', '109' : 'Koffing', '110' : 'Weezing', '111' : 'Rhyhorn', '112' : 'Rhydon', '113' : 'Chansey', '114' : 'Tangela', '115' : 'Kangaskhan', '116' : 'Horsea', '117' : 'Seadra', '118' : 'Goldeen', '119' : 'Seaking', '120' : 'Staryu', '121' : 'Starmie', '122' : 'Mr_Mime', '123' : 'Scyther', '124' : 'Jynx', '125' : 'Electabuzz', '126' : 'Magmar', '127' : 'Pinsir', '128' : 'Tauros', '129' : 'Magikarp', '130' : 'Gyarados', '131' : 'Lapras', '132' : 'Ditto', '133' : 'Eevee', '134' : 'Vaporeon', '135' : 'Jolteon', '136' : 'Flareon', '137' : 'Porygon', '138' : 'Omanyte', '139' : 'Omastar', '140' : 'Kabuto', '141' : 'Kabutops', '142' : 'Aerodactyl', '143' : 'Snorlax', '144' : 'Articuno', '145' : 'Zapdos', '146' : 'Moltres', '147' : 'Dratini', '148' : 'Dragonair', '149' : 'Dragonite', '150' : 'Mewtwo', '151' : 'Mew', }
+
+    pokemons_13totals_croissants=['150', '149', '151', '144', '145', '146', '59', '130', '143', '131', '6', '9', '3']
+        
+    
     #Constructeur
-    def __init__(self, nom):
+    def __init__(self, nom, genre):
         
         self.nom=nom
+        self.genre=genre
+        if self.genre=='Masculin':
+            self.image='../data/Images_interface.Garcon.jpg'
+        else:
+            self.image='../data\Images_interface.Fille.jpg'
         self.inventaire={}
         self.pokemons_attrappes=[]
         self.ID_pokemons_attrappees=[]
-        self.pokemons_a_trouver=list_pokemons.copy()
+        self.pokemons_a_trouver=Dresseur.list_pokemons.copy()
         
         for i in range(Dresseur.Pokemons_depart):
-            nom_pokemon=rd.choice(list_pokemons)
-            Choix=dict_pokemons[nom_pokemon]
+            nom_pokemon=rd.choice(Dresseur.list_pokemons)
+            Choix=Dresseur.dict_pokemons[nom_pokemon]
             
             self.inventaire[nom_pokemon]=Choix
             self.pokemons_attrappes.append(nom_pokemon+" ("+Choix.ID+")")
             self.ID_pokemons_attrappees.append(Choix.ID)
             self.pokemons_a_trouver.remove(nom_pokemon)
-            if Choix.ID in pokemons_13totals_croissants:
-                pokemons_13totals_croissants.remove(str(Choix.ID))
+            if Choix.ID in Dresseur.pokemons_13totals_croissants:
+                Dresseur.pokemons_13totals_croissants.remove(str(Choix.ID))
+                
+        
         
  
 ##############################################################
@@ -787,7 +809,7 @@ class Dresseur():
             ID_possibilites=self.ID_pokemons_attrappees.copy()
             for choix in range(Dresseur.Pokemons_depart):
                 
-                nom,pokemon,ID_nom= choix_pokemon(possibilites, ID_possibilites)
+                nom,pokemon,ID_nom= Dresseur.choix_pokemon(possibilites, ID_possibilites)
                 self.pokemons_combats[nom]= pokemon
                 self.nom_pokemons_combattants.append(pokemon)
                 self.ID_pokemons_combats.append(ID_nom)
@@ -813,7 +835,7 @@ class Dresseur():
 
         """
         self.pokemon_zone_combat={}
-        pokemon_nom,choix,ID_nom= choix_pokemon(self.nom_pokemons_combattants,self.ID_pokemons_combats)
+        pokemon_nom,choix,ID_nom= Dresseur.choix_pokemon(self.nom_pokemons_combattants,self.ID_pokemons_combats)
         
         self.pokemon_zone_combat[pokemon_nom]=choix
         del self.pokemon_zone_attente[pokemon_nom]
@@ -823,9 +845,7 @@ class Dresseur():
             return pokemon.nom
         
     def echange_pokemon(self):
-        choix_pokemon(self., liste2)
-        
-        
+        choix = Dresseur.choix_pokemon(self.pokemon_zone_combat, )
         return 0
     
     def fuir(): 
@@ -859,6 +879,47 @@ class Dresseur():
             self.pokemons_libres.remove(pokemon)
         if pokemon in self.pokemons_sauvages:
             self.pokemons_sauvages.remove(pokemon)
+            
+    def nom_identifiant(self):
+        return 0
+        
+            
+    @staticmethod
+    def choix_pokemon(liste1,liste2):
+        """
+        
+        Fonction qui permet de choisir un pokemon en choisissant son identifiant
+        
+        Parameters
+        ----------
+        liste1 : list
+            Liste de noms de pokemon avec leur identifiants entre parentheses.
+        liste2 : list
+            Liste d'identifiants de pokemon.
+
+        Returns
+        -------
+        nom : string
+            DESCRIPTION.
+        pokemon : sous-classe de pokemon
+            Pokemon selectionne.
+        ID_nom : string
+            Identifiant du pokemon selectionne.
+
+        """
+        possibilites= liste1.copy()
+        selection= str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
+        while selection not in liste2:
+            print("Le choix n'est pas valide")
+            selection =str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
+        nom=Dresseur.ID_pokemons[selection]
+        pokemon=Dresseur.dict_pokemons[nom]
+        ID_nom=selection
+        return nom,pokemon,ID_nom
+    
+    def info_pokemon(self, dictionnaire):
+        self.nom_pokemons_combattants=[]
+        self.ID_pokemons_combats=[]
         
         
     def pokemons_on_map(self):
@@ -876,18 +937,18 @@ class Dresseur():
             
             # Recupere les dix pokemons a trouver aux plus hauts totaux
             if numero <p_l:
-                nom = ID_pokemons[pokemons_13totals_croissants[0]]
-                ID_nom=pokemons_13totals_croissants[0]
+                nom = Dresseur.ID_pokemons[Dresseur.pokemons_13totals_croissants[0]]
+                ID_nom=Dresseur.pokemons_13totals_croissants[0]
                 self.pokemons_libres.append(nom)
                 self.pokemons_a_trouver.remove(nom)
-                pokemons_13totals_croissants.remove(ID_nom)
+                Dresseur.pokemons_13totals_croissants.remove(ID_nom)
                 
             else:
                 
                 # Recupere les 20 pokemons a trouver comme pokemons sauvages
                 nom=rd.choice(self.pokemons_a_trouver)[-5]
                 self.pokemons_sauvages.append(nom)
-                ID_nom=dict_pokemons[nom].ID
+                ID_nom=Dresseur.dict_pokemons[nom].ID
                 self.pokemons_a_trouver.remove(nom)
                                 
 ##############################################################
@@ -908,7 +969,7 @@ class Dresseur():
             
     # Surcharge in      
     def __contains__(self, nom):
-        if nom in list_pokemons:
+        if nom in Dresseur.list_pokemons:
             return True
         
     # Surcharge del
@@ -939,53 +1000,7 @@ def jeu():
             print("Félicitation vous avez achevé votre aventure")
         
 if __name__=='__main__':
-
-##############################################################
-
-           ########## Donnees utiles ###########
-
-##############################################################                
-
-    dict_pokemons={ 'Bulbasaur' : Bulbasaur(), 'Ivysaur' : Ivysaur(), 'Venusaur' : Venusaur(), 'Charmander' : Charmander(), 'Charmeleon' : Charmeleon(), 'Charizard' : Charizard(), 'Squirtle' : Squirtle(), 'Wartortle' : Wartortle(), 'Blastoise' : Blastoise(), 'Caterpie' : Caterpie(), 'Metapod' : Metapod(), 'Butterfree' : Butterfree(), 'Weedle' : Weedle(), 'Kakuna' : Kakuna(), 'Beedrill' : Beedrill(), 'Pidgey' : Pidgey(), 'Pidgeotto' : Pidgeotto(), 'Pidgeot' : Pidgeot(), 'Rattata' : Rattata(), 'Raticate' : Raticate(), 'Spearow' : Spearow(), 'Fearow' : Fearow(), 'Ekans' : Ekans(), 'Arbok' : Arbok(), 'Pikachu' : Pikachu(), 'Raichu' : Raichu(), 'Sandshrew' : Sandshrew(), 'Sandslash' : Sandslash(), 'Nidoran_male' : Nidoran_male(), 'Nidorina' : Nidorina(), 'Nidoqueen' : Nidoqueen(), 'Nidoran_female' : Nidoran_female(), 'Nidorino' : Nidorino(), 'Nidoking' : Nidoking(), 'Clefairy' : Clefairy(), 'Clefable' : Clefable(), 'Vulpix' : Vulpix(), 'Ninetales' : Ninetales(), 'Jigglypuff' : Jigglypuff(), 'Wigglytuff' : Wigglytuff(), 'Zubat' : Zubat(), 'Golbat' : Golbat(), 'Oddish' : Oddish(), 'Gloom' : Gloom(), 'Vileplume' : Vileplume(), 'Paras' : Paras(), 'Parasect' : Parasect(), 'Venonat' : Venonat(), 'Venomoth' : Venomoth(), 'Diglett' : Diglett(), 'Dugtrio' : Dugtrio(), 'Meowth' : Meowth(), 'Persian' : Persian(), 'Psyduck' : Psyduck(), 'Golduck' : Golduck(), 'Mankey' : Mankey(), 'Primeape' : Primeape(), 'Growlithe' : Growlithe(), 'Arcanine' : Arcanine(), 'Poliwag' : Poliwag(), 'Poliwhirl' : Poliwhirl(), 'Poliwrath' : Poliwrath(), 'Abra' : Abra(), 'Kadabra' : Kadabra(), 'Alakazam' : Alakazam(), 'Machop' : Machop(), 'Machoke' : Machoke(), 'Machamp' : Machamp(), 'Bellsprout' : Bellsprout(), 'Weepinbell' : Weepinbell(), 'Victreebel' : Victreebel(), 'Tentacool' : Tentacool(), 'Tentacruel' : Tentacruel(), 'Geodude' : Geodude(), 'Graveler' : Graveler(), 'Golem' : Golem(), 'Ponyta' : Ponyta(), 'Rapidash' : Rapidash(), 'Slowpoke' : Slowpoke(), 'Slowbro' : Slowbro(), 'Magnemite' : Magnemite(), 'Magneton' : Magneton(), 'Farfetchd' : Farfetchd(), 'Doduo' : Doduo(), 'Dodrio' : Dodrio(), 'Seel' : Seel(), 'Dewgong' : Dewgong(), 'Grimer' : Grimer(), 'Muk' : Muk(), 'Shellder' : Shellder(), 'Cloyster' : Cloyster(), 'Gastly' : Gastly(), 'Haunter' : Haunter(), 'Gengar' : Gengar(), 'Onix' : Onix(), 'Drowzee' : Drowzee(), 'Hypno' : Hypno(), 'Krabby' : Krabby(), 'Kingler' : Kingler(), 'Voltorb' : Voltorb(), 'Electrode' : Electrode(), 'Exeggcute' : Exeggcute(), 'Exeggutor' : Exeggutor(), 'Cubone' : Cubone(), 'Marowak' : Marowak(), 'Hitmonlee' : Hitmonlee(), 'Hitmonchan' : Hitmonchan(), 'Lickitung' : Lickitung(), 'Koffing' : Koffing(), 'Weezing' : Weezing(), 'Rhyhorn' : Rhyhorn(), 'Rhydon' : Rhydon(), 'Chansey' : Chansey(), 'Tangela' : Tangela(), 'Kangaskhan' : Kangaskhan(), 'Horsea' : Horsea(), 'Seadra' : Seadra(), 'Goldeen' : Goldeen(), 'Seaking' : Seaking(), 'Staryu' : Staryu(), 'Starmie' : Starmie(), 'Mr_Mime' : Mr_Mime(), 'Scyther' : Scyther(), 'Jynx' : Jynx(), 'Electabuzz' : Electabuzz(), 'Magmar' : Magmar(), 'Pinsir' : Pinsir(), 'Tauros' : Tauros(), 'Magikarp' : Magikarp(), 'Gyarados' : Gyarados(), 'Lapras' : Lapras(), 'Ditto' : Ditto(), 'Eevee' : Eevee(), 'Vaporeon' : Vaporeon(), 'Jolteon' : Jolteon(), 'Flareon' : Flareon(), 'Porygon' : Porygon(), 'Omanyte' : Omanyte(), 'Omastar' : Omastar(), 'Kabuto' : Kabuto(), 'Kabutops' : Kabutops(), 'Aerodactyl' : Aerodactyl(), 'Snorlax' : Snorlax(), 'Articuno' : Articuno(), 'Zapdos' : Zapdos(), 'Moltres' : Moltres(), 'Dratini' : Dratini(), 'Dragonair' : Dragonair(), 'Dragonite' : Dragonite(), 'Mewtwo' : Mewtwo(), 'Mew' : Mew(), }
-
-    list_pokemons= list(dict_pokemons.keys()) 
-
-    ID_pokemons= { '1' : 'Bulbasaur', '2' : 'Ivysaur', '3' : 'Venusaur', '4' : 'Charmander', '5' : 'Charmeleon', '6' : 'Charizard', '7' : 'Squirtle', '8' : 'Wartortle', '9' : 'Blastoise', '10' : 'Caterpie', '11' : 'Metapod', '12' : 'Butterfree', '13' : 'Weedle', '14' : 'Kakuna', '15' : 'Beedrill', '16' : 'Pidgey', '17' : 'Pidgeotto', '18' : 'Pidgeot', '19' : 'Rattata', '20' : 'Raticate', '21' : 'Spearow', '22' : 'Fearow', '23' : 'Ekans', '24' : 'Arbok', '25' : 'Pikachu', '26' : 'Raichu', '27' : 'Sandshrew', '28' : 'Sandslash', '29' : 'Nidoran_male', '30' : 'Nidorina', '31' : 'Nidoqueen', '32' : 'Nidoran_female', '33' : 'Nidorino', '34' : 'Nidoking', '35' : 'Clefairy', '36' : 'Clefable', '37' : 'Vulpix', '38' : 'Ninetales', '39' : 'Jigglypuff', '40' : 'Wigglytuff', '41' : 'Zubat', '42' : 'Golbat', '43' : 'Oddish', '44' : 'Gloom', '45' : 'Vileplume', '46' : 'Paras', '47' : 'Parasect', '48' : 'Venonat', '49' : 'Venomoth', '50' : 'Diglett', '51' : 'Dugtrio', '52' : 'Meowth', '53' : 'Persian', '54' : 'Psyduck', '55' : 'Golduck', '56' : 'Mankey', '57' : 'Primeape', '58' : 'Growlithe', '59' : 'Arcanine', '60' : 'Poliwag', '61' : 'Poliwhirl', '62' : 'Poliwrath', '63' : 'Abra', '64' : 'Kadabra', '65' : 'Alakazam', '66' : 'Machop', '67' : 'Machoke', '68' : 'Machamp', '69' : 'Bellsprout', '70' : 'Weepinbell', '71' : 'Victreebel', '72' : 'Tentacool', '73' : 'Tentacruel', '74' : 'Geodude', '75' : 'Graveler', '76' : 'Golem', '77' : 'Ponyta', '78' : 'Rapidash', '79' : 'Slowpoke', '80' : 'Slowbro', '81' : 'Magnemite', '82' : 'Magneton', '83' : 'Farfetchd', '84' : 'Doduo', '85' : 'Dodrio', '86' : 'Seel', '87' : 'Dewgong', '88' : 'Grimer', '89' : 'Muk', '90' : 'Shellder', '91' : 'Cloyster', '92' : 'Gastly', '93' : 'Haunter', '94' : 'Gengar', '95' : 'Onix', '96' : 'Drowzee', '97' : 'Hypno', '98' : 'Krabby', '99' : 'Kingler', '100' : 'Voltorb', '101' : 'Electrode', '102' : 'Exeggcute', '103' : 'Exeggutor', '104' : 'Cubone', '105' : 'Marowak', '106' : 'Hitmonlee', '107' : 'Hitmonchan', '108' : 'Lickitung', '109' : 'Koffing', '110' : 'Weezing', '111' : 'Rhyhorn', '112' : 'Rhydon', '113' : 'Chansey', '114' : 'Tangela', '115' : 'Kangaskhan', '116' : 'Horsea', '117' : 'Seadra', '118' : 'Goldeen', '119' : 'Seaking', '120' : 'Staryu', '121' : 'Starmie', '122' : 'Mr_Mime', '123' : 'Scyther', '124' : 'Jynx', '125' : 'Electabuzz', '126' : 'Magmar', '127' : 'Pinsir', '128' : 'Tauros', '129' : 'Magikarp', '130' : 'Gyarados', '131' : 'Lapras', '132' : 'Ditto', '133' : 'Eevee', '134' : 'Vaporeon', '135' : 'Jolteon', '136' : 'Flareon', '137' : 'Porygon', '138' : 'Omanyte', '139' : 'Omastar', '140' : 'Kabuto', '141' : 'Kabutops', '142' : 'Aerodactyl', '143' : 'Snorlax', '144' : 'Articuno', '145' : 'Zapdos', '146' : 'Moltres', '147' : 'Dratini', '148' : 'Dragonair', '149' : 'Dragonite', '150' : 'Mewtwo', '151' : 'Mew', }
-
-    pokemons_13totals_croissants=['150', '149', '151', '144', '145', '146', '59', '130', '143', '131', '6', '9', '3']
-    
-    def choix_pokemon(liste1,liste2):
-        """
-        
-        Fonction qui permet de choisir un pokemon en choisissant son identifiant
-        
-        Parameters
-        ----------
-        liste1 : list
-            Liste de noms de pokemon avec leur identifiants entre parentheses.
-        liste2 : list
-            Liste d'identifiants de pokemon.
-
-        Returns
-        -------
-        nom : string
-            DESCRIPTION.
-        pokemon : sous-classe de pokemon
-            Pokemon selectionne.
-        ID_nom : string
-            Identifiant du pokemon selectionne.
-
-        """
-        possibilites= liste1.copy()
-        selection= str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
-        while selection not in liste2:
-            print("Le choix n'est pas valide")
-            selection =str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
-        nom=ID_pokemons[selection]
-        pokemon=dict_pokemons[nom]
-        ID_nom=selection
-        return nom,pokemon,ID_nom
-    
+   
 ##############################################################
 
                ########## Test ###########
@@ -1000,13 +1015,13 @@ if __name__=='__main__':
     # print(Mewtou.attaque_neutre(pi))
     
     Drac=Drowzee()
-    pika=dict_pokemons["Pikachu"]
+    pika=Dresseur.dict_pokemons["Pikachu"]
     
     # print(Pokemon.Affinites[Pokemon.Types[pika.type1],Pokemon.Types[pika.type1]])
     
     
     
-    Sacha = Dresseur("Sacha")
+    Sacha = Dresseur("Sacha",'Masculin')
     
     # Sacha.attrape_pokemon(pika)
     Sacha.choix_pokemons_combattants()

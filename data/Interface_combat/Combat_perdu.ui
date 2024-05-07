@@ -28,8 +28,8 @@
    <widget class="QCommandLinkButton" name="PASS">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>320</y>
+      <x>510</x>
+      <y>370</y>
       <width>121</width>
       <height>111</height>
      </rect>
@@ -59,8 +59,8 @@
    <widget class="QLabel" name="Pika_triste">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>100</y>
+      <x>120</x>
+      <y>110</y>
       <width>351</width>
       <height>341</height>
      </rect>
@@ -94,7 +94,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>-10</x>
       <y>20</y>
       <width>651</width>
       <height>101</height>
