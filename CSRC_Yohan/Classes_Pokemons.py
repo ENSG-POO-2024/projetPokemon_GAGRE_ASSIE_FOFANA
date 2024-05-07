@@ -722,7 +722,7 @@ class Mew (Pokemon):
 
 ##############################################################
 
-       ########## Classe Parente pokemon ###########
+       ########## Classe Dresseur ###########
 
 ############################################################## 
 
@@ -758,11 +758,8 @@ class Dresseur():
              
     def choix_pokemons_combattants(self):
         """
-        
-
-        Returns
-        -------
-        None.
+        Fonction qui renvoie les troix pokemons que le joueur utilisera
+        en combat avec leurs noms et leurs identifiants
 
         """
         self.pokemons_combats={}
@@ -776,21 +773,22 @@ class Dresseur():
             possibilites=self.pokemons_attrappes.copy()
             ID_possibilites=self.ID_pokemons_attrappees.copy()
             for choix in range(Dresseur.Pokemons_depart):
-                nom,pokemon,ID_nom=choix_pokemon(possibilites, ID_possibilites)
+                
+                nom,pokemon,ID_nom= choix_pokemon(possibilites, ID_possibilites)
                 self.pokemons_combats[nom]= pokemon
                 self.nom_pokemons_combattants.append(pokemon)
                 self.ID_pokemons_combats.append(ID_nom)
                 possibilites.remove(nom+" ("+ID_nom+")")
-                self.nom_pokemons_combattants.apppend(pokemon)        
                 
 
     def vitesse(self,pokemon):
         """
-        
+        Fonction qui renvoie le nom du pokemon qui commence le combat
+        entre le pokemon choisi par le joueur et un pokemon a trouver
 
         Parameters
         ----------
-        pokemon : TYPE
+        pokemon : Sous-classe pokemon
             DESCRIPTION.
 
         Returns
@@ -813,19 +811,21 @@ class Dresseur():
         
     def tour():
         return 0
+    
+    def ajout_pokemon(self):
+        nom_pokemon=rd.choice(self.pokemons_a_trouver)[-5]
+        self.pokemons_sauvages.append(nom_pokemon)
+        
         
     def attrape_pokemon(self,pokemon):
         """
-        
+        Fonction qui ajoute un pokemon battu a l'inventaire du pokemon
+        et le retiredes pokemons a trouver
 
         Parameters
         ----------
-        pokemon : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
+        pokemon : Sous-classe pokemon
+            Pokemon vaincu.
 
         """
         self.inventaire[pokemon.nom]=pokemon
@@ -836,18 +836,18 @@ class Dresseur():
         
     def pokemons_on_map(self):
         """
-        
-
-        Returns
-        -------
-        None.
+        Fonctions qui repartie les pokemons a trouver
+        en pokemons sauvages et libres
 
         """
-        p_l=10
-        p_s=20
-        self.pokemons_libres=[]
-        self.pokemons_sauvages=[]
+        p_l=10  # Nombre de pokemons libres
+        p_s=20  # Nombre de pokemons sauvages
+        
+        self.pokemons_libres=[] # Liste de pokemons libres
+        self.pokemons_sauvages=[] # Liste de pokemons sauvages
         for numero in range(p_s+p_l):
+            
+            # Recupere les dix pokemons a trouver aux plus hauts totaux
             if numero <p_l:
                 nom = ID_pokemons[pokemons_13totals_croissants[0]]
                 ID_nom=pokemons_13totals_croissants[0]
@@ -856,14 +856,16 @@ class Dresseur():
                 pokemons_13totals_croissants.remove(ID_nom)
                 
             else:
-                nom=rd.choice(self.pokemons_a_trouver)
+                
+                # Recupere les 20 pokemons a trouver comme pokemons sauvages
+                nom=rd.choice(self.pokemons_a_trouver)[-5]
                 self.pokemons_sauvages.append(nom)
                 ID_nom=dict_pokemons[nom].ID
                 self.pokemons_a_trouver.remove(nom)
                                 
 ##############################################################
 
-            ########## Surcharge ###########
+             ########## Surcharge ###########
 
 ##############################################################
     
@@ -913,7 +915,7 @@ if __name__=='__main__':
 
 ##############################################################
 
-       ########## Donnees utiles ###########
+           ########## Donnees utiles ###########
 
 ##############################################################                
 
@@ -928,7 +930,8 @@ if __name__=='__main__':
     def choix_pokemon(liste1,liste2):
         """
         
-
+        Fonction qui permet de choisir un pokemon en choisissant son identifiant
+        
         Parameters
         ----------
         liste1 : list
@@ -958,7 +961,7 @@ if __name__=='__main__':
     
 ##############################################################
 
-       ########## Test ###########
+               ########## Test ###########
 
 ##############################################################                
 
@@ -979,7 +982,7 @@ if __name__=='__main__':
     Sacha = Dresseur("Sacha")
     
     # Sacha.attrape_pokemon(pika)
-    # Sacha.choix_pokemons_combattants()
+    Sacha.choix_pokemons_combattants()
     # print(Sacha.get_nom_pokemon(25))
     # print(Sacha.vitesse(Drac))
     print(Sacha)
