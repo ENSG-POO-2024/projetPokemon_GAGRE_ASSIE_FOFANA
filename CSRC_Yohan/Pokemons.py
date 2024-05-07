@@ -12,7 +12,7 @@ import random as rd
 class Pokemon(metaclass=ABCMeta):
 
     # Dictionnaire associant un type a un numero 
-    Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electrik': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17}
+    Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electric': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17}
 
     #Matrice de relations d'affinites des types des pokemons 
     Affinites = np.genfromtxt ('../data/Donnees_crees/Affinites.csv', delimiter =';',skip_header=1,usecols=range(1,19))
@@ -672,6 +672,6 @@ if __name__=='__main__':
 
 ##############################################################                
 
-    pokemons_totals_croissants=pi=Pikachu()
+    pi=Pikachu()
     Mewtou=Mew()
     Drac=Drowzee()
