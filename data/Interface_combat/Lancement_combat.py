@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Lancement_Combat(object):
+class Ui_Lancement_combat(object):
     def setupUi(self, Lancement_Combat):
         Lancement_Combat.setObjectName("Lancement_Combat")
         Lancement_Combat.resize(752, 547)
@@ -91,6 +91,20 @@ class Ui_Lancement_Combat(object):
         self.Nom_Pokemon_3.setStyleSheet("color: rgb(255, 255, 255);")
         self.Nom_Pokemon_3.setText("")
         self.Nom_Pokemon_3.setObjectName("Nom_Pokemon_3")
+        self.PASS = QtWidgets.QCommandLinkButton(Lancement_Combat)
+        self.PASS.setGeometry(QtCore.QRect(620, 0, 121, 111))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.PASS.setFont(font)
+        self.PASS.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../Images_interface/Pass.webp"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.PASS.setIcon(icon)
+        self.PASS.setIconSize(QtCore.QSize(100, 100))
+        self.PASS.setObjectName("PASS")
 
         self.retranslateUi(Lancement_Combat)
         QtCore.QMetaObject.connectSlotsByName(Lancement_Combat)

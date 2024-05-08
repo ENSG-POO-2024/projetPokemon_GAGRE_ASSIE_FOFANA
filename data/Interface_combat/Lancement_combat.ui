@@ -111,6 +111,9 @@
    <property name="text">
     <string/>
    </property>
+   <property name="pixmap">
+    <pixmap>../Pokemon_images/Articuno.png</pixmap>
+   </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
@@ -209,6 +212,37 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QCommandLinkButton" name="PASS">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>0</y>
+     <width>121</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../Images_interface/Pass.webp</normaloff>../Images_interface/Pass.webp</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>100</width>
+     <height>100</height>
+    </size>
    </property>
   </widget>
  </widget>

@@ -333,7 +333,7 @@
    <widget class="QPushButton" name="Type1">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>630</x>
       <y>50</y>
       <width>61</width>
       <height>81</height>
@@ -341,10 +341,6 @@
     </property>
     <property name="text">
      <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>../Images_interface/Types/Bug.png</normaloff>../Images_interface/Types/Bug.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -356,7 +352,7 @@
    <widget class="QPushButton" name="Type2">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>700</x>
       <y>50</y>
       <width>61</width>
       <height>81</height>
@@ -364,10 +360,6 @@
     </property>
     <property name="text">
      <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>../Images_interface/Types/Fire.png</normaloff>../Images_interface/Types/Fire.png</iconset>
     </property>
     <property name="iconSize">
      <size>

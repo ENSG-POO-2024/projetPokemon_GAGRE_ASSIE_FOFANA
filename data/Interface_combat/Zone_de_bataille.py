@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Dialog(object):
+class Ui_Zone_de_bataille(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(764, 440)
@@ -118,19 +118,13 @@ class Ui_Dialog(object):
         self.Fuir.setIconSize(QtCore.QSize(80, 80))
         self.Fuir.setObjectName("Fuir")
         self.Type1 = QtWidgets.QPushButton(self.Ensemble_bataille)
-        self.Type1.setGeometry(QtCore.QRect(700, 50, 61, 81))
+        self.Type1.setGeometry(QtCore.QRect(630, 50, 61, 81))
         self.Type1.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("../Images_interface/Types/Bug.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Type1.setIcon(icon3)
         self.Type1.setIconSize(QtCore.QSize(100, 75))
         self.Type1.setObjectName("Type1")
         self.Type2 = QtWidgets.QPushButton(self.Ensemble_bataille)
-        self.Type2.setGeometry(QtCore.QRect(620, 50, 61, 81))
+        self.Type2.setGeometry(QtCore.QRect(700, 50, 61, 81))
         self.Type2.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("../Images_interface/Types/Fire.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Type2.setIcon(icon4)
         self.Type2.setIconSize(QtCore.QSize(100, 75))
         self.Type2.setObjectName("Type2")
         self.PV_adversaire = QtWidgets.QLabel(self.Ensemble_bataille)

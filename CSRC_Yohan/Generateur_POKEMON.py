@@ -6,6 +6,7 @@ Created on Fri May  3 11:59:02 2024
 """    
 
 import csv
+import numpy as np
 
 # Modele de creation de pokemon en str
 modele=("class {nom} (Pokemon):\n"+"    def __init__(self, ID ='{ID}',nom='{nom}', type1='{type1}', type2='{type2}', Total={Total},HP={HP}, Attack={Attack}, Defense={Defense}, Sp_Atk={Sp_Atk}, Sp_Def={Sp_Def}, Speed={Speed}, Generation='{Generation}', Legendary={Legendary},Image='{Image}', Coordonnees={Coordonnees}):\n"
@@ -63,7 +64,7 @@ def generateur_pokemon(fichier):
                                   Speed=ligne[10],
                                   Generation=ligne[11] ,
                                   Legendary=ligne[12],
-                                  Image="../data/Pokemon_images/"+nom_pokemon+".PNG",
+                                  Image="../Pokemon_images/"+nom_pokemon+".png",
                                   Coordonnees=str(ligne[13])+","+str(ligne[14]))
             
             # Remplissage des dictionnaires
@@ -94,6 +95,8 @@ if __name__=='__main__':
     # Notre fichier de départ avec tous les pokemons et leurs attributs
     fichier="../data/Donnees_crees/fichier_pokemon.csv"
     
+    Affinites = str(np.genfromtxt ('../data/Donnees_crees/Affinites.csv', delimiter =';',skip_header=1,usecols=range(1,19)).tolist())
+    
     # Recuperation de nos conteneurs
     Pokemons,dict_pokemons,ID_pokemons=generateur_pokemon(fichier)
     
@@ -105,7 +108,7 @@ if __name__=='__main__':
                    +"##############################################################\n\n       ########## Classe Parente pokemon ###########\n\n"
                    +"##############################################################                \n\n\n"
                    +"class Pokemon(metaclass=ABCMeta):\n\n"
-                   +"    # Dictionnaire associant un type a un numero \n    Types="+str(Types)+"\n\n    #Matrice de relations d'affinites des types des pokemons \n    Affinites = np.genfromtxt ('../data/Donnees_crees/Affinites.csv', delimiter =';',skip_header=1,usecols=range(1,19))\n"
+                   +"    # Dictionnaire associant un type a un numero \n    Types="+str(Types)+"\n\n    #Matrice de relations d'affinites des types des pokemons \n    Affinites = np.array("+Affinites+")\n"
                    +"\n    #Constructeur"
                    +"\n    def __init__(self, ID, nom, type1, type2, Total, HP, Attack, Defense , Sp_Atk , Sp_Def , Speed , Generation , Legendary, Image, Coordonnees ):\n"
                    +"        self.ID=ID\n"
