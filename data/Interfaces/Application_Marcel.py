@@ -21,13 +21,9 @@ class Window_Bienvenue (QMainWindow,Ui_Bienvenue):
         pseudo = self.player_name.text()
         age = self.player_age.text()
         genre = self.gender_choice.currentText()
-        
-        self.player_profil = Window_Player_profil()
-        
-        # self.player_profil.dresseur = Dresseur(pseudo, genre)
-        
-        # print(self.player_profil.dresseur.nom)
-        
+        Joueur = Dresseur(pseudo, genre)
+        Joueur.age= age
+        self.player_profil = Window_Player_profil(Joueur)
         self.player_profil.show()
         self.close()
         
@@ -35,17 +31,16 @@ class Window_Bienvenue (QMainWindow,Ui_Bienvenue):
         
 
 class Window_Player_profil (QMainWindow,Ui_Player_profil):
-    def __init__(self, parent=None):
+    def __init__(self,Joueur, parent=None):
         super(Window_Player_profil, self).__init__(parent)
         self.setupUi(self)
-        
+        self.Joueur= Joueur
         self.choix_pokemons.clicked.connect(self.afficher_inventaire)
         self.change_pokemon.clicked.connect(self.changement_combattants)
         self.close_window.clicked.connect(self.close)
-        
         self.pokemons_combats=[] # Liste pour stocker les pokemons choisis
-        # print(self.dresseur.nom)
-        # print(self.dresseur.genre)
+        print(self.Joueur.nom)
+        print(self.Joueur.genre)
 
     def afficher_inventaire(self):
         self.inventaire_window = Window_Inventaire_Pokemon() # Ouvrir la fenêtre de l'inventaire des pokemons

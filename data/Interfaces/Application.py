@@ -22,9 +22,9 @@ from Lancement_combat import Ui_Lancement_combat
 from Zone_de_bataille import Ui_Zone_de_bataille
 from Victoire_combat import Ui_Victoire_combat
 from Selection_pokemon import Ui_Selection_pokemon
-# from Player_profil import Ui_Player_profil
-# from Bienvenue import Ui_Bienvenue
-# from Inventaire_Pokemon import Ui_Inventaire_Pokemon
+from Player_profil import Ui_Player_profil
+from Bienvenue import Ui_Bienvenue
+from Inventaire_Pokemon import Ui_Inventaire_Pokemon
 from Classes_Pokemons import *
 
 Joueur= Dresseur("Sacha",'Masculin') #Univers_pokemon.Joueur
@@ -32,6 +32,73 @@ pokemon_adversaire =[Pikachu()]
 Joueur.choix_pokemons_combattants()
 Joueur.pokemons_on_map()
 
+
+class Window_Bienvenue (QMainWindow,Ui_Bienvenue):
+    def __init__(self, parent=None):
+        super(Window_Bienvenue, self).__init__(parent)
+        self.setupUi(self)
+        
+        self.play.clicked.connect(self.update_pseudo)
+        # self.play.clicked.connect(self.change_window)
+
+    def update_pseudo(self):
+        pseudo = self.player_name.text()
+        age = self.player_age.text()
+        genre = self.gender_choice.currentText()
+        Joueur = Dresseur(pseudo, genre)
+        
+        self.player_profil = Window_Player_profil(Joueur)
+        self.player_profil.show()
+        self.close()
+        
+    
+        
+
+class Window_Player_profil (QMainWindow,Ui_Player_profil):
+    def __init__(self,Joueur, parent=None):
+        super(Window_Player_profil, self).__init__(parent)
+        self.setupUi(self)
+        self.Joueur= Joueur
+        self.choix_pokemons.clicked.connect(self.afficher_inventaire)
+        self.change_pokemon.clicked.connect(self.changement_combattants)
+        self.close_window.clicked.connect(self.close)
+        
+        self.pokemons_combats=[] # Liste pour stocker les pokemons choisis
+        print(self.Joueur.nom)
+        print(self.Joueur.genre)
+
+    def afficher_inventaire(self):
+        self.inventaire_window = Window_Inventaire_Pokemon() # Ouvrir la fenêtre de l'inventaire des pokemons
+        self.inventaire_window.tableWidget.cellClicked.connect(self.selectionner_pokemon)
+        self.inventaire_window.show()
+
+    def selectionner_pokemon(self, row, col):
+        pokemon_selectionne = self.inventaire_window.tableWidget.cellWidget(row, col).layout().itemAt(1).widget().text()    # Récupérer le nom du pokemon sélectionné dans le tableau
+        if len(self.pokemons_combats) == 3:
+            print("La liste de vos pokemons est pleine")
+        if pokemon_selectionne not in self.pokemons_combats: # Vérifier si le pokemon sélectionné n'est pas déjà dans la liste des pokemons choisis
+            self.pokemons_combats.append(pokemon_selectionne) # Ajouter le pokemon sélectionné dans la liste des pokemons choisis
+            # Mettre à jour les labels avec les pokemons choisis
+            if len(self.pokemons_combats) == 1:
+                self.pokemon_1.setPixmap(QtGui.QPixmap("../Images/Pokemon_images/" + pokemon_selectionne.replace("'","")+".png").scaled(141, 101))
+            elif len(self.pokemons_combats) == 2:
+                self.pokemon_2.setPixmap(QtGui.QPixmap("../Images/Pokemon_images/" + pokemon_selectionne.replace("'","")+".png").scaled(141, 101))
+            elif len(self.pokemons_combats) == 3:
+                self.pokemon_3.setPixmap(QtGui.QPixmap("../Images/Pokemon_images/" + pokemon_selectionne.replace("'","")+".png").scaled(141, 101))
+
+    def changement_combattants(self):
+        self.pokemons_combats = [] # Vider la liste de pokemon la liste de pokemon
+        self.pokemon_1.setPixmap(QtGui.QPixmap(""))
+        self.pokemon_1.setText("1er choix")
+        self.pokemon_2.setPixmap(QtGui.QPixmap(""))
+        self.pokemon_2.setText("2ème choix")
+        self.pokemon_3.setPixmap(QtGui.QPixmap(""))
+        self.pokemon_3.setText("3ème choix")
+
+class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
+    def __init__(self, parent=None):
+        super(Window_Inventaire_Pokemon, self).__init__(parent)
+        self.setupUi()
 ##############################################################
 
              ########## Music ###########
@@ -336,13 +403,14 @@ class Window_Victoire_combat (QMainWindow,Ui_Victoire_combat ):
 ##############################################################
 
 class Window_Capture_pokemon(QMainWindow,Ui_Capture_pokemon):
-    def __init__(self, parent=None):
+    def __init__(self,pokemon_adversaire, parent=None):
         super(Window_Capture_pokemon, self).__init__(parent)
         self.setupUi(self)
+        self.pokemon_adversaire =pokemon_adversaire
         self.Capture()
         
     def change_window(self):
-        self.second_window = Window_Zone_de_bataille ()
+        self.second_window = Window_carte ()
         self.second_window.show()
         self.hide()
         Victoire().hide()
@@ -366,7 +434,7 @@ if __name__ == "__main__":
         # Defaite=Window_Combat_perdu()
         # New_pokemon =Window_Capture_pokemon()
      
-        mainWin = Window_Lancement_combat()
+        mainWin = Window_Bienvenue()
         mainWin.show()
         app.exec_()
     fenetre=run_app()
