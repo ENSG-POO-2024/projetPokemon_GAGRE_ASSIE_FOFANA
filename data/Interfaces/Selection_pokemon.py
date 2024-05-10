@@ -33,7 +33,7 @@ class Ui_Selection_pokemon(object):
         self.Arriere = QtWidgets.QLabel(self.Ensemble_Selection)
         self.Arriere.setGeometry(QtCore.QRect(10, -10, 591, 381))
         self.Arriere.setText("")
-        self.Arriere.setPixmap(QtGui.QPixmap("../Images_interface/Paysage.jpg"))
+        self.Arriere.setPixmap(QtGui.QPixmap("../Images/Paysage.jpg"))
         self.Arriere.setScaledContents(True)
         self.Arriere.setObjectName("Arriere")
         self.Nom_Pokemon_1 = QtWidgets.QLabel(self.Ensemble_Selection)
@@ -102,5 +102,5 @@ class Ui_Selection_pokemon(object):
 
     def retranslateUi(self, Selection_pokemon):
         _translate = QtCore.QCoreApplication.translate
-        Selection_pokemon.setWindowTitle(_translate("Selection_pokemon", "Dialog"))
+        Selection_pokemon.setWindowTitle(_translate("Selection_pokemon", " "))
         self.label.setText(_translate("Selection_pokemon", "Choississez votre pokemon :"))

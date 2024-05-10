@@ -31,14 +31,14 @@ class Ui_Combat_perdu(object):
         self.PASS.setFont(font)
         self.PASS.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../Images_interface/Pass.webp"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../Images/Pass.webp"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PASS.setIcon(icon)
         self.PASS.setIconSize(QtCore.QSize(100, 100))
         self.PASS.setObjectName("PASS")
         self.Pika_triste = QtWidgets.QLabel(self.Ensemble_combat_perdu)
         self.Pika_triste.setGeometry(QtCore.QRect(80, 90, 331, 301))
         self.Pika_triste.setText("")
-        self.Pika_triste.setPixmap(QtGui.QPixmap("../Images_interface/Defaite.jpg"))
+        self.Pika_triste.setPixmap(QtGui.QPixmap("../Images/Defaite.jpg"))
         self.Pika_triste.setScaledContents(True)
         self.Pika_triste.setObjectName("Pika_triste")
         self.Arriere = QtWidgets.QLabel(self.Ensemble_combat_perdu)
@@ -66,5 +66,5 @@ class Ui_Combat_perdu(object):
 
     def retranslateUi(self, Combat_perdu):
         _translate = QtCore.QCoreApplication.translate
-        Combat_perdu.setWindowTitle(_translate("Combat_perdu", "Dialog"))
+        Combat_perdu.setWindowTitle(_translate("Combat_perdu", " "))
         self.label_2.setText(_translate("Combat_perdu", "Perdu  !!!!"))

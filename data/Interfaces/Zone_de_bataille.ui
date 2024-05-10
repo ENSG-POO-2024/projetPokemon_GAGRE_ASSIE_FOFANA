@@ -50,7 +50,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../Images_interface/Arene.png</pixmap>
+     <pixmap>../Images/Arene.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -85,7 +85,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../Images_interface/Hopital.webp</pixmap>
+     <pixmap>../Images/Hopital.webp</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -104,7 +104,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../Images_interface/Hopital.webp</pixmap>
+     <pixmap>../Images/Hopital.webp</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -123,7 +123,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../Images_interface/Hopital.webp</pixmap>
+     <pixmap>../Images/Hopital.webp</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -242,7 +242,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../Images_interface/Echange.png</normaloff>../Images_interface/Echange.png</iconset>
+      <normaloff>../Images/Echange.png</normaloff>../Images/Echange.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -252,6 +252,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="Neutre">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -265,7 +268,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../Images_interface/Neutre.webp</normaloff>../Images_interface/Neutre.webp</iconset>
+      <normaloff>../Images/Neutre.webp</normaloff>../Images/Neutre.webp</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -291,7 +294,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../Images_interface/Exit.png</normaloff>../Images_interface/Exit.png</iconset>
+      <normaloff>../Images/Exit.png</normaloff>../Images/Exit.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -347,11 +350,19 @@
    <widget class="QLabel" name="PV_adversaire">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>200</y>
+      <x>680</x>
+      <y>240</y>
       <width>101</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Rockwell Extra Bold</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string/>
@@ -363,11 +374,19 @@
    <widget class="QLabel" name="PV_attaquant">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>200</y>
+      <x>280</x>
+      <y>240</y>
       <width>101</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Rockwell Extra Bold</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string/>
@@ -421,6 +440,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="Pokemon_3">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>370</x>
@@ -434,6 +456,10 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../Images/Pokemon_images/Cloyster.png</normaloff>../Images/Pokemon_images/Cloyster.png</iconset>
     </property>
     <property name="iconSize">
      <size>

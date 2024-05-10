@@ -116,7 +116,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../Images_interface/Pass.webp</normaloff>../Images_interface/Pass.webp</iconset>
+      <normaloff>../Images/Pass.webp</normaloff>../Images/Pass.webp</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -165,7 +165,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../Images_interface/Capture.png</pixmap>
+     <pixmap>../Images/Capture.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>

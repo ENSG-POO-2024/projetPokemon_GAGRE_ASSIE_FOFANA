@@ -72,7 +72,7 @@ class Ui_Capture_pokemon(object):
         self.Pokemon_Capture = QtWidgets.QLabel(self.Ensemble_Capture)
         self.Pokemon_Capture.setGeometry(QtCore.QRect(0, -10, 971, 601))
         self.Pokemon_Capture.setText("")
-        self.Pokemon_Capture.setPixmap(QtGui.QPixmap("../Images_interface/Capture.png"))
+        self.Pokemon_Capture.setPixmap(QtGui.QPixmap("../Images/Capture.png"))
         self.Pokemon_Capture.setScaledContents(True)
         self.Pokemon_Capture.setObjectName("Pokemon_Capture")
         self.Affichage = QtWidgets.QLabel(self.Ensemble_Capture)
@@ -98,6 +98,6 @@ class Ui_Capture_pokemon(object):
 
     def retranslateUi(self, Capture_pokemon):
         _translate = QtCore.QCoreApplication.translate
-        Capture_pokemon.setWindowTitle(_translate("Capture_pokemon", "Dialog"))
+        Capture_pokemon.setWindowTitle(_translate("Capture_pokemon", " "))
         self.Affichage_2.setText(_translate("Capture_pokemon", "Bravo !!!"))
         self.Affichage.setText(_translate("Capture_pokemon", "Vous avez attrapé"))

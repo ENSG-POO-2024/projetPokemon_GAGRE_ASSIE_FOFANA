@@ -772,23 +772,17 @@ class Dresseur():
             
         self.inventaire={}
         self.pokemons_attrappes=[]
-        self.ID_pokemons_attrappees=[]
         self.pokemons_a_trouver=Dresseur.list_pokemons.copy()
         
         for i in range(Dresseur.Pokemons_depart):
             nom_pokemon=rd.choice(Dresseur.list_pokemons)
             Choix=Dresseur.dict_pokemons[nom_pokemon]
             self.inventaire[nom_pokemon]=Choix
-            self.pokemons_attrappes.append(nom_pokemon+" ("+Choix.ID+")")            
-            self.ID_pokemons_attrappees.append(Choix.ID)
+            self.pokemons_attrappes.append(nom_pokemon)            
             self.pokemons_a_trouver.remove(nom_pokemon)
-            
             if Choix.ID in Dresseur.pokemons_13totals_croissants:
                 Dresseur.pokemons_13totals_croissants.remove(str(Choix.ID))
                 
-        
-        
- 
 ##############################################################
 
             ########## Methodes ###########
@@ -803,32 +797,9 @@ class Dresseur():
         """
         self.pokemons_combattants={}
         self.noms_pokemons_combattants=[]
-        self.ID_pokemons_combattants=[]
         if len(self)==3:
             self.pokemons_combattants=self.inventaire.copy()
             self.noms_pokemons_combattants=self.pokemons_attrappes.copy()
-            self.ID_pokemons_combattants=self.ID_pokemons_attrappees
-        # else:
-        #     possibilites=self.pokemons_attrappes.copy()
-        #     ID_possibilites=self.ID_pokemons_attrappees.copy()
-        #     selection= str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
-        #     while selection not in ID_possibilites:
-        #         print("Le choix n'est pas valide")
-        #         selection =str(input("Choississez l'identifiant du pokemon : " +str(possibilites).replace("'","").replace("[","").replace("]","")+"\n➡️ "))
-            
-            
-        #     nom=Dresseur.ID_pokemons[selection]
-        #     pokemon=Dresseur.dict_pokemons[nom]
-        #     ID_nom=selection
-            
-            
-        #     for selection in range(Dresseur.Pokemons_depart):
-                
-        #         nom,pokemon,ID_nom= Dresseur.choix_pokemon(possibilites, ID_possibilites)
-        #         self.pokemons_combattants[nom]= pokemon
-        #         self.noms_pokemons_combattants.append(pokemon)
-        #         self.ID_pokemons_combattants.append(ID_nom)
-        #         possibilites.remove(nom+" ("+ID_nom+")")
         
 
     def ajout_pokemon_sauvages(self):
@@ -848,8 +819,7 @@ class Dresseur():
 
         """
         self.inventaire[pokemon.nom]=pokemon
-        self.pokemons_attrappes.append(pokemon.nom+" ("+pokemon.ID+")")
-        self.ID_pokemons_attrappees.append(pokemon.ID)
+        self.pokemons_attrappes.append(pokemon.nom)
         self.pokemons_a_trouver.remove(pokemon.nom)
         if pokemon in self.pokemons_libres:
             self.pokemons_libres.remove(pokemon)
@@ -949,12 +919,10 @@ if __name__=='__main__':
     
     Sacha = Dresseur("Sacha",'Masculin')
     Sacha.pokemons_on_map()
-    Sacha.attrape_pokemon(pika)
+    # Sacha.attrape_pokemon(pika)
     Sacha.choix_pokemons_combattants()
     print(Sacha.noms_pokemons_combattants)
     # print(Sacha.get_nom_pokemon(25))
     # print(Sacha.vitesse(Drac))
     print(Sacha)
-    
-    
     # <>
