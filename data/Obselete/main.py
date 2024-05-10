@@ -138,7 +138,7 @@ class LesPokemons:
             pygame.draw.circle(Carte.screen, self.color, (X, Y), rayon)
 
 
-        # Programme principal
+# Programme principal
 
 # Dessiner la carte
 Carte.dessiner_grille()

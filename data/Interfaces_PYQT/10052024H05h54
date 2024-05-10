@@ -1,0 +1,173 @@
+import sys
+import random
+import openpyxl
+import json
+import math
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt6.QtGui import QPixmap, QPainter, QColor, QFont
+from PyQt6.QtCore import Qt
+
+# Constantes
+MARGIN = 10
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
+GRID_SIZE = 20
+Joueur_COLOR = QColor(255, 0, 0)
+Pokemon_COLOR = QColor(0, 0, 0)
+
+
+def distance(point1, point2):
+    """
+    Calcule la distance entre deux points.
+    """
+    return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
+
+class Carte(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("POKEMON")
+        self.setMinimumSize(SCREEN_WIDTH, SCREEN_HEIGHT)
+
+        # Charger l'image d'arrière-plan
+        self.background_image = QPixmap("Images/BackgroundImage.jpeg")
+
+        # Création du joueur
+        self.joueur = Joueur()
+
+        # Création des Pokemons
+        self.lespokemons = LesPokemons(self)
+
+        # Ajout des labels pour afficher les noms des Pokémons
+        self.labels = {}
+        for pokemon_name, info in self.lespokemons.pokemons.items():
+            label = QLabel(pokemon_name, self)
+            label.setStyleSheet("color: black")
+            font = QFont()
+            font.setPointSize(16)
+            label.setFont(font)
+            label.setGeometry(*self.calculate_position(info['x'], info['y']))
+            self.labels[pokemon_name] = label
+
+    def calculate_position(self, x, y):
+        return (
+            round(x * (self.width() - 2 * MARGIN) / GRID_SIZE + MARGIN),
+            round(y * (self.height() - 2 * MARGIN) / GRID_SIZE + MARGIN),
+            100,
+            20
+        )
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.drawPixmap(self.rect(), self.background_image)
+        self.draw_player(painter)
+        self.draw_pokemons(painter)
+
+    def draw_player(self, painter):
+        painter.setPen(Joueur_COLOR)
+        painter.setBrush(Joueur_COLOR)
+        x, y, _, _ = self.calculate_position(self.joueur.row, self.joueur.col)
+        painter.drawEllipse(x, y, self.joueur.cell_size, self.joueur.cell_size)
+
+    def draw_pokemons(self, painter):
+        rayon = 10
+        for pokemon_name, info in self.lespokemons.pokemons.items():
+            if info['visible']:
+                X, Y, _, _ = self.calculate_position(info['x'], info['y'])
+                painter.setPen(Pokemon_COLOR)
+                painter.setBrush(Pokemon_COLOR)
+                painter.drawEllipse(X, Y, rayon, rayon)
+
+    def keyPressEvent(self, event):
+        directions = {
+            Qt.Key.Key_Up: "haut",
+            Qt.Key.Key_Down: "bas",
+            Qt.Key.Key_Left: "gauche",
+            Qt.Key.Key_Right: "droite"
+        }
+        direction = directions.get(event.key())
+        if direction:
+            self.joueur.deplacer(direction)
+            self.repaint()
+            self.update_pokemons_visibility()
+
+    def update_pokemons_visibility(self):
+        joueur_position = (2 * self.joueur.row, self.joueur.col / 2)
+        self.lespokemons.show_nearest(joueur_position)
+        self.repaint()
+
+
+class Joueur:
+    def __init__(self):
+        self.row = random.randint(0, GRID_SIZE)
+        self.col = random.randint(0, GRID_SIZE)
+        self.cell_size = 20
+
+    def deplacer(self, direction, step=0.5):
+        if direction == "haut" and self.col > 0:
+            self.col -= step
+        elif direction == "bas" and self.col < GRID_SIZE - 1:
+            self.col += step
+        elif direction == "gauche" and self.row > 0:
+            self.row -= step
+        elif direction == "droite" and self.row < GRID_SIZE - 1:
+            self.row += step
+        elif direction == "haut-gauche" and self.col > 0 and self.row > 0:
+            self.col -= step
+            self.row -= step
+        elif direction == "haut-droite" and self.col > 0 and self.row < GRID_SIZE - 1:
+            self.col -= step
+            self.row += step
+        elif direction == "bas-gauche" and self.col < GRID_SIZE - 1 and self.row > 0:
+            self.col += step
+            self.row -= step
+        elif direction == "bas-droite" and self.col < GRID_SIZE - 1 and self.row < GRID_SIZE - 1:
+            self.col += step
+            self.row += step
+
+
+class LesPokemons:
+    def __init__(self, window):
+        self.window = window
+        self.pokemons = {}
+        wb = openpyxl.load_workbook("essai.xlsx")
+        sheet = wb.active
+        for row in range(1, sheet.max_row + 1):
+            cell1 = sheet.cell(row, 1)
+            cell2 = sheet.cell(row, 2)
+            pokemon_name = cell1.value
+            x, y = json.loads(f"{cell2.value}")
+            self.pokemons[pokemon_name] = {
+                'x': x,
+                'y': y,
+                'visible': False
+            }
+
+    def hide_all(self):
+        for pokemon in self.pokemons.values():
+            pokemon['visible'] = False
+
+    def show_nearest(self, joueur_position):
+        nearest_pokemon = None
+        nearest_distance = 1
+        for pokemon_name, info in self.pokemons.items():
+            distances = distance(joueur_position, (info['x'], info['y']))
+            if distances < nearest_distance:
+                nearest_distance = distances
+                nearest_pokemon = pokemon_name
+
+        if nearest_pokemon:
+            for pokemon_name, info in self.pokemons.items():
+                info['visible'] = (pokemon_name == nearest_pokemon)
+
+
+def main():
+    app = QApplication(sys.argv)
+    window = Carte()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

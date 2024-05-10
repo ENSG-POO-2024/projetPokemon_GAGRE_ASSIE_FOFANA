@@ -1,0 +1,725 @@
+
+import pygame
+import random
+import os
+import openpyxl
+import json
+
+
+class Carte:
+    # Initialisation de Pygame
+    pygame.init()
+
+    # Configuration de la fenêtre du jeu
+    MARGIN = 10  # Taille de la marge autour de la carte
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 800
+    GRID_SIZE = 15  # Nombre de cellule de la grille sur une ligne ou sur une colonne.
+    CELL_SIZE = (SCREEN_WIDTH - 2 * MARGIN) // GRID_SIZE  # Taille d'une cellule de la grille
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Affiche l'écran principal
+    pygame.display.set_caption("POKEMON")  # Affiche le titre donné en haut du dessin
+
+    # Couleurs
+    # J'ai chosit la couleur blanche
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+
+    # Chargement de l'image d'arrière-plan
+    background_image = pygame.image.load("Images/Jardin.jpg")
+    # Permet d'afficher l'image sur toute la surface de l'ecran en se limitant à la limite des marges.
+    background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH - MARGIN, SCREEN_HEIGHT - MARGIN))
+
+    @classmethod
+    def dessiner_grille(cls):
+        """
+        Elle dessine la carte ou grille.
+        cls : cet paramètre fait référence à la classe elle même.
+        Elle ne s'applique pas un objet de la classe Carte mais à la classe elle même.
+        """
+        # Effacer l'écran ou remplir l'ecran dans le but d'effacer ou cacher ce qui existait avant sur l'écran
+        cls.screen.fill(cls.WHITE)
+
+        # Dessiner l'image d'arrière-plan sur l'écran(screen) en spécifiant la coordonnée supérieur gauche
+        cls.screen.blit(cls.background_image, (cls.MARGIN, cls.MARGIN),
+                        pygame.Rect(cls.MARGIN, cls.MARGIN, cls.SCREEN_WIDTH - cls.MARGIN,
+                                    cls.SCREEN_HEIGHT - cls.MARGIN))
+
+        # Dessin du rectangle
+        pygame.draw.rect(cls.screen, cls.BLACK,
+                         pygame.Rect(cls.MARGIN, cls.MARGIN, cls.SCREEN_WIDTH - 2 * cls.MARGIN,
+                                     cls.SCREEN_HEIGHT - 2 * cls.MARGIN), 1)
+
+        # Dessiner le cadrillage
+        for i in range(1, cls.GRID_SIZE):
+            # Trace une droite horizonrale(ligne) à chaque boucle
+            pygame.draw.line(cls.screen, cls.BLACK, (cls.MARGIN, cls.MARGIN + i * cls.CELL_SIZE),
+                             (cls.SCREEN_WIDTH - cls.MARGIN, cls.MARGIN + i * cls.CELL_SIZE), 1)
+            # Trace une droite verticale(colonne) à chaque boucle
+            pygame.draw.line(cls.screen, cls.BLACK, (cls.MARGIN + i * cls.CELL_SIZE, cls.MARGIN),
+                             (cls.MARGIN + i * cls.CELL_SIZE, cls.SCREEN_HEIGHT - cls.MARGIN), 1)
+
+            # Rafraîchir l'écran
+        pygame.display.flip()
+
+
+class Joueur:
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+        self.color = (255, 0, 0)  # On choisit une couleur pour le joueur : Rouge
+
+    def deplacer(self, direction):
+        """
+        Elle permet de deplacer le joueur sur la grille ou la carte en vérifiant que le joueur ne sort pas de la zone
+        du jeu. direction: la direction dans laquelle le joueur se deplace
+        """
+        # Calcul des limites des bords
+        limit_left = Carte.MARGIN  # la limite gauche de la carte
+        limit_right = Carte.SCREEN_WIDTH - Carte.MARGIN - Carte.CELL_SIZE  # la limite droite de la carte
+        limit_top = Carte.MARGIN  # la limite haut de la carte
+        limit_bottom = Carte.SCREEN_HEIGHT - Carte.MARGIN - Carte.CELL_SIZE  # la limite bas de la carte
+
+        if direction == "haut" and self.col > 0:
+            self.col -= 1
+        elif direction == "bas" and self.col < Carte.GRID_SIZE - 1:
+            self.col += 1
+        elif direction == "gauche" and self.row > 0:
+            self.row -= 1
+        elif direction == "droite" and self.row < Carte.GRID_SIZE - 1:
+            self.row += 1
+        elif direction == "haut-gauche" and self.col > 0 and self.row > 0:
+            self.col -= 1
+            self.row -= 1
+        elif direction == "haut-droite" and self.col > 0 and self.row < Carte.GRID_SIZE - 1:
+            self.col -= 1
+            self.row += 1
+        elif direction == "bas-gauche" and self.col < Carte.GRID_SIZE - 1 and self.row > 0:
+            self.col += 1
+            self.row -= 1
+        elif direction == "bas-droite" and self.col < Carte.GRID_SIZE - 1 and self.row < Carte.GRID_SIZE - 1:
+            self.col += 1
+            self.row += 1
+
+            # Vérification des limites des bords
+        self.row = max(limit_left // Carte.CELL_SIZE, min(self.row, limit_right // Carte.CELL_SIZE))
+        self.col = max(limit_top // Carte.CELL_SIZE, min(self.col, limit_bottom // Carte.CELL_SIZE))
+
+    def dessiner(self):
+        """
+        Elle dessine le joueur.
+        """
+        # Dessiner le joueur comme un cercle
+
+        centre = (Carte.MARGIN + self.row * Carte.CELL_SIZE + Carte.CELL_SIZE // 2,
+                  Carte.MARGIN + self.col * Carte.CELL_SIZE + Carte.CELL_SIZE // 2)
+        rayon = Carte.CELL_SIZE // 8
+        pygame.draw.circle(Carte.screen, self.color, centre, rayon)
+
+
+class LesPokemons:
+    def __init__(self):
+        self.color = (0, 0, 0)  # Couleur jaune pour les Pokémon
+        self.pokemons = {}  # Dictionnaire pour stocker les coordonnées des Pokémon
+        # Chargement des coordonnées des Pokémon depuis le fichier Excel
+        wb = openpyxl.load_workbook("pokemon_coordinates.xlsx")
+        sheet = wb.active
+        for row in range(2, sheet.max_row + 1):
+            cell1 = sheet.cell(row, 1)
+            cell2 = sheet.cell(row, 2)
+            pokemon_name = cell1.value
+            x, y = json.loads(f"{cell2.value}")  # Convertir la valeur de la cellule en tuple
+            self.pokemons[pokemon_name] = (x, y)
+
+    def positionner(self):
+        for pokemon_name, (x, y) in self.pokemons.items():
+            rayon = Carte.CELL_SIZE // 16
+            X = x * 19.5 + Carte.MARGIN
+            Y = y * 78 + Carte.MARGIN
+            pygame.draw.circle(Carte.screen, self.color, (X, Y), rayon)
+
+
+        # Programme principal
+
+# Dessiner la carte
+Carte.dessiner_grille()
+
+# Création du joueur
+rows, cols = random.randint(1, Carte.GRID_SIZE) - 1, random.randint(1, Carte.GRID_SIZE) - 1  # La position du joueur
+joueur = Joueur(rows, cols)  # Le joueur commence dans une position aléatoire
+
+
+# Création de pokemon
+pokemon = LesPokemons()
+
+# Boucle principale du jeu
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                if event.mod & pygame.K_LEFT:
+                    joueur.deplacer("haut-gauche")
+                elif event.mod & pygame.K_RIGHT:
+                    joueur.deplacer("haut-droite")
+                else:
+                    joueur.deplacer("haut")
+            elif event.key == pygame.K_DOWN:
+                if event.mod & pygame.K_LEFT:
+                    joueur.deplacer("bas-gauche")
+                elif event.mod & pygame.K_RIGHT:
+                    joueur.deplacer("bas-droite")
+                else:
+                    joueur.deplacer("bas")
+            elif event.key == pygame.K_LEFT:
+                joueur.deplacer("gauche")
+            elif event.key == pygame.K_RIGHT:
+                joueur.deplacer("droite")
+
+                # Effacer l'écran
+    Carte.screen.fill(Carte.WHITE)
+
+    # Dessiner les pokemons
+    pokemon.positionner()
+
+    # Dessiner le joueur
+    joueur.dessiner()
+
+    # Rafraîchir l'écran
+    pygame.display.flip()
+
+# Quitter Pygame
+pygame.quit()
+
+
+
+
+
+
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt6.QtGui import QPixmap
+
+
+class CarteWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("POKEMON")
+        self.setGeometry(100, 100, 800, 800)
+        self.initUI()
+
+    def initUI(self):
+        # Charger l'image d'arrière-plan
+        background_image = QPixmap("Images/Jardin.jpg")
+        # Redimensionner l'image d'arrière-plan
+        background_image = background_image.scaled(800 - 20, 800 - 20)
+
+        # Afficher l'image d'arrière-plan dans un QLabel
+        self.background_label = QLabel(self)
+        self.background_label.setGeometry(10, 10, 800 - 20, 800 - 20)
+        self.background_label.setPixmap(background_image)
+
+        # Dessiner le cadrillage
+        for i in range(15):
+            # Dessiner les lignes horizontales
+            label = QLabel(self)
+            label.setGeometry(10, 10 + i * (800 - 20) // 15, 800 - 20, 1)
+            label.setStyleSheet("background-color: black")
+
+            # Dessiner les lignes verticales
+            label = QLabel(self)
+            label.setGeometry(10 + i * (800 - 20) // 15, 10, 1, 800 - 20)
+            label.setStyleSheet("background-color: black")
+
+
+def main():
+    app = QApplication(sys.argv)
+    window = CarteWindow()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel
+from PyQt6.QtGui import QPixmap, QPainter, QPaintEvent
+from PyQt6.QtCore import Qt
+
+
+class CarteWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.image_path = "Images/Jardin.jpg"
+        self.background_image = QPixmap(self.image_path)
+
+    def paintEvent(self, event: QPaintEvent):
+        painter = QPainter(self)
+        scaled_image = self.background_image.scaled(self.size(), aspectRatioMode=Qt.AspectRatioMode.IgnoreAspectRatio)
+        painter.drawPixmap(0, 0, scaled_image)
+
+
+class CarteWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle("POKEMON")
+        self.central_widget = QWidget()
+        self.layout = QVBoxLayout(self.central_widget)
+        self.carte_widget = CarteWidget(self)
+        self.layout.addWidget(self.carte_widget)
+        self.setCentralWidget(self.central_widget)
+
+
+def main():
+    app = QApplication(sys.argv)
+    window = CarteWindow()
+    window.setGeometry(100, 100, 800, 800)  # Définir une taille initiale pour la fenêtre
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt6.QtGui import QPixmap
+
+
+class CarteWindow(QMainWindow):
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 800
+    CordSupX = 100
+    CordSupY = 100
+
+    def __init__(self):
+        super().__init__()
+        self.background_label = None
+        self.setWindowTitle("POKEMON")
+        self.setGeometry(CarteWindow.CordSupX, CarteWindow.CordSupY, CarteWindow.SCREEN_WIDTH, CarteWindow.SCREEN_HEIGHT)
+        CarteWindow.initUI(CarteWindow)
+
+    @staticmethod
+    def initUI(cls):
+        # Charger l'image d'arrière-plan
+        background_image = QPixmap("Images/BackgroundImage.jpeg")
+        # Redimensionner l'image d'arrière-plan
+        background_image = background_image.scaled(800 - 20, 800 - 20)
+
+        # Afficher l'image d'arrière-plan dans un QLabel
+        cls.background_label = QLabel(cls)
+        cls.background_label.setGeometry(10, 10, 800 - 20, 800 - 20)
+        cls.background_label.setPixmap(background_image)
+
+        # Dessiner le cadrillage
+        for i in range(15):
+            # Dessiner les lignes horizontales
+            label = QLabel(cls)
+            label.setGeometry(10, 10 + i * (800 - 20) // 15, 800 - 20, 1)
+            label.setStyleSheet("background-color: black")
+
+            # Dessiner les lignes verticales
+            label = QLabel(cls)
+            label.setGeometry(10 + i * (800 - 20) // 15, 10, 1, 800 - 20)
+            label.setStyleSheet("background-color: black")
+
+
+def main():
+    app = QApplication(sys.argv)
+    window = CarteWindow()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import sys
+import random
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QWidget, QLabel
+from PyQt6.QtGui import QPainter, QColor
+from PyQt5.QtCore import Qt
+
+
+class Carte(QMainWindow):
+    MARGIN = 10
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 800
+    CordSupX = 100
+    CordSupY = 100
+    GRID_SIZE = 15
+
+    def __init__(self):
+        super().__init__()
+        self.background_label = None
+        #self.joueur_label = None  # Ajout d'un QLabel pour le joueur
+        self.setWindowTitle("POKEMON")
+        self.setGeometry(Carte.CordSupX, Carte.CordSupY, Carte.SCREEN_WIDTH,
+                         Carte.SCREEN_HEIGHT)
+        self.initUI()
+
+        # Création du joueur
+
+        # La position du joueur : Le joueur commence dans une position aléatoire
+        #rows, cols = random.randint(Carte.MARGIN, Carte.SCREEN_WIDTH-2*Carte.MARGIN), random.randint(Carte.MARGIN, Carte.SCREEN_WIDTH-2*Carte.MARGIN)
+        rows, cols = 10, 10
+        self.joueur = Joueur(rows, cols)
+
+    def initUI(self):
+        # Charger l'image d'arrière-plan
+        background_image = QPixmap("Images/BackgroundImage.jpeg")
+        # Redimensionner l'image d'arrière-plan
+        background_image = background_image.scaled(800 - 20, 800 - 20)
+
+        # Afficher l'image d'arrière-plan dans un QLabel
+        self.background_label = QLabel(self)
+        self.background_label.setGeometry(Carte.MARGIN, Carte.MARGIN,
+                                          Carte.SCREEN_WIDTH - 2 * Carte.MARGIN,
+                                          Carte.SCREEN_HEIGHT - 2 * Carte.MARGIN)
+        self.background_label.setPixmap(background_image)
+
+        # Dessiner le cadrillage
+        for i in range(Carte.GRID_SIZE):
+            # Dessiner les lignes horizontales
+            label = QLabel(self)
+            label.setGeometry(10, 10 + i * (800 - 20) // 15, 800 - 20, 1)
+            label.setStyleSheet("background-color: black")
+
+            # Dessiner les lignes verticales
+            label = QLabel(self)
+            label.setGeometry(10 + i * (800 - 20) // 15, 10, 1, 800 - 20)
+            label.setStyleSheet("background-color: black")
+
+            # Ajouter un QLabel pour le joueur
+            self.joueur_label = QLabel(self)
+            self.joueur_label.setFixedSize(Joueur.TAILLE, Joueur.TAILLE)  # Taille du joueur
+            self.joueur_label.setStyleSheet("background-color: red")  # Couleur du joueur
+
+
+    """def paintEvent(self, event):
+
+        #Elle dessine le joueur.
+
+        painter = QPainter(self)
+        painter.setPen(Joueur.COLOR)
+        painter.setBrush(Joueur.COLOR)
+
+        # Calculer les coordonnées du coin supérieur gauche de l'ellipse
+        x = self.joueur.row * (self.width() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN
+        y = self.joueur.col * (self.height() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN
+
+        # Dessiner l'ellipse centrée sur les coordonnées calculées
+        painter.drawEllipse(x, y, self.joueur.cell_size, self.joueur.cell_size)"""
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Up:
+            self.joueur.deplacer("haut")
+        elif event.key() == Qt.Key_Down:
+            self.joueur.deplacer("bas")
+        elif event.key() == Qt.Key_Left:
+            self.joueur.deplacer("gauche")
+        elif event.key() == Qt.Key_Right:
+            self.joueur.deplacer("droite")
+        self.repaint()  # Redessine la fenêtre après le déplacement du joueur
+
+        # Mettre à jour la position du joueur lorsqu'une touche est enfoncée
+        self.joueur_label.move(self.joueur.row * (self.width() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN,
+                               self.joueur.col * (self.height() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN)
+
+
+class Joueur:
+    COLOR = QColor(255, 0, 0)  # On choisit une couleur pour le joueur : Rouge
+    TAILLE = 10
+
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+        self.cell_size = 20
+
+    def deplacer(self, direction):
+        """
+        Elle permet de deplacer le joueur sur la grille ou la carte en vérifiant que le joueur ne sort pas de la zone
+        du jeu. direction: la direction dans laquelle le joueur se deplace
+        """
+        # Logique de déplacement
+        if direction == "haut" and self.col > 0:
+            self.col -= 1
+        elif direction == "bas" and self.col < Carte.GRID_SIZE - 1:
+            self.col += 1
+        elif direction == "gauche" and self.row > 0:
+            self.row -= 1
+        elif direction == "droite" and self.row < Carte.GRID_SIZE - 1:
+            self.row += 1
+        elif direction == "haut-gauche" and self.col > 0 and self.row > 0:
+            self.col -= 1
+            self.row -= 1
+        elif direction == "haut-droite" and self.col > 0 and self.row < Carte.GRID_SIZE - 1:
+            self.col -= 1
+            self.row += 1
+        elif direction == "bas-gauche" and self.col < Carte.GRID_SIZE - 1 and self.row > 0:
+            self.col += 1
+            self.row -= 1
+        elif direction == "bas-droite" and self.col < Carte.GRID_SIZE - 1 and self.row < Carte.GRID_SIZE - 1:
+            self.col += 1
+            self.row += 1
+
+
+def main():
+    app = QApplication(sys.argv)
+    window = Carte()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+# Charger l'image d'arrière-plan
+        background_image = QPixmap("Images/BackgroundImage.jpeg")
+        # Redimensionner l'image d'arrière-plan
+        background_image = background_image.scaled(800 - 20, 800 - 20)
+
+        # Afficher l'image d'arrière-plan dans un QLabel
+        self.background_label = QLabel(self)
+        self.background_label.setGeometry(Carte.MARGIN, Carte.MARGIN,
+                                          Carte.SCREEN_WIDTH - 2 * Carte.MARGIN,
+                                          Carte.SCREEN_HEIGHT - 2 * Carte.MARGIN)
+        self.background_label.setPixmap(background_image)
+
+
+ # Dessiner le cadrillage
+        for i in range(Carte.GRID_SIZE):
+            # Dessiner les lignes horizontales
+            label = QLabel(self)
+            label.setGeometry(10, 10 + i * (800 - 20) // 15, 800 - 20, 1)
+            label.setStyleSheet("background-color: black")
+
+            # Dessiner les lignes verticales
+            label = QLabel(self)
+            label.setGeometry(10 + i * (800 - 20) // 15, 10, 1, 800 - 20)
+            label.setStyleSheet("background-color: black")
+
+
+
+
+
+import sys
+import random
+import openpyxl
+import json
+import math
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QGraphicsEllipseItem, QGraphicsScene
+from PyQt6.QtGui import QPainter, QColor
+from PyQt5.QtCore import Qt
+
+
+class Carte(QMainWindow):
+    MARGIN = 10
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 800
+    CordSupX = 100
+    CordSupY = 100
+    GRID_SIZE = 20
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("POKEMON")
+        self.setMinimumSize(Carte.SCREEN_WIDTH, Carte.SCREEN_HEIGHT)
+
+        # Charger l'image d'arrière-plan
+        self.background_image = QPixmap("Images/BackgroundImage.jpeg")
+
+        # Création du joueur
+        rows = random.randint(0, Carte.GRID_SIZE - 1)
+        cols = random.randint(0, Carte.GRID_SIZE - 1)
+        self.joueur = Joueur(rows, cols)
+
+        # Liste pour stocker les Pokémon
+        self.pokemons = []
+
+        # Ajouter des Pokémon de test
+        for _ in range(5):
+            self.pokemons.append(Pokemon(random.randint(0, Carte.GRID_SIZE - 1),
+                                         random.randint(0, Carte.GRID_SIZE - 1),
+                                         QColor(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+                                         20))
+
+    def paintEvent(self, event):
+        """
+        Dessine le joueur et les Pokémon.
+        """
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.drawPixmap(self.rect(), self.background_image)
+        painter.setPen(Joueur.COLOR)
+        painter.setBrush(Joueur.COLOR)
+
+        # Dessiner le joueur
+        x = self.joueur.row * (self.width() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN
+        y = self.joueur.col * (self.height() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN
+        painter.drawEllipse(x, y, self.joueur.cell_size, self.joueur.cell_size)
+
+        # Dessiner les Pokémon visibles
+        for pokemon in self.pokemons:
+            if pokemon.visible:
+                painter.setPen(Qt.PenStyle.NoPen)
+                painter.setBrush(pokemon.color)
+                pokemon.x = pokemon.row * (self.width() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN
+                pokemon.y = pokemon.col * (self.height() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN
+                painter.drawEllipse(pokemon.x, pokemon.y, pokemon.size, pokemon.size)
+
+    def keyPressEvent(self, event):
+        """
+        Gère les événements de pression de touche pour déplacer le joueur.
+        """
+        if event.key() == Qt.Key_Up:
+            self.joueur.deplacer("haut")
+        elif event.key() == Qt.Key_Down:
+            self.joueur.deplacer("bas")
+        elif event.key() == Qt.Key_Left:
+            self.joueur.deplacer("gauche")
+        elif event.key() == Qt.Key_Right:
+            self.joueur.deplacer("droite")
+
+        # Appeler la méthode pour faire apparaître les Pokémon à l'approche du joueur
+        self.show_nearest_pokemon()
+        self.repaint()  # Redessine la fenêtre après le déplacement du joueur
+
+    def hide_all_pokemons(self):
+        """
+        Cache tous les Pokémon.
+        """
+        for pokemon in self.pokemons:
+            pokemon.hide()
+
+    def show_nearest_pokemon(self):
+        """
+        Affiche le Pokémon le plus proche du joueur et cache les autres.
+        """
+        nearest_pokemon = None
+        nearest_distance = float('inf')
+        for pokemon in self.pokemons:
+            distance = calculate_distance((self.joueur.row, self.joueur.col), (pokemon.row, pokemon.col))
+            if distance < nearest_distance:
+                nearest_distance = distance
+                nearest_pokemon = pokemon
+
+        if nearest_pokemon:
+            for pokemon in self.pokemons:
+                if pokemon != nearest_pokemon:
+                    pokemon.hide()
+            nearest_pokemon.show()
+
+
+class Joueur:
+    COLOR = QColor(255, 0, 0)  # On choisit une couleur pour le joueur : Rouge
+
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+        self.cell_size = 20
+
+    def deplacer(self, direction, step=1):
+        """
+        Elle permet de déplacer le joueur sur la grille ou la carte en vérifiant que le joueur ne sort pas de la zone
+        du jeu. direction: la direction dans laquelle le joueur se déplace
+        """
+        # Logique de déplacement
+        if direction == "haut" and self.col > 0:
+            self.col -= step
+        elif direction == "bas" and self.col < Carte.GRID_SIZE - 1:
+            self.col += step
+        elif direction == "gauche" and self.row > 0:
+            self.row -= step
+        elif direction == "droite" and self.row < Carte.GRID_SIZE - 1:
+            self.row += step
+        elif direction == "haut-gauche" and self.col > 0 and self.row > 0:
+            self.col -= step
+            self.row -= step
+        elif direction == "haut-droite" and self.col > 0 and self.row < Carte.GRID_SIZE - 1:
+            self.col -= step
+            self.row += step
+        elif direction == "bas-gauche" and self.col < Carte.GRID_SIZE - 1 and self.row > 0:
+            self.col += step
+            self.row -= step
+        elif direction == "bas-droite" and self.col < Carte.GRID_SIZE - 1 and self.row < Carte.GRID_SIZE - 1:
+            self.col += step
+            self.row += step
+
+
+class Pokemon:
+    def __init__(self, row, col, color, size):
+        self.row = row
+        self.col = col
+        self.x = None  # Calculé lors de l'affichage
+        self.y = None  # Calculé lors de l'affichage
+        self.color = color
+        self.size = size
+        self.visible = False  # Initialiser comme non visible par défaut
+
+    def show(self):
+        """
+        Rend le Pokémon visible.
+        """
+        self.visible = True
+
+    def hide(self):
+        """
+        Cache le Pokémon.
+        """
+        self.visible = False
+
+
+def calculate_distance(pos1, pos2):
+    """
+    Calcule la distance entre deux positions sur la grille.
+    """
+    return ((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2) ** 0.5
+
+
+def main():
+    app = QApplication(sys.argv)
+    window = Carte()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
