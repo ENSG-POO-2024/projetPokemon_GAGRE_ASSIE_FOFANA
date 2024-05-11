@@ -59,5 +59,5 @@ class Ui_Victoire_combat(object):
 
     def retranslateUi(self, Victoire_combat):
         _translate = QtCore.QCoreApplication.translate
-        Victoire_combat.setWindowTitle(_translate("Victoire_combat", "Dialog"))
+        Victoire_combat.setWindowTitle(_translate("Victoire_combat", "Victoire !!!"))
         self.label.setText(_translate("Victoire_combat", "Victoire !!!"))

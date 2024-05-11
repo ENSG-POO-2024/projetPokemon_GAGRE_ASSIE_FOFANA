@@ -102,5 +102,5 @@ class Ui_Selection_pokemon(object):
 
     def retranslateUi(self, Selection_pokemon):
         _translate = QtCore.QCoreApplication.translate
-        Selection_pokemon.setWindowTitle(_translate("Selection_pokemon", " "))
+        Selection_pokemon.setWindowTitle(_translate("Selection_pokemon", "Combat"))
         self.label.setText(_translate("Selection_pokemon", "Choississez votre pokemon :"))

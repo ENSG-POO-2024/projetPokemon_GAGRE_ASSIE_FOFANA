@@ -66,5 +66,5 @@ class Ui_Combat_perdu(object):
 
     def retranslateUi(self, Combat_perdu):
         _translate = QtCore.QCoreApplication.translate
-        Combat_perdu.setWindowTitle(_translate("Combat_perdu", " "))
+        Combat_perdu.setWindowTitle(_translate("Combat_perdu", "Defaite"))
         self.label_2.setText(_translate("Combat_perdu", "Perdu  !!!!"))
