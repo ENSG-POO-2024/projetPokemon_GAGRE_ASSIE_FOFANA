@@ -255,6 +255,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.type_2_etat=False
         self.Neutre_etat=False
         self.Echange_etat=False
+        self.fin_combat=False
         
         self.Pokemon_1.clicked.connect(self.press_Pokemon_1)
         self.Pokemon_2.clicked.connect(self.press_Pokemon_2)
@@ -268,26 +269,14 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.lance_echange_pokemon()
         self.Echange.clicked.connect(self.echange_pokemon)
         
-        # self.Pokemon_1.clicked.connect(self.combat)
-        # self.Pokemon_2.clicked.connect(self.combat)
-        # self.Pokemon_3.clicked.connect(self.combat)
-        # self.Type1.clicked.connect(self.combat)
-        # self.Type2.clicked.connect(self.combat)
-        # self.Neutre.clicked.connect(self.combat)
-        # self.Type1.clicked.connect( self.combat)
-        # self.Type2.clicked.connect( self.combat)
-        # self.Fuir.clicked.connect( self.combat)
-        # self.Echange.clicked.connect(self.combat)
+        
         
         self.Echange.clicked.connect(self.echange_pokemon)
         self.Neutre.clicked.connect(self.attaque_neutre)
         self.Type1.clicked.connect(self.attaque_elementaire)
         self.Type2.clicked.connect(self.attaque_elementaire)
         self.Fuir.clicked.connect(self.fuite)
-        
-        self.Tour_du_joueur =QtCore.pyqtSignal()
         self.combat()
-        # self.Attaquer.clicked.connect(self.combat)
         
 
         
@@ -417,21 +406,23 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.Echange_etat=False
 
     def fuite(self):
-       if self.fuir_etat== True :
-            self.next_window=Window_Combat_perdu(self)
-            self.next_window.show()
+       if self.fuir_etat :
+            self.Defaite()
             print("Fuite")
         
     def Victoire(self):   
         if self.pokemon_zone_adversaire.HP_combat==0:
             self.next_window=Window_Victoire_combat(self)
+            self.fin_combat=True
             self.next_window.show()
+            print("Vic")
+            
 
     def Defaite(self): 
-        if len(self.pokemons_zone_repos)==3:
+        if len(self.pokemons_zone_repos) ==3 or self.fuir_etat:
             self.next_window=Window_Combat_perdu(self)
             self.next_window.show()
-            self.hide()
+            self.fin_combat=True
             print("def" )
             
     def attaque_neutre(self):
@@ -441,6 +432,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.affichage_HP()
         self.Victoire()
         print( "Neute " +str(Dommage ))
+        
     def attaque_elementaire(self):
         if self.type_1_etat =="actif":
             Dommage =self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, False)
@@ -448,7 +440,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         if self.type_2_etat =="actif":
             Dommage = self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, True)
             self.type_2_etat=False
-        print( "elem" +str(Dommage ))
+        print( "elem " +str(Dommage ))
         self.affichage_HP()
         self.Victoire()    
 
@@ -468,7 +460,6 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.pokemon_KO()
         self.remplacement()
         self.Defaite()
-        return 1
            
     
         
@@ -536,79 +527,108 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         
     def tour_joueur(self):
         if self.Neutre_etat:
-              self.attaque_neutre()
-              return 1
+            self.attaque_neutre()
                  
         elif self.fuir_etat:
             self.fuite()
-            return 1
                
         elif self.Echange_etat :
             self.echange_pokemon()
-            return 1
                
         elif self.type_1_etat == "actif":
             self.attaque_elementaire()
-            return 1
             
         elif  self.type_2_etat == "actif":
             self.attaque_elementaire()
-            return 1
+        
+        
+    def Action_utilisateur(self):
+        loop = QtCore.QEventLoop()  # Crée une boucle d'événements
+        Action = False
+
+        # Fonction pour gérer le clic du bouton
+        def Action_joueur():
+            nonlocal Action
             
+            Action = True
+            loop.quit()
+            
+        self.Pokemon_1.clicked.connect(Action_joueur)
+        self.Pokemon_2.clicked.connect(Action_joueur)
+        self.Pokemon_3.clicked.connect(Action_joueur)
+        self.Type1.clicked.connect(Action_joueur)
+        self.Type2.clicked.connect(Action_joueur)
+        self.Neutre.clicked.connect(Action_joueur)
+        self.Type1.clicked.connect( Action_joueur)
+        self.Type2.clicked.connect( Action_joueur)
+        self.Fuir.clicked.connect( Action_joueur)
+        self.Echange.clicked.connect(Action_joueur)
+        self.show()
+        loop.exec_()
+        
+        return Action
+       
+    # Long mais marche
+    # def combat(self):
+    #     rapidite = self.vitesse()
+    #     compteur = 1
+    #     if rapidite:
+    #         while self.fuir_etat != True or self.fin_combat!= True :
+    #             if compteur % 2 != 0 :
+    #                 Action= self.Action_utilisateur()
+    #                 if Action:
+    #                     self.tour_joueur()
+    #                     compteur += 1 
+    #             else:
+    #                 self.attaque_adversaire()
+    #                 compteur += 1 
+                    
+    #             print(self.fuir_etat)
+    #             print (self.fin_combat)
+            
+    #             if self.fin_combat:
+    #                 break
+    #     else:
+    #         while self.fuir_etat != True or self.fin_combat != True:
+    #             if compteur % 2 != 0 :
+    #                 self.attaque_adversaire()
+    #                 compteur += 1 
+    #             else:
+    #                 Action= self.Action_utilisateur()
+    #                 if Action:
+    #                     self.tour_joueur()
+    #                     compteur += 1 
+    #             print(self.fuir_etat)
+    #             print (self.fin_combat)
+    #             if self.fin_combat:
+    #                 break
+                
+    # Court avec bug
     def combat(self):
         rapidite = self.vitesse()
-        compteur = 1
         if rapidite:
-            while not self.fuir_etat or not self.Victoire() or not self.Defaite():
-                if compteur % 2 != 0 :
-                    self.Tour_du_joueur.emit()
-                    print(self.fuir_etat)
-                    print(self.Victoire())
-                    print(self.Defaite())
-                    compteur += self.tour_joueur()
-                    print(compteur)
-                else:
-                    
-                    compteur += self.attaque_adversaire()
-                    print(compteur)
-        else:
-            # print("2")
-            while not self.fuir_etat or not self.Victoire() or not self.Defaite():
+            print("1")
+            while self.fuir_etat != True or self.fin_combat != True:
+                Action= self.Action_utilisateur()
+                self.tour_joueur()
+                self.attaque_adversaire()
+                
+                if self.fin_combat:
+                    break
+                
                 print(self.fuir_etat)
-                print(self.Victoire())
-                print(self.Defaite())
-                if compteur % 2 != 0 :
-                    compteur +=  self.attaque_adversaire()
-                    print(compteur)
-                else:
-                    self.Tour_du_joueur.emit()
-                    compteur += self.tour_joueur()
-                    print(compteur)
-    
-    
-    # def wait_for_player_action(self):
-    #     loop = QtCore.QEventLoop()  # Crée une boucle d'événements
-    #     button_clicked = False
-
-    #     # Fonction pour gérer le clic du bouton
-    #     def handle_button_click():
-    #         nonlocal button_clicked
-    #         button_clicked = True
-    #         loop.quit()  # Quitte la boucle d'événements lorsque le bouton est cliqué
-
-    #     button = QtWidgets.QPushButton("Cliquez pour une action")  # Crée un bouton
-    #     button.clicked.connect(handle_button_click)  # Connecte le clic du bouton à la fonction de gestion
-
-    #     layout = QVBoxLayout()  # Crée un layout vertical
-    #     layout.addWidget(button)  # Ajoute le bouton au layout
-    #     self.setLayout(layout)  # Définit le layout de la fenêtre
-
-    #     self.show()  # Affiche la fenêtre
-
-    #     loop.exec_()  # Exécute la boucle d'événements jusqu'à ce qu'elle soit quittée
-
-    #     return button_clicked
-
+                print (self.fin_combat)
+        else:
+            print("2")
+            while self.fuir_etat != True or self.fin_combat != True:
+                self.attaque_adversaire()
+                Action= self.Action_utilisateur()
+                self.tour_joueur()
+                if self.fin_combat:
+                    break
+                
+                print(self.fuir_etat)
+                print (self.fin_combat)
 
 ##############################################################
 
