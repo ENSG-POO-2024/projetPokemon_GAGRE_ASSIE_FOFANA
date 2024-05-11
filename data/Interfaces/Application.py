@@ -10,13 +10,8 @@ Created on Tue May  7 20:13:38 2024
 import sys
 import random as rd
 sys.path.append('../../Gestion_pokemon/')
-
-from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout
-
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QMainWindow, QApplication,QVBoxLayout
 from Capture_pokemon import Ui_Capture_pokemon
 from Combat_perdu import Ui_Combat_perdu
 from Lancement_combat import Ui_Lancement_combat
@@ -27,6 +22,7 @@ from Player_profil import Ui_Player_profil
 from Bienvenue import Ui_Bienvenue
 from Inventaire_Pokemon import Ui_Inventaire_Pokemon
 from Classes_Pokemons import *
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 class Window_Bienvenue (QMainWindow,Ui_Bienvenue):
     def __init__(self, parent=None):
@@ -114,7 +110,7 @@ class music():
 ##############################################################
 
 class Window_Lancement_combat (QMainWindow,Ui_Lancement_combat):
-    def __init__(self,Joueur= Dresseur("Sacha",'Masculin'),pokemon_adversaire =Krabby(),liste_pokemons_combattants=["Nidoking", "Graveler", "Mew"] , parent=None): #Joueur, pokemon_adversaire, liste_pokemons_combattants
+    def __init__(self,Joueur= Dresseur("Sacha",'Masculin'),pokemon_adversaire = Golbat(),liste_pokemons_combattants=[ 'Charmeleon',  'Rattata', 'Clefairy'] , parent=None): #Joueur, pokemon_adversaire, liste_pokemons_combattants
         super(Window_Lancement_combat, self).__init__(parent)
         self.setupUi(self)
         self.joueur= Joueur
@@ -127,21 +123,17 @@ class Window_Lancement_combat (QMainWindow,Ui_Lancement_combat):
         self.acteur_combat()
         self.PASS.clicked.connect(self.change_window)
         
-        
-        
     def Zone_d_attente(self) :
         self.pokemons_zone_attente = [Dresseur.dict_pokemons[self.Combattants[0]],
                                       Dresseur.dict_pokemons[self.Combattants[1]],
                                       Dresseur.dict_pokemons[self.Combattants[2]]]
 
-        
     def close_window(self):
         self.close()
 
     def change_window(self):
         self.next_window = Window_Selection_pokemon (self)
         self.next_window.show()
-        
 
     def acteur_combat(self):
          
@@ -175,13 +167,10 @@ class Window_Selection_pokemon (QMainWindow,Ui_Selection_pokemon):
     def __init__(self,lancement, parent=None):
         super(Window_Selection_pokemon, self).__init__(parent)
         self.setupUi(self)
-        
         self.pokemons_zone_attente= lancement.pokemons_zone_attente
         self.affichage()
-        
         self.joueur = lancement.joueur
         self.pokemon_adversaire= lancement.pokemon_adversaire
-        
         self.Pokemon_1_etat= False
         self.Pokemon_2_etat= False
         self.Pokemon_3_etat= False
@@ -193,10 +182,9 @@ class Window_Selection_pokemon (QMainWindow,Ui_Selection_pokemon):
         self.Pokemon_2.clicked.connect(self.choix_pokemon_attaquant)
         self.Pokemon_3.clicked.connect(self.choix_pokemon_attaquant)
 
-        
     def press_Pokemon_1(self):
         self.Pokemon_1_etat =True
-
+        
     def press_Pokemon_2(self):
         self.Pokemon_2_etat =True
         
@@ -207,13 +195,10 @@ class Window_Selection_pokemon (QMainWindow,Ui_Selection_pokemon):
         Combattants = self.pokemons_zone_attente
         if self.Pokemon_1_etat ==True:
             self.pokemon_zone_combat= Combattants[0]
-            
         elif self.Pokemon_2_etat ==True:
             self.pokemon_zone_combat= Combattants[1]
-            
         elif self.Pokemon_3_etat ==True:
             self.pokemon_zone_combat= Combattants[2]
-
         self.next_window = Window_Zone_de_bataille(self)
         self.next_window.show()
         self.close()
@@ -224,11 +209,9 @@ class Window_Selection_pokemon (QMainWindow,Ui_Selection_pokemon):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(Combattants[0].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_1.setIcon(icon1)
-        
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(Combattants[1].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_2.setIcon(icon2)
-        
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(Combattants[2].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_3.setIcon(icon3)
@@ -249,20 +232,21 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.pokemon_zone_combat= selection.pokemon_zone_combat
         self.pokemon_zone_adversaire= selection.pokemon_adversaire
         self.joueur= selection.joueur
+        
         self.pokemons_zone_repos=[]
         self.progress_bar_attaquant = QtWidgets.QProgressBar(self)
-        self.progress_bar_attaquant.setGeometry(QtCore.QRect(235, 200, 150, 15))
+        self.progress_bar_attaquant.setGeometry(QtCore.QRect(252, 215, 150, 15))
         self.progress_bar_attaquant.setTextVisible(False)
         self.progress_bar_attaquant.setStyleSheet("QProgressBar::chunk { background-color: rgb(255, 46, 46); }")
-
         self.progress_bar_adversaire = QtWidgets.QProgressBar(self)
-        self.progress_bar_adversaire.setGeometry(QtCore.QRect(590, 200, 150, 15))
+        self.progress_bar_adversaire.setGeometry(QtCore.QRect(693, 215, 150, 15))
         self.progress_bar_adversaire.setTextVisible(False)
         self.progress_bar_adversaire.setStyleSheet("QProgressBar::chunk { background-color: rgb(255, 46, 46); }")
         
         self.acteur_combat()
         self.affichage_HP()
         
+        self.KO= False
         self.fuir_etat=False
         self.Pokemon_1_etat= False
         self.Pokemon_2_etat= False
@@ -281,7 +265,8 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.Type1.clicked.connect( self.press_type_1)
         self.Type2.clicked.connect( self.press_type_2)
         self.Fuir.clicked.connect( self.press_fuir)
-        self.Echange.clicked.connect(self.press_echange_pokemon)
+        self.lance_echange_pokemon()
+        self.Echange.clicked.connect(self.echange_pokemon)
         
         # self.Pokemon_1.clicked.connect(self.combat)
         # self.Pokemon_2.clicked.connect(self.combat)
@@ -298,8 +283,10 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.Neutre.clicked.connect(self.attaque_neutre)
         self.Type1.clicked.connect(self.attaque_elementaire)
         self.Type2.clicked.connect(self.attaque_elementaire)
-        # self.affichage_HP()
-        # self.combat()
+        self.Fuir.clicked.connect(self.fuite)
+        
+        self.Tour_du_joueur =QtCore.pyqtSignal()
+        self.combat()
         # self.Attaquer.clicked.connect(self.combat)
         
 
@@ -309,135 +296,159 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(Combattants[0].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_1.setIcon(icon1)
+        
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(Combattants[1].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_2.setIcon(icon2)
+        
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(Combattants[2].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_3.setIcon(icon3)
+        
         self.Pokemon_attaquant.setPixmap(QtGui.QPixmap(self.pokemon_zone_combat.Image))
+        self.Nom_attaquant.setText(self.pokemon_zone_combat.nom)
+        
         for bouton in [self.Pokemon_1,self.Pokemon_2,self.Pokemon_3]:
             icon = bouton.icon().pixmap(bouton.icon().availableSizes()[0]).cacheKey()
             image =self.Pokemon_attaquant.pixmap().cacheKey()
-            if icon == image:
+            if image == icon:
                 bouton.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
                 bouton.setEnabled(False)
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("../Images/Types/"+self.pokemon_zone_combat.type1+".png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Type1.setIcon(icon4)
-        self.Type1.setToolTip(self.pokemon_zone_combat.type1)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("../Images/Types/"+self.pokemon_zone_combat.type2+".png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Type2.setIcon(icon5)
-        self.Type2.setToolTip(self.pokemon_zone_combat.type2)
+
+        self.Type1.setIcon(QtGui.QIcon("../Images/Types/"+self.pokemon_zone_combat.type1+".png"))
+        self.Type2.setIcon(QtGui.QIcon("../Images/Types/"+self.pokemon_zone_combat.type2+".png"))
+        
         if self.pokemon_zone_combat.type2 == "null":
             self.Type2.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
             self.Type2.setEnabled(False)
+            
+        self.Type1_adversaire.setPixmap(QtGui.QPixmap("../Images/Types/"+self.pokemon_zone_adversaire.type1+".png"))
+        self.Type2_adversaire.setPixmap(QtGui.QPixmap("../Images/Types/"+self.pokemon_zone_adversaire.type2+".png"))
         self.Adversaire.setPixmap(QtGui.QPixmap(self.pokemon_zone_adversaire.Image))
+        self.Nom_adversaire.setText(self.pokemon_zone_adversaire.nom)
+        
         self.Joueur.setPixmap(QtGui.QPixmap(self.joueur.Image))
         
-    def affichage_HP(self):
-        self.PV_adversaire.setText(str(self.pokemon_zone_adversaire.HP_combat)+" / "+str(self.pokemon_zone_adversaire.HP))
         
-        self.PV_attaquant.setText(str(self.pokemon_zone_combat.HP_combat)+" / "+str(self.pokemon_zone_combat.HP))   
-        self.progress_bar_attaquant.setValue(self.pokemon_zone_combat.HP_combat)
+    def affichage_HP(self):
+        self.Nom_attaquant.setText(self.pokemon_zone_combat.nom)
+        self.PV_adversaire.setText(str(self.pokemon_zone_adversaire.HP_combat)+" / "+str(self.pokemon_zone_adversaire.HP))
+        self.PV_attaquant.setText(str(self.pokemon_zone_combat.HP_combat)+" / "+str(self.pokemon_zone_combat.HP)) 
+        
         self.progress_bar_attaquant.setMaximum(self.pokemon_zone_combat.HP)
-
-        self.progress_bar_adversaire.setValue(self.pokemon_zone_adversaire.HP_combat)
+        self.progress_bar_attaquant.setValue(self.pokemon_zone_combat.HP_combat)
+        
         self.progress_bar_adversaire.setMaximum(self.pokemon_zone_adversaire.HP)
-
+        self.progress_bar_adversaire.setValue(self.pokemon_zone_adversaire.HP_combat)
+        
     def press_Pokemon_1(self):
         self.Pokemon_1_etat =True
+        if self.KO:
+            self.Pokemon_1.setEnabled(False)
+            self.Pokemon_1.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
+            self.remplacement()
+            self.Pokemon_1_etat =False
+        self.lance_echange_pokemon()
         
+
     def press_Pokemon_2(self):
         self.Pokemon_2_etat =True
+        if self.KO:
+            self.Pokemon_2.setEnabled(False)
+            self.Pokemon_2.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
+            self.remplacement()
+            self.Pokemon_2_etat =False
+        self.lance_echange_pokemon()
         
     def press_Pokemon_3(self):
         self.Pokemon_3_etat =True
+        if self.KO:
+            self.Pokemon_3.setEnabled(False)
+            self.Pokemon_3.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
+            self.remplacement()
+            self.Pokemon_3_etat =False
+        self.lance_echange_pokemon()
     
     def press_neutre(self):
         self.Neutre_etat =True
         
-    def press_echange_pokemon(self):
-        self.Echange_etat= True
-        
-    def press_fuir (self):
-        self.fuir_etat=True
-        
-    def echange_pokemon(self):  
-        
-        for bouton in [self.Pokemon_1,self.Pokemon_2,self.Pokemon_3]:
-            icon = bouton.icon().pixmap(bouton.icon().availableSizes()[0]).cacheKey()
-            image =self.Pokemon_attaquant.pixmap().cacheKey()
-            if icon == image:
-                bouton.setStyleSheet("background-color: transparent")
-                bouton.setEnabled(True)      
-        if self.Pokemon_1_etat :
-            self.pokemon_zone_combat= self.pokemons_zone_attente[0]
-            self.Pokemon_1.setEnabled(False)
-            self.Pokemon_1.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
-            self.Pokemon_1_etat =False
-            
-        elif self.Pokemon_2_etat :
-            self.pokemon_zone_combat= self.pokemons_zone_attente[1]
-            self.Pokemon_2.setEnabled(False)
-            self.Pokemon_2.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
-            self.Pokemon_2_etat =False
-            
-        elif self.Pokemon_3_etat :
-            self.pokemon_zone_combat= self.pokemons_zone_attente[2]
-            self.Pokemon_3.setEnabled(False)
-            self.Pokemon_3.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
-            self.Pokemon_3_etat =False
-            
-        if self.pokemon_zone_combat.type2 == "null":
-            self.Type2.setIcon(QtGui.QIcon("../Images/Types/"+self.pokemon_zone_combat.type2+".png"))
-            self.Type2.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
-            self.Type2.setEnabled(False)
-        else:
-            self.Type2.setIcon(QtGui.QIcon("../Images/Types/"+self.pokemon_zone_combat.type2+".png"))
-            self.Type2.setEnabled(True)  
-        self.Type1.setIcon(QtGui.QIcon("../Images/Types/"+self.pokemon_zone_combat.type1+".png"))
-        self.Pokemon_attaquant.setPixmap(QtGui.QPixmap(self.pokemon_zone_combat.Image))
-        self.affichage_HP()
-
-    def fuite(self):
-       if self.fuir_etat== True :
-            self.next_window=Window_Combat_perdu(self)
-            self.next_window.show()
-        
-    def Victoire(self):   
-        if self.pokemon_zone_adversaire.HP_combat==0:
-            self.next_window=Window_Victoire_combat(self)
-            self.next_window.show()
-
-    def defaite(self): 
-        if len(self.pokemons_zone_repos)==3:
-            self.next_window=Window_Combat_perdu(self)
-            self.next_window.show()
-            self.hide()
-            
-    def attaque_neutre(self):
-        if self.Neutre_etat:
-            self.pokemon_zone_combat.attaque_neutre(self.pokemon_zone_adversaire)
-        self.Neutre_etat=False
-        self.affichage_HP()
-        self.Victoire()
-        
-             
     def press_type_1(self):
         self.type_1_etat = "actif"
         
     def press_type_2(self):
         self.type_2_etat = "actif"
         
+    def press_fuir (self):
+        self.fuir_etat=True
+        
+    def lance_echange_pokemon(self):
+        if self.Pokemon_1_etat or self.Pokemon_2_etat or self.Pokemon_3_etat:
+            self.Echange_etat= True
+            self.Echange.setEnabled(True)
+        else:
+            self.Echange.setEnabled(False)
+   
+    def echange_pokemon(self):  
+        for bouton in [self.Pokemon_1,self.Pokemon_2,self.Pokemon_3]:
+            icon = bouton.icon().pixmap(bouton.icon().availableSizes()[0]).cacheKey()
+            image =self.Pokemon_attaquant.pixmap().cacheKey()
+            if icon == image:
+                bouton.setStyleSheet("background-color: transparent")
+                bouton.setEnabled(True)      
+                
+        if self.Pokemon_1_etat :
+            self.pokemon_zone_combat= self.pokemons_zone_attente[0]
+            self.Pokemon_1_etat =False
+            
+        elif self.Pokemon_2_etat :
+            self.pokemon_zone_combat= self.pokemons_zone_attente[1]
+            self.Pokemon_2_etat =False
+            
+        elif self.Pokemon_3_etat :
+            self.pokemon_zone_combat= self.pokemons_zone_attente[2]
+            self.Pokemon_3_etat =False
+            
+        self.Pokemon_attaquant.setPixmap(QtGui.QPixmap(self.pokemon_zone_combat.Image))
+        self.acteur_combat()
+        if self.pokemon_zone_combat.type2 != "null":
+            self.Type2.setStyleSheet("background-color:rgb(255, 255, 255)")
+            self.Type2.setEnabled(True)
+        self.Echange.setEnabled(False)
+        self.Echange_etat=False
+
+    def fuite(self):
+       if self.fuir_etat== True :
+            self.next_window=Window_Combat_perdu(self)
+            self.next_window.show()
+            print("Fuite")
+        
+    def Victoire(self):   
+        if self.pokemon_zone_adversaire.HP_combat==0:
+            self.next_window=Window_Victoire_combat(self)
+            self.next_window.show()
+
+    def Defaite(self): 
+        if len(self.pokemons_zone_repos)==3:
+            self.next_window=Window_Combat_perdu(self)
+            self.next_window.show()
+            self.hide()
+            print("def" )
+            
+    def attaque_neutre(self):
+        if self.Neutre_etat:
+           Dommage = self.pokemon_zone_combat.attaque_neutre(self.pokemon_zone_adversaire)
+        self.Neutre_etat=False
+        self.affichage_HP()
+        self.Victoire()
+        print( "Neute " +str(Dommage ))
     def attaque_elementaire(self):
         if self.type_1_etat =="actif":
-            self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, False)
+            Dommage =self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, False)
             self.type_1_etat =False
         if self.type_2_etat =="actif":
-            self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, True)
+            Dommage = self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, True)
             self.type_2_etat=False
+        print( "elem" +str(Dommage ))
         self.affichage_HP()
         self.Victoire()    
 
@@ -445,57 +456,41 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
     def attaque_adversaire(self):
         choix= [True, False]
         if rd.choice(choix):
-            self.pokemon_zone_adversaire.attaque_neutre(self.pokemon_zone_combat)
+            Dommage = self.pokemon_zone_adversaire.attaque_neutre(self.pokemon_zone_combat)
             
         else:
             if self.pokemon_zone_adversaire.type2 == 'null':
-                self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat, False)
+                Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat, False)
             else:
-                self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat, rd.choice(choix))
+                Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat, rd.choice(choix))
+        print( "adv " + str(Dommage ))
         self.affichage_HP()
         self.pokemon_KO()
         self.remplacement()
-        self.defaite()
+        self.Defaite()
+        return 1
+           
     
         
-    # def pokemon_KO(self):
-    #     liste_boutons = [self.Pokemon_1,self.Pokemon_2,self.Pokemon_3]
-    #     liste_labels = [self.Pokemon_KO_1, self.Pokemon_KO_2, self.Pokemon_KO_3]
-    #     if self.pokemon_zone_combat.HP_combat == 0:
-    #         # image = self.pokemon_zone_combat.Image
-    #         for numero in range(len(liste_boutons)):
-    #             bouton = liste_boutons[numero]
-    #             icon = bouton.icon().pixmap(bouton.icon().availableSizes()[0]).cacheKey()
-    #             image =self.Pokemon_attaquant.pixmap().cacheKey()
-    #             if icon == image:
-    #                 bouton.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
-    #                 bouton.setEnabled(False)
-    #                 pokemon = self.pokemons_zone_attente[numero]
-    #                 label = liste_labels[numero]
-                    
-    #                 image =QtGui.QImage(pokemon.Image).convertToFormat(QtGui.QImage.Format_Grayscale8)
-    #                 pixmap = QtGui.QPixmap.fromImage(image)
-    #                 label.setPixmap(pixmap)
-    #                 self.pokemons_zone_repos.append(pokemon)
-                    
-    
     def pokemon_KO(self):
-          liste_boutons = [self.Pokemon_1, self.Pokemon_2, self.Pokemon_3]
-          liste_labels = [self.Pokemon_KO_1, self.Pokemon_KO_2, self.Pokemon_KO_3]
-          if self.pokemon_zone_combat.HP_combat == 0:
-                pokemon_attaquant_path = self.pokemon_zone_combat.Image
-                for bouton, label, pokemon in zip(liste_boutons, liste_labels, self.pokemons_zone_attente):
-                      if bouton.icon().pixmap(bouton.icon().availableSizes()[0]).cacheKey() ==  self.Pokemon_attaquant.pixmap().cacheKey():
-                        bouton.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
-                        bouton.setEnabled(False)
-                        image = QtGui.QImage(pokemon.Image)
-                        image = image.convertToFormat(QtGui.QImage.Format_Grayscale8)
-                        pixmap = QtGui.QPixmap.fromImage(image)
-                        label.setPixmap(pixmap)
-                        self.pokemons_zone_repos.append(pokemon)
-          self.KO= True
-
-                    
+        liste_boutons = [self.Pokemon_1,self.Pokemon_2,self.Pokemon_3]
+        liste_labels = [self.Pokemon_KO_1, self.Pokemon_KO_2, self.Pokemon_KO_3]
+        if self.pokemon_zone_combat.HP_combat == 0:
+            for numero in range(len(liste_boutons)):
+                bouton = liste_boutons[numero]
+                icon = bouton.icon().pixmap(bouton.icon().availableSizes()[0]).cacheKey()
+                image =self.Pokemon_attaquant.pixmap().cacheKey()
+                if icon == image:
+                    bouton.setStyleSheet("background-color: rgba(255, 77, 61, 0.3)")
+                    bouton.setEnabled(False)
+                    pokemon = self.pokemons_zone_attente[numero]
+                    label = liste_labels[numero]
+                    image =QtGui.QImage(pokemon.Image).convertToFormat(QtGui.QImage.Format_Grayscale8)
+                    pixmap = QtGui.QPixmap.fromImage(image)
+                    label.setPixmap(pixmap)
+                    self.pokemons_zone_repos.append(pokemon)
+        self.KO= True
+         
     def  remplacement(self):
         if self.KO==True:
             if self.Pokemon_1_etat :
@@ -528,24 +523,9 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.Pokemon_attaquant.setPixmap(QtGui.QPixmap(self.pokemon_zone_combat.Image))
         self.affichage_HP()
         self.KO= False
-        
-    # def tour_joueur(self):
-        
-    #     if self.Neutre_etat:
-    #           self.attaque_neutre()
-    #     elif self.fuir_etat:
-    #         self.fuite()
-    #     elif self.Echange_etat :
-    #         self.echange_pokemon()
-    #     elif self.type_1_etat == "actif":
-    #         self.attaque_elementaire()
-    #     elif  self.type_2_etat == "actif":
-    #         self.attaque_elementaire()
-            
-            
-         
+
+    
     def vitesse(self):
-      
         if self.pokemon_zone_combat.Speed >= self.pokemon_zone_adversaire.Speed:
             return True
         else:
@@ -554,25 +534,81 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
     def close_window(self):
         self.close()
         
-        
-    # def combat(self):
-    #     rapidite = self.vitesse()
-    #     if rapidite:
-    #         print("1")
-    #         while not self.fuir_etat or not self.Victoire() or not self.defaite():
-    #             print(self.fuir_etat)
-    #             print(self.Victoire())
-    #             print(self.defaite())
-    #             self.tour_joueur()
-    #             self.attaque_adversaire()
-    #     else:
-    #         print("2")
-    #         while not self.fuir_etat or not self.Victoire() or not self.defaite():
-    #             print(self.fuir_etat)
-    #             print(self.Victoire())
-    #             print(self.defaite())
-    #             self.attaque_adversaire()
-    #             self.tour_joueur()
+    def tour_joueur(self):
+        if self.Neutre_etat:
+              self.attaque_neutre()
+              return 1
+                 
+        elif self.fuir_etat:
+            self.fuite()
+            return 1
+               
+        elif self.Echange_etat :
+            self.echange_pokemon()
+            return 1
+               
+        elif self.type_1_etat == "actif":
+            self.attaque_elementaire()
+            return 1
+            
+        elif  self.type_2_etat == "actif":
+            self.attaque_elementaire()
+            return 1
+            
+    def combat(self):
+        rapidite = self.vitesse()
+        compteur = 1
+        if rapidite:
+            while not self.fuir_etat or not self.Victoire() or not self.Defaite():
+                if compteur % 2 != 0 :
+                    self.Tour_du_joueur.emit()
+                    print(self.fuir_etat)
+                    print(self.Victoire())
+                    print(self.Defaite())
+                    compteur += self.tour_joueur()
+                    print(compteur)
+                else:
+                    
+                    compteur += self.attaque_adversaire()
+                    print(compteur)
+        else:
+            # print("2")
+            while not self.fuir_etat or not self.Victoire() or not self.Defaite():
+                print(self.fuir_etat)
+                print(self.Victoire())
+                print(self.Defaite())
+                if compteur % 2 != 0 :
+                    compteur +=  self.attaque_adversaire()
+                    print(compteur)
+                else:
+                    self.Tour_du_joueur.emit()
+                    compteur += self.tour_joueur()
+                    print(compteur)
+    
+    
+    # def wait_for_player_action(self):
+    #     loop = QtCore.QEventLoop()  # Crée une boucle d'événements
+    #     button_clicked = False
+
+    #     # Fonction pour gérer le clic du bouton
+    #     def handle_button_click():
+    #         nonlocal button_clicked
+    #         button_clicked = True
+    #         loop.quit()  # Quitte la boucle d'événements lorsque le bouton est cliqué
+
+    #     button = QtWidgets.QPushButton("Cliquez pour une action")  # Crée un bouton
+    #     button.clicked.connect(handle_button_click)  # Connecte le clic du bouton à la fonction de gestion
+
+    #     layout = QVBoxLayout()  # Crée un layout vertical
+    #     layout.addWidget(button)  # Ajoute le bouton au layout
+    #     self.setLayout(layout)  # Définit le layout de la fenêtre
+
+    #     self.show()  # Affiche la fenêtre
+
+    #     loop.exec_()  # Exécute la boucle d'événements jusqu'à ce qu'elle soit quittée
+
+    #     return button_clicked
+
 
 ##############################################################
 
