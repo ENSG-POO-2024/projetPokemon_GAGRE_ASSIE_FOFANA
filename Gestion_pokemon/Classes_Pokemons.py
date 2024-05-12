@@ -106,7 +106,7 @@ class Pokemon(metaclass=ABCMeta):
             Dommage=0
             
         # Application des dommages
-        pokemon.HP_combat=pokemon.HP-Dommage
+        pokemon.HP_combat=pokemon.HP_combat-Dommage
         
         # Retour a 0 pour les points de vie negatifs
         if pokemon.HP_combat<0:
@@ -844,6 +844,7 @@ class Dresseur():
                 nom=rd.choice(self.pokemons_hors_map)
                 self.pokemons_sauvages.append(nom)
                 self.pokemons_hors_map.remove(nom)
+        return self.pokemons_sauvages
                                 
 ##############################################################
 
@@ -867,13 +868,6 @@ class Dresseur():
              +"\nPokemons combattants : "+str(list(self.pokemons_combats))
              + "\nPokemons capturés : "+str(self.pokemons_attrapes) + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
         return txt
-
-
-# def jeu():
-#     Joueur= Dresseur(input("Veillez entrer votre Pseudo"))
-#     while len(Joueur)!=151:
-#         if len(Joueur)==151:
-#             print("Félicitation vous avez achevé votre aventure")
         
 if __name__=='__main__':
    
@@ -895,7 +889,7 @@ if __name__=='__main__':
     print(Pokemon.Affinites[Pokemon.Types[pika.type1],Pokemon.Types[pika.type1]])
     
     Sacha = Dresseur("Sacha",'Masculin')
-    Sacha.pokemons_on_map()
+    y =Sacha.pokemons_on_map()
     # Sacha.attrape_pokemon(pika)
     Sacha.choix_pokemons_combattants()
     print(Sacha.pokemons_combats)

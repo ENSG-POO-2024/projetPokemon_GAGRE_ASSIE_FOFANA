@@ -3,9 +3,9 @@ import random
 import openpyxl
 import json
 import math
-from PyQt6.QtWidgets import QApplication, QMainWindow
-from PyQt6.QtGui import QPixmap, QPainter
-from PyQt6.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QPixmap, QPainter
+from PyQt5.QtCore import Qt
 
 
 def distance(point1, point2):
@@ -45,7 +45,7 @@ class Carte(QMainWindow):
         # Choix aléatoire d'une paire de coordonnées parmi celles définies dans coord_surete
         coord_choice = coord_surete[random.randint(0, len(coord_surete) - 1)]
         # Les coordonnées sont ajustées avant d'être passées pour positionner le joueur correctement sur la carte
-        self.joueur = Joueur(coord_choice[0] / 2, 2 * coord_choice[1])
+        self.joueur = Personnage(coord_choice[0] / 2, 2 * coord_choice[1])
 
         # Création des Pokemons
         # Instanciation des de la classe LesPokemons
@@ -143,7 +143,7 @@ class Carte(QMainWindow):
         self.repaint()
 
 
-class Joueur:
+class Personnage:
 
     def __init__(self, row, col):
         self.row = row
