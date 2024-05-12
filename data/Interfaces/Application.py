@@ -138,8 +138,7 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         num_cols = len(Profil.joueur.pokemons_attrapes) if len(Profil.joueur.pokemons_attrapes) < 17 else 17
         self.tableWidget.setRowCount(num_rows)
         self.tableWidget.setColumnCount(num_cols)
-        #self.showFullScreen()
-        self.setFixedSize(1800, 940)
+        self.setFixedSize(1033, 580)
         window_geometry = self.frameGeometry()
         center_point = QApplication.desktop().availableGeometry().center()
         window_geometry.moveCenter(center_point)
@@ -866,7 +865,7 @@ class Window_Combat_perdu (QMainWindow,Ui_Combat_perdu):  #  OK Besoin de carte
         self.PASS.clicked.connect(self.change_window)
         
     def change_window(self):
-        self.next_window = Window_carte ()
+        self.next_window = Window_Carte (self.Bataille)
         self.next_window.show()
         self.Bataille.close_window()
         self.close()
@@ -908,6 +907,7 @@ class Window_Capture_pokemon(QMainWindow,Ui_Capture_pokemon):
         
     def Capture(self):
         self.joueur.attrape_pokemon(self.pokemon_adversaire)
+        self.joueur.ajout_pokemon_sauvages()
         self.Nom_pokemon.setText(self.pokemon_adversaire.nom)
         self.Pokemon_Attrape.setPixmap(QtGui.QPixmap(self.pokemon_adversaire.Image))
         

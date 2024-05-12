@@ -795,8 +795,9 @@ class Dresseur():
         
 
     def ajout_pokemon_sauvages(self):
-        nom_pokemon=rd.choice(self.pokemons_hors_map)
-        self.pokemons_sauvages.append(nom_pokemon)
+        if len(self.pokemons_hors_map) != 0 :
+            nom_pokemon=rd.choice(self.pokemons_hors_map)
+            self.pokemons_sauvages.append(nom_pokemon)
         
         
     def attrape_pokemon(self,pokemon):
@@ -852,6 +853,9 @@ class Dresseur():
 
 ##############################################################
     
+    def get_pokemon(nom):
+                return  Dresseur.dict_pokemons[nom]    
+            
     # Surcharge len()
     def __len__(self):
         return len(self.pokemons_attrapes)
@@ -880,7 +884,7 @@ if __name__=='__main__':
     Mewtou=Mew()
     Drac=Drowzee()
     o=Pokemon.Affinites.copy()
-    
+    print(Dresseur.get_pokemon("Pikachu"))
     print(Mewtou.attaque_neutre(pi))
     
     Drac=Drowzee()
