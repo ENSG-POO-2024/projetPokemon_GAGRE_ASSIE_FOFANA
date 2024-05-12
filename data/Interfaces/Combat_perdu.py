@@ -31,7 +31,7 @@ class Ui_Combat_perdu(object):
         self.PASS.setFont(font)
         self.PASS.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../Images/Pass.webp"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../Images/Pass.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PASS.setIcon(icon)
         self.PASS.setIconSize(QtCore.QSize(100, 100))
         self.PASS.setObjectName("PASS")
@@ -66,5 +66,5 @@ class Ui_Combat_perdu(object):
 
     def retranslateUi(self, Combat_perdu):
         _translate = QtCore.QCoreApplication.translate
-        Combat_perdu.setWindowTitle(_translate("Combat_perdu", " "))
+        Combat_perdu.setWindowTitle(_translate("Combat_perdu", "Defaite"))
         self.label_2.setText(_translate("Combat_perdu", "Perdu  !!!!"))

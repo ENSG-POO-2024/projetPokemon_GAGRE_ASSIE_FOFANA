@@ -46,7 +46,7 @@ class Ui_Victoire_combat(object):
         self.PASS.setFont(font)
         self.PASS.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../Images/Pass.webp"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../Images/Pass.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PASS.setIcon(icon)
         self.PASS.setIconSize(QtCore.QSize(100, 100))
         self.PASS.setObjectName("PASS")
@@ -59,5 +59,5 @@ class Ui_Victoire_combat(object):
 
     def retranslateUi(self, Victoire_combat):
         _translate = QtCore.QCoreApplication.translate
-        Victoire_combat.setWindowTitle(_translate("Victoire_combat", "Dialog"))
+        Victoire_combat.setWindowTitle(_translate("Victoire_combat", "Victoire !!!"))
         self.label.setText(_translate("Victoire_combat", "Victoire !!!"))
