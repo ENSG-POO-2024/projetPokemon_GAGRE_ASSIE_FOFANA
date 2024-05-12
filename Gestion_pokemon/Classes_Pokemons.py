@@ -56,20 +56,20 @@ class Pokemon(metaclass=ABCMeta):
             Nombre de points de vie retire.
 
         """
-        Dommage=self.Attack-pokemon.Defense
+        Dommage=self.Attack - pokemon.Defense
         # Retour a 0 pour les dommages negatifs 
         if Dommage <0 :
             Dommage=0
             
         # Application des dommages
-        pokemon.HP_combat=pokemon.HP_combat-Dommage
+        pokemon.HP_combat=pokemon.HP_combat - Dommage
         
         # Retour a 0 pour les points de vie negatifs
         if pokemon.HP_combat<0:
             pokemon.HP_combat=0
         return Dommage
 
-    def attaque_elementaire(self,pokemon,choix=False):
+    def attaque_elementaire(self, pokemon,choix=False):
         """
         Fonction qui calcule et applique les dommages que reçoit un pokemon d'une attaque elementaire
 
@@ -85,11 +85,12 @@ class Pokemon(metaclass=ABCMeta):
 
         """
         # Definition du type de l'attaque
-        if choix==False or self.type2=='null':
-            element=self.type1
+        
+        if choix :
+            element= self.type2 
         else:
-            element=self.type2
-            
+            element= self.type1
+
         # Calcule du coefficient d'affinite de l'attaque elementaire sur un pokemon d'un seul type
         coeff =Pokemon.Affinites[Pokemon.Types[element],Pokemon.Types[pokemon.type1]]
         if pokemon.type2=='null':
@@ -111,18 +112,6 @@ class Pokemon(metaclass=ABCMeta):
         if pokemon.HP_combat<0:
             pokemon.HP_combat=0
         return Dommage
-    
-    def pokemon_KO(self):
-        """
-        Fonction qui signale si un pokemon est hors d'etat de combattre
-
-        Returns
-        -------
-        bool
-
-        """
-        if self.HP==0:
-            return True
         
 
 ##############################################################
@@ -744,7 +733,6 @@ class Mew (Pokemon):
 
 class Dresseur():
     Pokemons_depart=3
-    
 ##############################################################
 
            ########## Donnees utiles ###########
@@ -767,22 +755,27 @@ class Dresseur():
         self.genre=genre
         if self.genre=='Masculin':
             self.Image='../Images/masculin.png'
-        else:
+        elif self.genre=='Feminin':
             self.Image='../Images/feminin.png'
-            
-        self.inventaire={}
-        self.pokemons_attrappes=[]
+        else:
+            self.Image='../Images/none_profil.png'
+
+        self.pokemons_attrapes=[]
         self.pokemons_a_trouver=Dresseur.list_pokemons.copy()
         
         for i in range(Dresseur.Pokemons_depart):
             nom_pokemon=rd.choice(Dresseur.list_pokemons)
             Choix=Dresseur.dict_pokemons[nom_pokemon]
-            self.inventaire[nom_pokemon]=Choix
-            self.pokemons_attrappes.append(nom_pokemon)            
+            self.pokemons_attrapes.append(nom_pokemon)
             self.pokemons_a_trouver.remove(nom_pokemon)
             if Choix.ID in Dresseur.pokemons_13totals_croissants:
                 Dresseur.pokemons_13totals_croissants.remove(str(Choix.ID))
-                
+
+
+
+
+
+
 ##############################################################
 
             ########## Methodes ###########
@@ -795,15 +788,14 @@ class Dresseur():
         en combat avec leurs noms et leurs identifiants
 
         """
-        self.pokemons_combattants={}
-        self.noms_pokemons_combattants=[]
-        if len(self)==3:
-            self.pokemons_combattants=self.inventaire.copy()
-            self.noms_pokemons_combattants=self.pokemons_attrappes.copy()
+        self.pokemons_combats=[]
+        if len(self)==len(self.pokemons_attrapes):
+            self.pokemons_combats=self.pokemons_attrapes.copy()
+
         
 
     def ajout_pokemon_sauvages(self):
-        nom_pokemon=rd.choice(self.pokemons_a_trouver)
+        nom_pokemon=rd.choice(self.pokemons_hors_map)
         self.pokemons_sauvages.append(nom_pokemon)
         
         
@@ -818,8 +810,7 @@ class Dresseur():
             Pokemon vaincu.
 
         """
-        self.inventaire[pokemon.nom]=pokemon
-        self.pokemons_attrappes.append(pokemon.nom)
+        self.pokemons_attrapes.append(pokemon.nom)
         self.pokemons_a_trouver.remove(pokemon.nom)
         if pokemon in self.pokemons_libres:
             self.pokemons_libres.remove(pokemon)
@@ -838,6 +829,7 @@ class Dresseur():
         
         self.pokemons_libres=[] # Liste de pokemons libres
         self.pokemons_sauvages=[] # Liste de pokemons sauvages
+        self.pokemons_hors_map = self.pokemons_a_trouver.copy()
         for numero in range(p_s+p_l):
             
             # Recupere les dix pokemons a trouver aux plus hauts totaux
@@ -845,16 +837,13 @@ class Dresseur():
                 nom = Dresseur.ID_pokemons[Dresseur.pokemons_13totals_croissants[0]]
                 ID_nom=Dresseur.pokemons_13totals_croissants[0]
                 self.pokemons_libres.append(nom)
-                self.pokemons_a_trouver.remove(nom)
+                self.pokemons_hors_map.remove(nom)
                 Dresseur.pokemons_13totals_croissants.remove(ID_nom)
-                
             else:
-                
                 # Recupere les 20 pokemons a trouver comme pokemons sauvages
-                nom=rd.choice(self.pokemons_a_trouver)
+                nom=rd.choice(self.pokemons_hors_map)
                 self.pokemons_sauvages.append(nom)
-                ID_nom=Dresseur.dict_pokemons[nom].ID
-                self.pokemons_a_trouver.remove(nom)
+                self.pokemons_hors_map.remove(nom)
                                 
 ##############################################################
 
@@ -864,31 +853,19 @@ class Dresseur():
     
     # Surcharge len()
     def __len__(self):
-        return len(self.inventaire)
-    
-    # Surcharge X[nom]=valeur
-    def __getitem__(self,nom):
-        for pokemon in self.inventaire:
-            if (pokemon.__name__)== nom :
-                return pokemon       
+        return len(self.pokemons_attrapes)
             
     # Surcharge in      
     def __contains__(self, nom):
         if nom in Dresseur.list_pokemons:
             return True
-        
-    # Surcharge del
-    def __delitem__(conteneur,nom):
-        for pokemon in conteneur:
-            if pokemon.name == nom:
-                del conteneur[pokemon.name]
                 
     # Surcharge print()
     def __str__(self):
         txt=("- - - - - - - - - - - - - - - - - - - - - - - - - - - - \nNom : "
              +str(self.nom) +"\nNombre de pokemons : "+str(len(self))
-             +"\nPokemons combattants : "+str(list(self.pokemons_combattants.keys())).replace("'","").replace("[","").replace("]","")
-             + "\nPokemons capturés : "+str(self.pokemons_attrappes).replace("'","").replace("[","").replace("]","") + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+             +"\nPokemons combattants : "+str(list(self.pokemons_combats))
+             + "\nPokemons capturés : "+str(self.pokemons_attrapes) + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
         return txt
 
 
@@ -921,7 +898,7 @@ if __name__=='__main__':
     Sacha.pokemons_on_map()
     # Sacha.attrape_pokemon(pika)
     Sacha.choix_pokemons_combattants()
-    print(Sacha.noms_pokemons_combattants)
+    print(Sacha.pokemons_combats)
     # print(Sacha.get_nom_pokemon(25))
     # print(Sacha.vitesse(Drac))
     print(Sacha)
