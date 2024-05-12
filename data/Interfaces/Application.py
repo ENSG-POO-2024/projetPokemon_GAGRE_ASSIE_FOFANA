@@ -187,10 +187,9 @@ class music():
         
 
 class Window_Carte (Carte):
-    def __init__(self,Profil , parent=None): #Joueur, pokemon_adversaire, liste_pokemons_combattants
-        super( Window_Carte, self).__init__(parent)
-        self.setupUi()
-        self.joueur = Profil.joueur
+    def __init__(self, Profil ): 
+        super( ).__init__()
+        self.joueur_info = Profil.joueur
 ##############################################################
 
              ########## Lancement ###########     
