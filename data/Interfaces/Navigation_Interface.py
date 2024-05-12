@@ -35,7 +35,7 @@ class Carte(QMainWindow):
         self.setMinimumSize(Carte.SCREEN_WIDTH, Carte.SCREEN_HEIGHT)
 
         # Charger l'image d'arrière-plan
-        self.background_image = QPixmap("../Images/background/background.jpeg")
+        self.background_image = QPixmap("../Images/background/background_player.png")
 
         # Création du joueur
 

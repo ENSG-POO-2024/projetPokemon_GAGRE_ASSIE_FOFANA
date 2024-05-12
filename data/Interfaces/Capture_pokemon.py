@@ -51,7 +51,7 @@ class Ui_Capture_pokemon(object):
         self.PASS.setFont(font)
         self.PASS.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../Images/Pass.webp"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../Images/Pass.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PASS.setIcon(icon)
         self.PASS.setIconSize(QtCore.QSize(120, 120))
         self.PASS.setObjectName("PASS")

@@ -138,7 +138,7 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.tableWidget.setRowCount(num_rows)
         self.tableWidget.setColumnCount(num_cols)
         #self.showFullScreen()
-        self.setFixedSize(1033, 580)
+        self.setFixedSize(1800, 940)
         window_geometry = self.frameGeometry()
         center_point = QApplication.desktop().availableGeometry().center()
         window_geometry.moveCenter(center_point)
@@ -161,8 +161,13 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.layout.addWidget(self.tableWidget)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(105)  # Augmenter la taille des cellules
         self.tableWidget.verticalHeader().setDefaultSectionSize(100)
+        self.sortir_button = QtWidgets.QPushButton("Cliquez ici pour sortir")
+        self.sortir_button.setStyleSheet("background-color: rgb(255,110,100); color: rgb(0,0,0); font: 75 10pt \"Arial\"")
+        self.layout.addWidget(self.sortir_button)
+        self.sortir_button.clicked.connect(self.sortir)
         
-    
+    def sortir(self):
+        self.close()
 ##############################################################
 
              ########## Music ###########
@@ -187,10 +192,9 @@ class music():
         
 
 class Window_Carte (Carte):
-    def __init__(self,Profil , parent=None): #Joueur, pokemon_adversaire, liste_pokemons_combattants
-        super( Window_Carte, self).__init__(parent)
-        self.setupUi()
-        self.joueur = Profil.joueur
+    def _init_(self,Profil , parent=None):
+        super( )._init_()
+        self.joueur_info = Profil.joueur
 ##############################################################
 
              ########## Lancement ###########     
