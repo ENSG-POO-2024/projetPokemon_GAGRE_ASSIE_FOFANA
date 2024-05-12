@@ -149,7 +149,7 @@ class Joueur:
         self.row = row
         self.col = col
         self.sizeJ = 40
-        self.image = QPixmap("../Images/masculin.png")  # Chargement de l'image du joueur
+        self.image = QPixmap("../Images/Pion.png")  # Chargement de l'image du joueur
 
     def deplacer(self, direction, step=0.5):
         """
@@ -177,7 +177,7 @@ class LesPokemons:
         self.sizeP = 20
         self.pokemons = {}
         # Chargement du classeur Excel contenant les coordonnées des Pokémons
-        wb = openpyxl.load_workbook("../Donnees_crees/pokemon_coordinates.xlsx")
+        wb = openpyxl.load_workbook("../Donnees_crees/pokemon_coordinates_P.xlsx")
         # Sélection de la feuille active dans le classeur Excel
         sheet = wb.active
         # Sélectionner un échantillon aléatoire de 30 éléments parmi tous les éléments du fichier Excel

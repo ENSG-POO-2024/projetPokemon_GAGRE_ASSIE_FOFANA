@@ -142,7 +142,7 @@ class Joueur:
         self.row = row
         self.col = col
         self.sizeJ = 40
-        self.image = QPixmap("../Images/masculin.png")
+        self.image = QPixmap("../Images/Pion.png")
 
     def deplacer(self, direction, step=0.5):
         if direction == "haut" and self.col > 0:
@@ -160,7 +160,7 @@ class LesPokemons:
         super().__init__()
         self.sizeP = 20
         self.pokemons = {}
-        wb = openpyxl.load_workbook("../Donnees_crees/pokemon_coordinates.xlsx")
+        wb = openpyxl.load_workbook("../Donnees_crees/pokemon_coordinates_P.xlsx")
         sheet = wb.active
         selected_rows = random.sample(range(1, sheet.max_row + 1), 30)
         for row in selected_rows:
