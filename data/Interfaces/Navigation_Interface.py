@@ -35,7 +35,7 @@ class Carte(QMainWindow):
         self.setMinimumSize(Carte.SCREEN_WIDTH, Carte.SCREEN_HEIGHT)
 
         # Charger l'image d'arrière-plan
-        self.background_image = QPixmap("../Images/background/background.jpeg")
+        self.background_image = QPixmap("../Images/background/background_player.png")
 
         # Création du joueur
 
@@ -49,26 +49,26 @@ class Carte(QMainWindow):
 
         # Création des Pokemons
         # Instanciation des de la classe LesPokemons
-        self.lespokemons = LesPokemons()
+        # self.lespokemons = LesPokemons()
         # Extraction des pokemons libres
         # L'argument 10 spécifie le nombre de pokemons libres à extraire
-        self.pokemons_libres = self.lespokemons.extract_pokemons_libres(10)
+        # self.pokemons_libres = self.lespokemons.extract_pokemons_libres(10)
 
         # Chargement des images des Pokémons sous forme de dictionnaire.
         # Indice recupération : le nom du Pokemon qui correspond au nom de son image.
-        self.pokemon_images = {}
-        for pokemon_name in self.lespokemons.pokemons:
-            image_path = f"../Images/Pokemon_images/{pokemon_name}.PNG"
-            self.pokemon_images[pokemon_name] = QPixmap(image_path)
+        # self.pokemon_images = {}
+        # for pokemon_name in self.lespokemons.pokemons:
+        #     image_path = f"../Images/Pokemon_images/{pokemon_name}.PNG"
+        #     self.pokemon_images[pokemon_name] = QPixmap(image_path)
 
     def paintEvent(self, event):
         """
-           Redessine la carte, le joueur et les Pokémon.
+            Redessine la carte, le joueur et les Pokémon.
 
-           Args:
+            Args:
                 event (QPaintEvent): L'événement de redessin.
 
-           Returns:
+            Returns:
                   None
     """
         # Crée un objet QPainter pour dessiner sur la fenêtre
@@ -100,7 +100,7 @@ class Carte(QMainWindow):
                 X = round(coord['x'] * echelleX)
                 Y = round(coord['y'] * echelleY)
                 painter.drawPixmap(X, Y, self.lespokemons.sizeP, self.lespokemons.sizeP,
-                                   self.pokemon_images[pokemon_name])
+                                    self.pokemon_images[pokemon_name])
 
     def distance_joueur_pokemons(self):
         """
@@ -149,7 +149,7 @@ class Personnage:
         self.row = row
         self.col = col
         self.sizeJ = 40
-        self.image = QPixmap("../Images/masculin.png")  # Chargement de l'image du joueur
+        self.image = QPixmap("../Images/Pion.png")  # Chargement de l'image du joueur
 
     def deplacer(self, direction, step=0.5):
         """
@@ -177,7 +177,7 @@ class LesPokemons:
         self.sizeP = 20
         self.pokemons = {}
         # Chargement du classeur Excel contenant les coordonnées des Pokémons
-        wb = openpyxl.load_workbook("../Donnees_crees/pokemon_coordinates.xlsx")
+        wb = openpyxl.load_workbook("../Brutes/pokemon_coordinates.xlsx")
         # Sélection de la feuille active dans le classeur Excel
         sheet = wb.active
         # Sélectionner un échantillon aléatoire de 30 éléments parmi tous les éléments du fichier Excel
@@ -196,26 +196,26 @@ class LesPokemons:
                 'visible': False
             }
 
-    def extract_pokemons_libres(self, num_elements):
-        """
-            Extrait un nombre donné d'éléments de la liste des pokemons.
+    # def extract_pokemons_libres(self, num_elements):
+    #     """
+    #         Extrait un nombre donné d'éléments de la liste des pokemons.
 
-            Args:
-                num_elements (int): Le nombre d'éléments à extraire.
+    #         Args:
+    #             num_elements (int): Le nombre d'éléments à extraire.
 
-            Returns:
-                dict: Un dictionnaire contenant les éléments extraits.
-            """
-        # Si le nombre d'éléments demandé est supérieur à la taille de la liste des pokemons,
-        # on ajuste le nombre d'éléments à extraire pour qu'il corresponde à la taille de la liste.
-        if num_elements > len(self.pokemons):
-            num_elements = min(num_elements, len(self.pokemons))
-        # Sélectionne au hasard un ensemble de clés (noms de pokemons) de la liste des pokemons
-        # en nombre égal à num_elements.
-        selected_keys = random.sample(list(self.pokemons.keys()), num_elements)
-        # Crée un nouveau dictionnaire contenant uniquement les éléments correspondant aux clés sélectionnées.
-        extracted_elements = {key: self.pokemons[key] for key in selected_keys}
-        return extracted_elements
+    #         Returns:
+    #             dict: Un dictionnaire contenant les éléments extraits.
+    #         """
+    #     # Si le nombre d'éléments demandé est supérieur à la taille de la liste des pokemons,
+    #     # on ajuste le nombre d'éléments à extraire pour qu'il corresponde à la taille de la liste.
+    #     if num_elements > len(self.pokemons):
+    #         num_elements = min(num_elements, len(self.pokemons))
+    #     # Sélectionne au hasard un ensemble de clés (noms de pokemons) de la liste des pokemons
+    #     # en nombre égal à num_elements.
+    #     selected_keys = random.sample(list(self.pokemons.keys()), num_elements)
+    #     # Crée un nouveau dictionnaire contenant uniquement les éléments correspondant aux clés sélectionnées.
+    #     extracted_elements = {key: self.pokemons[key] for key in selected_keys}
+    #     return extracted_elements
 
     def show_nearest(self, joueur_position):
         """

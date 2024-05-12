@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication
 class Ui_Bienvenue(object):
     def setupUi(self, Bienvenue):
         Bienvenue.setObjectName("Bienvenue")
+        #self.setWindowTitle("Home")
         self.setFixedSize(1033, 580)
         # -----------------------------------------
         # Centrer la fenêtre sur l'écran

@@ -12,6 +12,7 @@ import random as rd
 sys.path.append('../../Gestion_pokemon/')
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
+
 from Capture_pokemon import Ui_Capture_pokemon
 from Combat_perdu import Ui_Combat_perdu
 from Lancement_combat import Ui_Lancement_combat
@@ -138,7 +139,7 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.tableWidget.setRowCount(num_rows)
         self.tableWidget.setColumnCount(num_cols)
         #self.showFullScreen()
-        self.setFixedSize(1033, 580)
+        self.setFixedSize(1800, 940)
         window_geometry = self.frameGeometry()
         center_point = QApplication.desktop().availableGeometry().center()
         window_geometry.moveCenter(center_point)
@@ -161,8 +162,13 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.layout.addWidget(self.tableWidget)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(105)  # Augmenter la taille des cellules
         self.tableWidget.verticalHeader().setDefaultSectionSize(100)
+        self.sortir_button = QtWidgets.QPushButton("Cliquez ici pour sortir")
+        self.sortir_button.setStyleSheet("background-color: rgb(255,110,100); color: rgb(0,0,0); font: 75 10pt \"Arial\"")
+        self.layout.addWidget(self.sortir_button)
+        self.sortir_button.clicked.connect(self.sortir)
         
-    
+    def sortir(self):
+        self.close()
 ##############################################################
 
              ########## Music ###########
@@ -190,6 +196,137 @@ class Window_Carte (Carte):
     def __init__(self, Profil ): 
         super( ).__init__()
         self.joueur_info = Profil.joueur
+        self.pokemons_libres =self.joueur_info.pokemons_libres
+        self.pokemons_sauvages= self.joueur_info.pokemons_sauvages
+        self.pokemons_hors_map=  self.joueur_info.pokemons_hors_map
+        self.pokemon_adversaire_etat=[False,0]
+        
+        
+    def show_nearest(self, joueur_position):
+        """
+            Met à jour la visibilité du Pokémon le plus proche du joueur.
+
+            Args:
+                joueur_position (tuple): Les coordonnées du joueur.
+
+            Returns:
+                None
+            """
+        # Initialisation des variables pour le Pokémon le plus proche
+        nearest_pokemon = False
+        # On donne le seuil de comparaion
+        nearest_distance = 1
+        for pokemon_sauvage in self.pokemons_sauvages:
+            pokemon = Dresseur.get_pokemon(pokemon_sauvage)
+            print(pokemon)
+            position= pokemon.Coordonnees
+            dist = Window_Carte.distance(joueur_position, (position[0], position[1]))
+            # Mise à jour du Pokémon le plus proche si la nouvelle distance est plus petite
+            if dist < nearest_distance:
+                nearest_distance = dist
+                nearest_pokemon = pokemon
+                
+        # Mise à jour de la visibilité des pokemons
+        if nearest_pokemon != False:
+            self.pokemon_adversaire_etat=[True, nearest_pokemon]
+            nearest_pokemon = False
+            # for pokemon_sauvage :
+            #     # Le Pokémon le plus proche est rendu visible, les autres invisibles
+            #     if pokemon_sauvage == nearest_pokemon.nom:
+            #         info['visible'] = True
+                    
+            #     else:
+            #         info['visible'] = False
+                    
+    def distance(point1, point2):
+        """
+        Calcule la distance entre deux points.
+
+        Args:
+            point1 (tuple): Coordonnées du premier point.
+            point2 (tuple): Coordonnées du deuxième point.
+
+        Returns:
+            float: La distance entre les deux points.
+        """
+        return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)**0.5
+               
+    def paintEvent(self, event):
+        """
+           Redessine la carte, le joueur et les Pokémon.
+
+           Args:
+                event (QPaintEvent): L'événement de redessin.
+
+           Returns:
+                  None
+    """
+        # Crée un objet QPainter pour dessiner sur la fenêtre
+        painter =QtGui.QPainter(self)
+        # Active l'antialiasing pour des dessins plus lisses
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+        # Dessine l'image d'arrière-plan sur toute la fenêtre
+        painter.drawPixmap(self.rect(), self.background_image)
+
+        # Dessin du joueur
+        x = round(self.joueur.row * (self.width() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN)
+        y = round(self.joueur.col * (self.height() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN)
+        painter.drawPixmap(x, y, self.joueur.sizeJ, self.joueur.sizeJ, self.joueur.image)
+
+        # le facteur d'echelle pour convertir les coordoonnées du fichier en coordonnées pixelisées.
+        # Coordonnée maximun dans le fichier : x = 40 et y = 10.
+        echelleX = (self.width() - 2 * Carte.MARGIN) / 40
+        echelleY = (self.height() - 2 * Carte.MARGIN) / 10
+
+        # Dessin des pokemons libres
+        for pokemon_libre in self.pokemons_libres:
+            pokemon = Dresseur.get_pokemon(pokemon_libre)
+            position = pokemon.Coordonnees
+            X = round(position[0] * echelleX)
+            Y = round(position[1] * echelleY)
+            painter.drawPixmap(X, Y, 20, 20, QtGui.QPixmap(pokemon.Image))
+
+        # Dessin des pokemons sauvages
+        if self.pokemon_adversaire_etat[0]:
+            coord = self.pokemon_adversaire_etat[1].Coordonnees
+            X = round(coord[0] * echelleX)
+            Y = round(coord[1] * echelleY)
+            painter.drawPixmap(X, Y,20, 20, QtGui.QPixmap(self.pokemon_adversaire_etat[1].Image))
+            self.change_window()
+            
+        #          position= pokemon.Coordonnees
+        # for pokemon_name, coord in self.lespokemons.pokemons.items():
+        #     if not self.pokemons_libres.get(pokemon_name) and coord['visible']:
+                
+        
+        
+    def keyPressEvent(self, event):
+        """
+            Gère les événements de pression de touche.
+
+            Args:
+                event: L'événement de pression de touche.
+
+            """
+        # Déplace le joueur en fonction de la touche pressée
+
+        if event.key() == QtCore.Qt.Key.Key_Up:
+            self.joueur.deplacer("haut")
+        elif event.key() == QtCore.Qt.Key.Key_Down:
+            self.joueur.deplacer("bas")
+        elif event.key() == QtCore.Qt.Key.Key_Left:
+            self.joueur.deplacer("gauche")
+        elif event.key() == QtCore.Qt.Key.Key_Right:
+            self.joueur.deplacer("droite")
+        # Affiche le Pokémon le plus proche du joueur
+        self.show_nearest((2 * self.joueur.row, self.joueur.col / 2))
+        # Actualise l'affichage de la carte
+        self.repaint()
+        
+    def change_window(self):
+        self.next_window = Window_Lancement_combat (self)
+        self.next_window.show()
+        self.close()
 ##############################################################
 
              ########## Lancement ###########     
@@ -197,12 +334,12 @@ class Window_Carte (Carte):
 ##############################################################
 
 class Window_Lancement_combat (QMainWindow,Ui_Lancement_combat):
-    def __init__(self,Carte ,pokemon_adversaire = Golbat() , parent=None): #Joueur, pokemon_adversaire, liste_pokemons_combattants
+    def __init__(self,Carte, parent=None): #Joueur, pokemon_adversaire, liste_pokemons_combattants
         super(Window_Lancement_combat, self).__init__(parent)
         self.setupUi(self)
-        self.joueur= Carte.joueur
+        self.joueur= Carte.joueur_info
         self.joueur.choix_pokemons_combattants()
-        self.pokemon_adversaire=pokemon_adversaire
+        self.pokemon_adversaire= Carte.pokemon_adversaire_etat[1]
         self.Combattants=self.joueur.pokemons_combats
         self.Zone_d_attente()
         self.acteur_combat()
