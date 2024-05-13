@@ -209,13 +209,42 @@ class Window_Carte (Carte):
         self.joueur = Profil.joueur
         self.pokemons_libres =self.joueur.pokemons_libres
         self.pokemons_sauvages= self.joueur.pokemons_sauvages
-        # print(self.pokemons_sauvages)
-        # print("Pok sauvage "+str(len(self.pokemons_sauvages)))
         self.pokemons_hors_map=  self.joueur.pokemons_hors_map
         self.pokemon_adversaire= None
         self.create_menu()
+        if len(self.joueur.pokemons_a_trouver) == 0:
+            self.fin_de_jeu()
+###############################################################################################
+
+###############################  Message de fin de Jeu  ###############################
+
+###############################################################################################
+    def fin_de_jeu(self):
+        
+        self.fin = QDialog(self)
+        self.fin.setWindowTitle("  ")
+        self.fin.setFixedSize(700,300)
+        self.fin.setWindowTitle("  POKEMON")
+        self.fin.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
+        dialog_layout = QVBoxLayout(self.fin)
+        fin_label = QLabel()
+        fin_label.setPixmap(QtGui.QPixmap("../Images/Fin_Jeu.jpg").scaled(781, 661))
+        fin_label.setScaledContents(True)
+        dialog_layout.addWidget(fin_label)
+        self.sortir = QPushButton("Acceuil")
+        self.sortir.clicked.connect(self.reinitialisation)
+        dialog_layout.addWidget(self.sortir, alignment= QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.fin.exec()
+            
+    def reinitialisation(self):
+        print("Ici")
+        self.relancer=Window_Bienvenue()
+        self.relancer.show()
+        self.fin.close()
+        self.close()
         
         
+###############################################################################################
     def recherche_pokemon(self, Personnage_position):
         """
             Met à jour la visibilité du Pokémon le plus proche du joueur.
@@ -265,13 +294,13 @@ class Window_Carte (Carte):
                 self.Personnage.row, self.Personnage.row = int(player_position[0] /2), 2* int(player_position[1] )
                 self.update()
             
-        
+    
             
     def display_developpers(self):
         dialog = QDialog(self)
-        dialog.setWindowTitle("  ")
         dialog.setFixedSize(300, 150)
-        dialog.setWindowIcon(QtGui.QIcon("../Images/pokemon_icon.png"))
+        dialog.setWindowTitle("  POKEMON")
+        dialog.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
         dialog_layout = QVBoxLayout(dialog)
         developers_label = QLabel()
         developers_label.setText("Yohan GAGRE\nIbrahima FOFANA\nMarcel ASSIE")
@@ -548,8 +577,6 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.Type2.clicked.connect( self.press_type_2)
         self.Fuir.clicked.connect( self.press_fuir)
         self.lance_echange_pokemon()
-        
-        # self.Echange.clicked.connect(self.echange_pokemon)
         self.Neutre.clicked.connect(self.attaque_neutre)
         self.Type1.clicked.connect(self.attaque_elementaire)
         self.Type2.clicked.connect(self.attaque_elementaire)
