@@ -5,7 +5,6 @@ import json
 import math
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPixmap, QPainter,QIcon
-    
 from PyQt5.QtCore import Qt
 
 
@@ -49,7 +48,6 @@ class Carte(QMainWindow):
         self.coord_choice = self.coord_surete[random.randint(0, len(self.coord_surete) - 1)]
         # Les coordonnées sont ajustées avant d'être passées pour positionner le joueur correctement sur la carte
         self. Personnage = Personnage(self.coord_choice[0] / 2, 2 * self.coord_choice[1])
-
     def distance_joueur_pokemons(self):
         """
     Calcule la distance entre le joueur et tous les Pokémons(sauges et libres) sur la carte.
