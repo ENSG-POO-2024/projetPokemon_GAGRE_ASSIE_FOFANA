@@ -763,7 +763,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
     def info_combat(self):
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.nettoyage)
-        self.timer.start(3500)
+        self.timer.start(2000)
         
     def nettoyage(self):
         self.Degats_attaquant.clear()
@@ -798,7 +798,6 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
                 elementaire =rd.choice(choix)
                 Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat,elementaire )
                 self.degats_elementaires(Dommage, elementaire)
-        self.compteur += 1 
         self.affichage_HP()
         self.pokemon_KO()
         self.Defaite()
@@ -880,8 +879,6 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             
         elif  self.type_2_etat == "actif":
             self.attaque_elementaire()
-            
-        self.compteur += 1 
         
         
     def Action_utilisateur(self):
@@ -909,39 +906,47 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
     # Long mais marche
     def combat(self):
         rapidite = self.vitesse()
-        self.compteur = 1
+        compteur = 1
         if rapidite:
-            # QMessageBox.information(self,"   POKEMON", "Vous jouer en première position \nBonne chance  !")
+            QMessageBox.information(self,"   POKEMON", "Vous jouer en première position \nBonne chance  !")
             
             while self.fin_combat!= True :
-                if self.compteur % 2 != 0 :
+                if compteur % 2 != 0 :
                     
                     Action= self.Action_utilisateur()
                     if Action:
                         self.timer = QtCore.QTimer(self)
                         self.timer.timeout.connect(self.tour_joueur)
+                        # self.timer.timeout.connect()
                         self.timer.start(3500)
+                        compteur += 1
+                        print("Joueur")
                 else:
                     self.timer = QtCore.QTimer(self)
                     self.timer.timeout.connect(self.attaque_adversaire)
                     self.timer.start(3500)
-                    
+                    compteur += 1
+                    print("Joueur2")
             
                 if self.fin_combat:
                     break
         else:
-            # QMessageBox.information(self,"   POKEMON", "Votre adversaire joue en première position\nBonne chance  !")
+            QMessageBox.information(self,"   POKEMON", "Votre adversaire joue en première position\nBonne chance  !")
             while  self.fin_combat != True:
-                if self.compteur % 2 != 0 :
+                if compteur % 2 != 0 :
                     self.timer = QtCore.QTimer(self)
                     self.timer.timeout.connect(self.attaque_adversaire)
                     self.timer.start(3500)
+                    compteur += 1
+                    print("Joueur2")
                 else:
                     Action= self.Action_utilisateur()
                     if Action:
                         self.timer = QtCore.QTimer(self)
                         self.timer.timeout.connect(self.tour_joueur)
                         self.timer.start(3500)
+                        compteur += 1
+                        print("Joueur")
                 if self.fin_combat:
                     break
                 
