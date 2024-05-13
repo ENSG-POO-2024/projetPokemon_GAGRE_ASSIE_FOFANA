@@ -141,7 +141,7 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
     def __init__(self,Profil, parent=None):
         super(Window_Inventaire_Pokemon, self).__init__(parent)
         self.setupUi()
-        self.profil_arriere =Profil
+        self.profil =Profil
         self.joueur = Profil.joueur
         self.pokemons_attrapes =self.joueur.pokemons_attrapes
         self.pokemons_a_trouver =self.joueur.pokemons_a_trouver
@@ -176,13 +176,9 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.sortir_button = QtWidgets.QPushButton("Cliquez ici pour sortir")
         self.sortir_button.setStyleSheet("background-color: rgb(255,110,100); color: rgb(0,0,0); font: 75 10pt \"Arial\"")
         self.layout.addWidget(self.sortir_button)
-        self.sortir_button.clicked.connect(self.sortir)
+        self.sortir_button.clicked.connect(self.close)
         
-    def sortir(self):
-        self.profil_avant = Window_Player_profil(self)
-        self.profil_arriere.close()
-        self.profil_avant.close_window()
-        self.close()
+        
 ##############################################################
 
              ########## Music ###########
@@ -355,6 +351,7 @@ class Window_Carte (Carte):
         # Création d'un menu
         menu = self.menuBar()
         fichier_menu = menu.addMenu(QtGui.QIcon("../Images/menu.png"),"Menu")
+        fichier_menu.setStyleSheet("QMenuBar { background-color: rgba(0, 0, 0, 0); color: red; }")
         fichier_menu.addAction(profil_view)
         fichier_menu.addAction(developpers)
         
@@ -401,7 +398,6 @@ class Window_Lancement_combat (QMainWindow,Ui_Lancement_combat):
         super(Window_Lancement_combat, self).__init__(parent)
         self.setupUi(self)
         self.joueur= Carte.joueur
-        self.joueur.choix_pokemons_combattants()
         self.pokemon_adversaire= Carte.pokemon_adversaire
         self.Combattants=self.joueur.pokemons_combats
         self.Zone_d_attente()

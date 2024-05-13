@@ -101,7 +101,7 @@ class Ui_Player_profil(object):
        self.pseudo.setText(_translate("Player_profil    ", ""))
        self.age_input.setText(_translate("Player_profil", ""))
        self.choix_pokemons.setText(_translate("Player_profil", "Choisir vos pokemons de combats"))
-       self.change_pokemon.setText(_translate("Player_profil", "Changer de combattants"))
+       self.change_pokemon.setText(_translate("Player_profil", "Réinitialiser vos choix"))
        self.pokemon_1.setText(_translate("Player_profil", "1er choix"))
        self.pokemon_2.setText(_translate("Player_profil", "2ème choix"))
        self.pokemon_3.setText(_translate("Player_profil", "3ème choix"))
