@@ -59,8 +59,9 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
         self.joueur = Bienvenue.joueur
         self.choix_pokemons.clicked.connect(self.afficher_inventaire)
         self.change_pokemon.clicked.connect(self.changement_combattants)
-        self.close_window.clicked.connect(self.change_window)
         self.pokemons_combats= self.joueur.pokemons_combats # Liste pour stocker les pokemons choisis
+        self.close_window.clicked.connect(self.change_window)
+        
         self.pokemon_1.setPixmap(QtGui.QPixmap(Dresseur.dict_pokemons[self.pokemons_combats[0]].Image).scaled(141,101))
         self.pokemon_2.setPixmap(QtGui.QPixmap(Dresseur.dict_pokemons[self.pokemons_combats[1]].Image).scaled(141,101))
         self.pokemon_3.setPixmap(QtGui.QPixmap(Dresseur.dict_pokemons[self.pokemons_combats[2]].Image).scaled(141,101))
@@ -108,7 +109,13 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
                 result = confirm_box.exec_()
                 if result == QMessageBox.Yes:
                     self.inventaire_window.close()
-                self.pokemons_combats = []
+                else :
+                    self.pokemons_combats = []
+                    
+                self.joueur.pokemons_combats=self.pokemons_combats
+                print(self.pokemons_combats)
+
+
 
     def changement_combattants(self):
         self.pokemons_combats = [] # Vider la liste de pokemon la liste de pokemon
@@ -126,11 +133,15 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
         self.next_window =  Window_Carte (self)
         self.next_window.show()
         self.close()
+    
+    def close_window(self):
+        self.close()
 
 class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
     def __init__(self,Profil, parent=None):
         super(Window_Inventaire_Pokemon, self).__init__(parent)
         self.setupUi()
+        self.profil_arriere =Profil
         self.joueur = Profil.joueur
         self.pokemons_attrapes =self.joueur.pokemons_attrapes
         self.pokemons_a_trouver =self.joueur.pokemons_a_trouver
@@ -168,6 +179,9 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.sortir_button.clicked.connect(self.sortir)
         
     def sortir(self):
+        self.profil_avant = Window_Player_profil(self)
+        self.profil_arriere.close()
+        self.profil_avant.close_window()
         self.close()
 ##############################################################
 
