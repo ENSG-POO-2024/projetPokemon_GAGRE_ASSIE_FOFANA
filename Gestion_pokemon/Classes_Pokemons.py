@@ -1,7 +1,7 @@
 from abc import ABCMeta 
 import numpy as np
 import random as rd
-
+from PyQt5.QtGui import QPixmap
 ##############################################################
 
        ########## Classe Parente pokemon ###########
@@ -14,7 +14,8 @@ class Pokemon(metaclass=ABCMeta):
     # Dictionnaire associant un type a un numero 
     Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electric': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17, "null": 18}
     
-    Attaque_type={'Steel': "Tacle lourd", 'Fighting': "Marteau-poing", 'Dragon': "Rafale Ecailles", 'Water': "Bulle d'eau", 'Fire': "Canicule", 'Electric': "Boule eleck", 'Fairy': "Vent féérique", 'Ice': "Blizzard", 'Bug': "Taillade", 'Normal':"Combot-Griffe", 'Grass': "Tranch'Herbe", 'Poison': "Acide", 'Psychic':"Amnésie", 'Ground': "Telluriforce", 'Rock': "Tempête de sable", 'Ghost': "Revenant", 'Darness': "Coup Bas", 'Flying': "Acrobatie"}
+    Attaque_type={'Steel': "Tacle lourd", 'Fighting': "Marteau-poing", 'Dragon': "Rafale Ecailles", 'Water': "Bulle d'eau", 'Fire': "Canicule", 'Electric': "Eclair", 'Fairy': "Vent féérique", 'Ice': "Blizzard", 'Bug': "Taillade", 'Normal':"Combot-Griffe", 'Grass': "Tranch'Herbe", 'Poison': "Acide", 'Psychic':"Amnésie", 'Ground': "Telluriforce", 'Rock': "Tempête de sable", 'Ghost': "Revenant", 'Darness': "Coup Bas", 'Flying': "Acrobatie"}
+    
     #Matrice de relations d'affinites des types des pokemons 
     Affinites = np.array([[0.5, 1.0, 1.0, 0.5, 0.5, 0.5, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0], [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 0.5, 2.0, 1.0, 0.5, 0.5, 2.0, 1.0, 0.0, 2.0, 0.5], [0.5, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 0.5, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0], [1.0, 1.0, 0.5, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0], [2.0, 1.0, 0.5, 0.5, 0.5, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0], [0.5, 2.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0], [0.5, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0], [0.5, 0.5, 1.0, 1.0, 0.5, 1.0, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0, 1.0, 0.5, 2.0, 0.5], [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 0.0, 1.0, 1.0], [0.5, 1.0, 0.5, 2.0, 0.5, 1.0, 1.0, 1.0, 0.5, 1.0, 0.5, 0.5, 1.0, 2.0, 2.0, 1.0, 1.0, 0.5], [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 0.5, 0.5, 0.5, 1.0, 1.0], [0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 0.0, 1.0], [0.5, 0.5, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0], [2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 0.5, 1.0, 0.5, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.5, 1.0], [1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.5, 1.0], [0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0]])
 
@@ -754,6 +755,7 @@ class Dresseur():
         
         self.nom=nom
         self.genre=genre
+        self.image = QPixmap("../Images/joeur.png")
         if self.genre=='Masculin':
             self.Image='../Images/masculin.png'
         elif self.genre=='Feminin':
@@ -832,6 +834,25 @@ class Dresseur():
                 self.pokemons_sauvages.append(nom)
                 self.pokemons_hors_map.remove(nom)
         return self.pokemons_sauvages
+    
+    def deplacer(self, direction, step=0.5):
+        """
+             Déplace le joueur sur la carte en vérifiant les limites.
+
+             Args:
+                direction (str): La direction du déplacement (haut, bas, gauche, droite).
+                step (float): Le pas de déplacement.
+
+    """
+        GRID_SIZE = 20  # Taille d'une grille de la carte
+        if direction == "haut" and  self.y > 0:
+             self.y -= step
+        elif direction == "bas" and self.y < GRID_SIZE - 1:
+            self.y += step
+        elif direction == "gauche" and self.x > 0:
+            self.x -= step
+        elif direction == "droite" and self.x < GRID_SIZE - 1:
+            self.x += step
                                 
 ##############################################################
 

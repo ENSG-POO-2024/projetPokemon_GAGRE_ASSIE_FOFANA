@@ -24,7 +24,7 @@ from Player_profil import Ui_Player_profil
 from Bienvenue import Ui_Bienvenue
 from Inventaire_Pokemon import Ui_Inventaire_Pokemon
 from Classes_Pokemons import *
-from Navigation_Interface import Carte, Personnage
+from Navigation_Interface import Carte
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 ####################################################################################################################
@@ -198,8 +198,10 @@ class music():
 class Window_Carte (Carte):
     def __init__(self, Profil ): 
         super( ).__init__()
-        
         self.joueur = Profil.joueur
+        # Les coordonnées sont ajustées avant d'être passées pour positionner le joueur correctement sur la carte
+        self.joueur.x, self.joueur.y = self.coord_choice[0] / 2, 2 * self.coord_choice[1]
+        self.joueur.sizeJ = 40
         self.pokemons_libres =self.joueur.pokemons_libres
         self.pokemons_sauvages= self.joueur.pokemons_sauvages
         self.pokemons_hors_map=  self.joueur.pokemons_hors_map
@@ -237,7 +239,7 @@ class Window_Carte (Carte):
         
         
 ###############################################################################################
-    def recherche_pokemon(self, Personnage_position):
+    def recherche_pokemon(self):
         """
             Met à jour la visibilité du Pokémon le plus proche du joueur.
 
@@ -256,7 +258,8 @@ class Window_Carte (Carte):
         for pokemon_nom in pokemons:
             pokemon = Dresseur.dict_pokemons[pokemon_nom]
             position= pokemon.Coordonnees
-            dist = Window_Carte.distance(Personnage_position, (position[0], position[1]))
+            dist = ((2 *self.joueur.x - position[0])**2 + (self.joueur.y/2 - position[1])**2)**0.5
+            # print(dist)
             # Mise à jour du Pokémon le plus proche si la nouvelle distance est plus petite
             if dist < nearest_distance:
                 nearest_distance = dist
@@ -283,7 +286,7 @@ class Window_Carte (Carte):
             else:
                 self.pokemon_adversaire=None
                 player_position = rd.sample(self.coord_surete, k=1)[0]
-                self.Personnage.row, self.Personnage.row = int(player_position[0] /2), 2* int(player_position[1] )
+                self.joueur.x, self.joueur.y= int(player_position[0] /2), 2* int(player_position[1] )
                 self.update()
             
     
@@ -305,18 +308,6 @@ class Window_Carte (Carte):
         dialog.exec()
 
                     
-    def distance(point1, point2):
-        """
-        Calcule la distance entre deux points.
-
-        Args:
-            point1 (tuple): Coordonnées du premier point.
-            point2 (tuple): Coordonnées du deuxième point.
-
-        Returns:
-            float: La distance entre les deux points.
-        """
-        return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)**0.5
                
     def paintEvent(self, event):
         """
@@ -336,9 +327,9 @@ class Window_Carte (Carte):
         painter.drawPixmap(self.rect(), self.background_image)
 
         # Dessin du joueur
-        x = round(self.Personnage.row * (self.width() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN)
-        y = round(self.Personnage.col * (self.height() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN)
-        painter.drawPixmap(x, y, self.Personnage.sizeJ, self.Personnage.sizeJ, self.Personnage.image)
+        x = round(self.joueur.x * (self.width() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN)
+        y = round(self.joueur.y * (self.height() - 2 * Carte.MARGIN) // Carte.GRID_SIZE + Carte.MARGIN)
+        painter.drawPixmap(x, y, self.joueur.sizeJ, self.joueur.sizeJ, QtGui.QPixmap("../Images/joueur.png"))
 
         # le facteur d'echelle pour convertir les coordoonnées du fichier en coordonnées pixelisées.
         # Coordonnée maximun dans le fichier : x = 40 et y = 10.
@@ -373,7 +364,7 @@ class Window_Carte (Carte):
         menu = self.menuBar()
         menu.setStyleSheet("background-color: transparent;")
         fichier_menu = menu.addMenu(QtGui.QIcon("../Images/menu.png"),"Menu")
-        fichier_menu.setStyleSheet("background-color: transparent;")
+        fichier_menu.setStyleSheet("background-color: rgb(255,255,255); color : black;")
         fichier_menu.addAction(profil_view)
         fichier_menu.addAction(developpers)
         
@@ -389,15 +380,15 @@ class Window_Carte (Carte):
         # Déplace le joueur en fonction de la touche pressée
 
         if event.key() == QtCore.Qt.Key.Key_Up:
-            self.Personnage.deplacer("haut")
+            self.joueur.deplacer("haut")
         elif event.key() == QtCore.Qt.Key.Key_Down:
-            self.Personnage.deplacer("bas")
+            self.joueur.deplacer("bas")
         elif event.key() == QtCore.Qt.Key.Key_Left:
-            self.Personnage.deplacer("gauche")
+            self.joueur.deplacer("gauche")
         elif event.key() == QtCore.Qt.Key.Key_Right:
-            self.Personnage.deplacer("droite")
+            self.joueur.deplacer("droite")
         # Affiche le Pokémon le plus proche du joueur
-        self.recherche_pokemon((2 * self.Personnage.row, self.Personnage.col / 2))
+        self.recherche_pokemon()
         # Actualise l'affichage de la carte
         self.repaint()
         
@@ -876,8 +867,6 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             nonlocal Action
             Action = True
             loop.quit()  
-        self.Type1.clicked.connect(Action_joueur)
-        self.Type2.clicked.connect(Action_joueur)
         self.Neutre.clicked.connect(Action_joueur)
         self.Type1.clicked.connect( Action_joueur)
         self.Type2.clicked.connect( Action_joueur)
@@ -899,17 +888,19 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             QMessageBox.information(self,"   POKEMON", "Vous jouer en première position \nBonne chance  !")
             while  self.fin_combat!= False :
                 if compteur % 2 != 0 :
-                    self.Action_utilisateur()
-                    self.tour_jeu(self.tour_joueur)
-                    compteur += 1
+                    Action =self.Action_utilisateur()
+                    if Action:
+                        self.tour_jeu(self.tour_joueur)
                         
-                    # self.tour_joueur()
-                    print("Joueur")
-                    print(compteur)
+                        # self.tour_joueur()
+                        compteur += 1
+                        print("Joueur")
+                        print(compteur)
                 else:
                     self.tour_jeu(self.attaque_adversaire)
-                    compteur += 1
+                    
                     # self.attaque_adversaire()
+                    compteur += 1
                     print("Joueur2")
                     print(compteur)
                     
@@ -919,22 +910,22 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             QMessageBox.information(self,"   POKEMON", "Votre adversaire joue en première position\nBonne chance  !")
             while  self.fin_combat== False:
                 if compteur % 2 != 0 :
-                    compteur += 1
+                    
                     self.tour_jeu(self.attaque_adversaire)
                     
                     # self.attaque_adversaire()
-                    
+                    compteur += 1
                     print("Joueur2")
                     print(compteur)
                 else:
-                    self.Action_utilisateur()
-                    compteur += 1
-                    self.tour_jeu(self.tour_joueur)
+                    Action =self.Action_utilisateur()
+                    if Action:
+                        # self.tour_jeu(self.tour_joueur)
                     
-                    # self.tour_joueur()
-                    
-                    print("Joueur")
-                    print(compteur)
+                        # self.tour_joueur()
+                        compteur += 1
+                        print("Joueur")
+                        print(compteur)
                         
                 if self.fin_combat:
                     break
@@ -1019,7 +1010,6 @@ class Window_Capture_pokemon(QMainWindow,Ui_Capture_pokemon):
         self.pokemon_adversaire =  Bataille.pokemon_zone_adversaire
         self.Capture()
         self.PASS.clicked.connect(self.change_window)
-        
         
     def change_window(self):
         self.next_window = Window_Carte (self)
