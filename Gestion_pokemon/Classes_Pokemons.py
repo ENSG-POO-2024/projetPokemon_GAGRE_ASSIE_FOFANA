@@ -1,7 +1,6 @@
 from abc import ABCMeta 
 import numpy as np
 import random as rd
-import sys
 
 ##############################################################
 
@@ -14,7 +13,8 @@ class Pokemon(metaclass=ABCMeta):
 
     # Dictionnaire associant un type a un numero 
     Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electric': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17, "null": 18}
-
+    
+    Attaque_type={'Steel': "Tacle lourd", 'Fighting': "Marteau-poing", 'Dragon': "Rafale Ecailles", 'Water': "Bulle d'eau", 'Fire': "Canicule", 'Electric': "Boule eleck", 'Fairy': "Vent féérique", 'Ice': "Blizzard", 'Bug': "Taillade", 'Normal':"Combot-Griffe", 'Grass': "Tranch'Herbe", 'Poison': "Acide", 'Psychic':"Amnésie", 'Ground': "Telluriforce", 'Rock': "Tempête de sable", 'Ghost': "Revenant", 'Darness': "Coup Bas", 'Flying': "Acrobatie"}
     #Matrice de relations d'affinites des types des pokemons 
     Affinites = np.array([[0.5, 1.0, 1.0, 0.5, 0.5, 0.5, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0], [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 0.5, 2.0, 1.0, 0.5, 0.5, 2.0, 1.0, 0.0, 2.0, 0.5], [0.5, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 0.5, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0], [1.0, 1.0, 0.5, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0], [2.0, 1.0, 0.5, 0.5, 0.5, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0], [0.5, 2.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0], [0.5, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0], [0.5, 0.5, 1.0, 1.0, 0.5, 1.0, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0, 1.0, 0.5, 2.0, 0.5], [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 0.0, 1.0, 1.0], [0.5, 1.0, 0.5, 2.0, 0.5, 1.0, 1.0, 1.0, 0.5, 1.0, 0.5, 0.5, 1.0, 2.0, 2.0, 1.0, 1.0, 0.5], [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 0.5, 0.5, 0.5, 1.0, 1.0], [0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 0.0, 1.0], [0.5, 0.5, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0], [2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 0.5, 1.0, 0.5, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.5, 1.0], [1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.5, 1.0], [0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0]])
 
@@ -67,7 +67,8 @@ class Pokemon(metaclass=ABCMeta):
         # Retour a 0 pour les points de vie negatifs
         if pokemon.HP_combat<0:
             pokemon.HP_combat=0
-        return Dommage
+            
+        return str(self.nom) +" utilise \nCharge\n-" + str(Dommage)
 
     def attaque_elementaire(self, pokemon,choix=False):
         """
@@ -111,7 +112,7 @@ class Pokemon(metaclass=ABCMeta):
         # Retour a 0 pour les points de vie negatifs
         if pokemon.HP_combat<0:
             pokemon.HP_combat=0
-        return Dommage
+        return str(self.nom) +" utilise\n"+ Pokemon.Attaque_type[element] +"\n-"+ str(Dommage)
         
 
 ##############################################################
@@ -764,35 +765,20 @@ class Dresseur():
         self.pokemons_a_trouver=Dresseur.list_pokemons.copy()
         
         for i in range(Dresseur.Pokemons_depart):
-            nom_pokemon=rd.choice(Dresseur.list_pokemons)
+            nom_pokemon=rd.choice(self.pokemons_a_trouver)
             Choix=Dresseur.dict_pokemons[nom_pokemon]
             self.pokemons_attrapes.append(nom_pokemon)
             self.pokemons_a_trouver.remove(nom_pokemon)
             if Choix.ID in Dresseur.pokemons_13totals_croissants:
                 Dresseur.pokemons_13totals_croissants.remove(str(Choix.ID))
-
-
-
-
-
+        self.pokemons_combats=self.pokemons_attrapes.copy()
+                
 
 ##############################################################
 
             ########## Methodes ###########
 
 ##############################################################
-             
-    def choix_pokemons_combattants(self):
-        """
-        Fonction qui renvoie les troix pokemons que le joueur utilisera
-        en combat avec leurs noms et leurs identifiants
-
-        """
-        self.pokemons_combats=[]
-        if len(self)==len(self.pokemons_attrapes):
-            self.pokemons_combats=self.pokemons_attrapes.copy()
-
-        
 
     def ajout_pokemon_sauvages(self):
         if len(self.pokemons_hors_map) != 0 :
@@ -852,26 +838,9 @@ class Dresseur():
              ########## Surcharge ###########
 
 ##############################################################
-    
-    def get_pokemon(nom):
-                return  Dresseur.dict_pokemons[nom]    
-            
     # Surcharge len()
     def __len__(self):
         return len(self.pokemons_attrapes)
-            
-    # Surcharge in      
-    def __contains__(self, nom):
-        if nom in Dresseur.list_pokemons:
-            return True
-                
-    # Surcharge print()
-    def __str__(self):
-        txt=("- - - - - - - - - - - - - - - - - - - - - - - - - - - - \nNom : "
-             +str(self.nom) +"\nNombre de pokemons : "+str(len(self))
-             +"\nPokemons combattants : "+str(list(self.pokemons_combats))
-             + "\nPokemons capturés : "+str(self.pokemons_attrapes) + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-        return txt
         
 if __name__=='__main__':
    
@@ -883,21 +852,14 @@ if __name__=='__main__':
     pi=Pikachu()
     Mewtou=Mew()
     Drac=Drowzee()
-    o=Pokemon.Affinites.copy()
-    print(Dresseur.get_pokemon("Pikachu"))
+    
     print(Mewtou.attaque_neutre(pi))
-    
     Drac=Drowzee()
-    pika=Dresseur.dict_pokemons["Pikachu"]
-    
-    print(Pokemon.Affinites[Pokemon.Types[pika.type1],Pokemon.Types[pika.type1]])
-    
     Sacha = Dresseur("Sacha",'Masculin')
-    y =Sacha.pokemons_on_map()
-    # Sacha.attrape_pokemon(pika)
-    Sacha.choix_pokemons_combattants()
+    pokemon_rd = rd.choice(Sacha.pokemons_a_trouver)
+    carte =Sacha.pokemons_on_map()
+    Sacha.attrape_pokemon(Dresseur.dict_pokemons[pokemon_rd])
     print(Sacha.pokemons_combats)
-    # print(Sacha.get_nom_pokemon(25))
-    # print(Sacha.vitesse(Drac))
+    pika=Dresseur.dict_pokemons["Pikachu"]
+    print(Pokemon.Affinites[Pokemon.Types[pika.type1],Pokemon.Types[pika.type1]])
     print(Sacha)
-    # <>
