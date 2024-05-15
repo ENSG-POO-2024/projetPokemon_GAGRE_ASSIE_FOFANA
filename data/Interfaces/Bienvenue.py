@@ -68,11 +68,11 @@ class Ui_Bienvenue(object):
        Bienvenue.setWindowTitle(_translate("Bienvenue", "  POKEMON"))
        Bienvenue.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
        self.welcome_message.setText(_translate("Bienvenue", "BIENVENUE DANS L'UNIVERS POKEMON"))
-       self.player_name.setPlaceholderText(_translate("Bienvenue", "Your pseudo"))
-       self.player_age.setPlaceholderText(_translate("Bienvenue", "Your age"))
-       self.player_genre.setText(_translate("Bienvenue", "Sexe "))
-       self.play.setText(_translate("Bienvenue", "PLAY"))
-       self.cancel.setText(_translate("Bienvenue", "CANCEL"))
+       self.player_name.setPlaceholderText(_translate("Bienvenue", "Votre pseudo"))
+       self.player_age.setPlaceholderText(_translate("Bienvenue", "Votre age"))
+       self.player_genre.setText(_translate("Bienvenue", "Genre "))
+       self.play.setText(_translate("Bienvenue", "JOUER"))
+       self.cancel.setText(_translate("Bienvenue", "ANNULER"))
        self.editors.setText(_translate("Bienvenue", "By @yohan @marcel @ibrahima"))
        
 
