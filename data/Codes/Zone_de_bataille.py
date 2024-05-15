@@ -243,7 +243,6 @@ class Ui_Zone_de_bataille(object):
         self.Degats_adversaire.raise_()
         self.Degats.raise_()
         self.Degats_attaquant.raise_()
-
         self.retranslateUi(Zone_de_bataille)
         QtCore.QMetaObject.connectSlotsByName(Zone_de_bataille)
 
