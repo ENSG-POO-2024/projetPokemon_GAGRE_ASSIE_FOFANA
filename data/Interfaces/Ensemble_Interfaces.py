@@ -113,6 +113,7 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
             if len(self.pokemons_combats) == 3:
                 confirm_box = QMessageBox()
                 confirm_box.setIcon(QMessageBox.Question)
+                confirm_box.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
                 confirm_box.setWindowTitle("Validation de choix")
                 confirm_box.setText(f"Voulez-vous valider ces 3 combattants : \n{self.pokemons_combats[0]}, {self.pokemons_combats[1]} et {self.pokemons_combats[2]} ?")
                 confirm_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
@@ -902,7 +903,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         compteur =1
         if self.pokemon_zone_combat.Speed >= self.pokemon_zone_adversaire.Speed:
             QMessageBox.information(self,"   POKEMON", "Vous jouer en première position \nBonne chance  !")
-            while  self.fin_combat == False :
+            while  self.fin_combat == False:
                 if compteur % 2 != 0 :
                     
                     Action =self.Action_utilisateur()
@@ -984,11 +985,3 @@ class Window_Capture_pokemon(QMainWindow,Ui_Capture_pokemon):
         self.Nom_pokemon.setText(self.pokemon_adversaire.nom)
         self.Pokemon_Attrape.setPixmap(QtGui.QPixmap(self.pokemon_adversaire.Image))
         
-if __name__ == "__main__":
-
-    def run_app():
-        app = QApplication(sys.argv)
-        mainWin = Window_Bienvenue()
-        mainWin.show()
-        app.exec_()
-    fenetre=run_app()

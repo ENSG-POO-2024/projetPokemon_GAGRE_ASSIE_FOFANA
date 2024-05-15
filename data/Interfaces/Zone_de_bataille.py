@@ -249,4 +249,5 @@ class Ui_Zone_de_bataille(object):
 
     def retranslateUi(self, Zone_de_bataille):
         _translate = QtCore.QCoreApplication.translate
-        Zone_de_bataille.setWindowTitle(_translate("Zone_de_bataille", "Dialog"))
+        Zone_de_bataille.setWindowTitle(_translate("Zone_de_bataille", "    POKEMON"))
+        Zone_de_bataille.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
