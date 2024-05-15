@@ -26,7 +26,7 @@ class Pokemon(metaclass=ABCMeta):
         self.Total= Total 
         self.HP=  HP
         self.Attack= Attack 
-        self.Defense= Defense 
+        self.Defense= Defense              #   Attributs de tous les pokemons
         self.Sp_Atk= Sp_Atk 
         self.Sp_Def= Sp_Def 
         self.Speed= Speed 
@@ -671,7 +671,7 @@ if __name__=='__main__':
        ########## Test ###########
 
 ##############################################################                
-
+    # Creation d'objets pokemons
     pi=Pikachu()
     Mewtou=Mew()
     Drac=Drowzee()

@@ -59,7 +59,7 @@ def generateur_pokemon(fichier):
                                   HP=ligne[5],
                                   Attack=ligne[6],
                                   Defense=ligne[7],
-                                  Sp_Atk=ligne[8],                          #Attributs des pokemons
+                                  Sp_Atk=ligne[8],                          #Attributs des pokemons récupérés dans le fichier csv
                                   Sp_Def=ligne[9],
                                   Speed=ligne[10],
                                   Generation=ligne[11] ,
@@ -103,7 +103,7 @@ if __name__=='__main__':
     #Création du fichier python d'ecriture
     Fichier_Classes_Pokemons = open("Pokemons.py", "w")
     
-    #Import des bibliotheques et creation de la classe mere en string
+    #Import des bibliotheques et creation de la classe mere en chaîne de caractère
     Classe_mere=("from abc import ABCMeta \nimport numpy as np \nimport random as rd\n\n"
                    +"##############################################################\n\n       ########## Classe Parente pokemon ###########\n\n"
                    +"##############################################################                \n\n\n"

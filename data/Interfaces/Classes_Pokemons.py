@@ -14,7 +14,8 @@ class Pokemon(metaclass=ABCMeta):
     # Dictionnaire associant un type a un numero 
     Types={'Steel': 0, 'Fighting': 1, 'Dragon': 2, 'Water': 3, 'Fire': 4, 'Electric': 5, 'Fairy': 6, 'Ice': 7, 'Bug': 8, 'Normal': 9, 'Grass': 10, 'Poison': 11, 'Psychic': 12, 'Ground': 13, 'Rock': 14, 'Ghost': 15, 'Darness': 16, 'Flying': 17, "null": 18}
     
-    Attaque_type={'Steel': "Tacle lourd", 'Fighting': "Marteau-poing", 'Dragon': "Rafale Ecailles", 'Water': "Bulle d'eau", 'Fire': "Canicule", 'Electric': "Eclair", 'Fairy': "Vent féérique", 'Ice': "Blizzard", 'Bug': "Taillade", 'Normal':"Combot-Griffe", 'Grass': "Tranch'Herbe", 'Poison': "Acide", 'Psychic':"Amnésie", 'Ground': "Telluriforce", 'Rock': "Tempête de sable", 'Ghost': "Revenant", 'Darness': "Coup Bas", 'Flying': "Acrobatie"}
+    # Dictionnaire associant un type a une attaque
+    Attaque_type={'Steel': "Queue de Fer", 'Fighting': "Coup Fulgurant", 'Dragon': "Rafale Ecailles", 'Water': "Bulle d'eau", 'Fire': "Lance-Flamme", 'Electric': "Eclair", 'Fairy': "Vent féérique", 'Ice': "Chute Glace", 'Bug': "Toile Gluante", 'Normal':"Combot-Griffe", 'Grass': "Aire d'Herbe", 'Poison': "Acide", 'Psychic':"Amnésie", 'Ground': "Tir de boue", 'Rock': "Tempête de sable", 'Ghost': "Revenant", 'Darness': "Représailles", 'Flying': "Tornade"}
     
     #Matrice de relations d'affinites des types des pokemons 
     Affinites = np.array([[0.5, 1.0, 1.0, 0.5, 0.5, 0.5, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0], [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 0.5, 2.0, 1.0, 0.5, 0.5, 2.0, 1.0, 0.0, 2.0, 0.5], [0.5, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 0.5, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0], [1.0, 1.0, 0.5, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0], [2.0, 1.0, 0.5, 0.5, 0.5, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0], [0.5, 2.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0], [0.5, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0], [0.5, 0.5, 1.0, 1.0, 0.5, 1.0, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0, 1.0, 0.5, 2.0, 0.5], [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 0.0, 1.0, 1.0], [0.5, 1.0, 0.5, 2.0, 0.5, 1.0, 1.0, 1.0, 0.5, 1.0, 0.5, 0.5, 1.0, 2.0, 2.0, 1.0, 1.0, 0.5], [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 0.5, 0.5, 0.5, 1.0, 1.0], [0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 0.0, 1.0], [0.5, 0.5, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 2.0], [2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 0.5, 1.0, 0.5, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.5, 1.0], [1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.5, 1.0], [0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0]])
@@ -29,7 +30,7 @@ class Pokemon(metaclass=ABCMeta):
         self.HP=  HP
         self.HP_combat= HP
         self.Attack= Attack 
-        self.Defense= Defense 
+        self.Defense= Defense               #   Attributs de tous les pokemons
         self.Sp_Atk= Sp_Atk 
         self.Sp_Def= Sp_Def 
         self.Speed= Speed 
@@ -53,8 +54,8 @@ class Pokemon(metaclass=ABCMeta):
 
         Returns
         -------
-        Dommage : integer
-            Nombre de points de vie retire.
+        Dommage : string
+            Nom du  pokemon, l'attaque utilisée et les points de dommage infligés.
 
         """
         Dommage=self.Attack - pokemon.Defense
@@ -69,6 +70,7 @@ class Pokemon(metaclass=ABCMeta):
         if pokemon.HP_combat<0:
             pokemon.HP_combat=0
             
+        # Renvoie le nom du  pokemon, l'attaque utilisée et les points de dommage infligés
         return str(self.nom) +" utilise \nCharge\n-" + str(Dommage)
 
     def attaque_elementaire(self, pokemon,choix=False):
@@ -82,8 +84,8 @@ class Pokemon(metaclass=ABCMeta):
 
         Returns
         -------
-        Dommage : integer
-            Nombre de points de vie retire.
+        Dommage : string
+            Nom du  pokemon, l'attaque utilisée et les points de dommage infligés.
 
         """
         # Definition du type de l'attaque
@@ -113,6 +115,8 @@ class Pokemon(metaclass=ABCMeta):
         # Retour a 0 pour les points de vie negatifs
         if pokemon.HP_combat<0:
             pokemon.HP_combat=0
+            
+        # Renvoie le nom du  pokemon, l'attaque utilisée et les points de dommage infligés
         return str(self.nom) +" utilise\n"+ Pokemon.Attaque_type[element] +"\n-"+ str(Dommage)
         
 
@@ -734,19 +738,17 @@ class Mew (Pokemon):
 ############################################################## 
 
 class Dresseur():
-    Pokemons_depart=3
-##############################################################
-
-           ########## Donnees utiles ###########
-
-##############################################################                
-
+    Pokemons_depart=3 # Nombre de pokemons au debut du jeu
+    
+    # Dictionnaire renfermant les 151 objets des sous-classes pokemons
     dict_pokemons={ 'Bulbasaur' : Bulbasaur(), 'Ivysaur' : Ivysaur(), 'Venusaur' : Venusaur(), 'Charmander' : Charmander(), 'Charmeleon' : Charmeleon(), 'Charizard' : Charizard(), 'Squirtle' : Squirtle(), 'Wartortle' : Wartortle(), 'Blastoise' : Blastoise(), 'Caterpie' : Caterpie(), 'Metapod' : Metapod(), 'Butterfree' : Butterfree(), 'Weedle' : Weedle(), 'Kakuna' : Kakuna(), 'Beedrill' : Beedrill(), 'Pidgey' : Pidgey(), 'Pidgeotto' : Pidgeotto(), 'Pidgeot' : Pidgeot(), 'Rattata' : Rattata(), 'Raticate' : Raticate(), 'Spearow' : Spearow(), 'Fearow' : Fearow(), 'Ekans' : Ekans(), 'Arbok' : Arbok(), 'Pikachu' : Pikachu(), 'Raichu' : Raichu(), 'Sandshrew' : Sandshrew(), 'Sandslash' : Sandslash(), 'Nidoran_male' : Nidoran_male(), 'Nidorina' : Nidorina(), 'Nidoqueen' : Nidoqueen(), 'Nidoran_female' : Nidoran_female(), 'Nidorino' : Nidorino(), 'Nidoking' : Nidoking(), 'Clefairy' : Clefairy(), 'Clefable' : Clefable(), 'Vulpix' : Vulpix(), 'Ninetales' : Ninetales(), 'Jigglypuff' : Jigglypuff(), 'Wigglytuff' : Wigglytuff(), 'Zubat' : Zubat(), 'Golbat' : Golbat(), 'Oddish' : Oddish(), 'Gloom' : Gloom(), 'Vileplume' : Vileplume(), 'Paras' : Paras(), 'Parasect' : Parasect(), 'Venonat' : Venonat(), 'Venomoth' : Venomoth(), 'Diglett' : Diglett(), 'Dugtrio' : Dugtrio(), 'Meowth' : Meowth(), 'Persian' : Persian(), 'Psyduck' : Psyduck(), 'Golduck' : Golduck(), 'Mankey' : Mankey(), 'Primeape' : Primeape(), 'Growlithe' : Growlithe(), 'Arcanine' : Arcanine(), 'Poliwag' : Poliwag(), 'Poliwhirl' : Poliwhirl(), 'Poliwrath' : Poliwrath(), 'Abra' : Abra(), 'Kadabra' : Kadabra(), 'Alakazam' : Alakazam(), 'Machop' : Machop(), 'Machoke' : Machoke(), 'Machamp' : Machamp(), 'Bellsprout' : Bellsprout(), 'Weepinbell' : Weepinbell(), 'Victreebel' : Victreebel(), 'Tentacool' : Tentacool(), 'Tentacruel' : Tentacruel(), 'Geodude' : Geodude(), 'Graveler' : Graveler(), 'Golem' : Golem(), 'Ponyta' : Ponyta(), 'Rapidash' : Rapidash(), 'Slowpoke' : Slowpoke(), 'Slowbro' : Slowbro(), 'Magnemite' : Magnemite(), 'Magneton' : Magneton(), 'Farfetchd' : Farfetchd(), 'Doduo' : Doduo(), 'Dodrio' : Dodrio(), 'Seel' : Seel(), 'Dewgong' : Dewgong(), 'Grimer' : Grimer(), 'Muk' : Muk(), 'Shellder' : Shellder(), 'Cloyster' : Cloyster(), 'Gastly' : Gastly(), 'Haunter' : Haunter(), 'Gengar' : Gengar(), 'Onix' : Onix(), 'Drowzee' : Drowzee(), 'Hypno' : Hypno(), 'Krabby' : Krabby(), 'Kingler' : Kingler(), 'Voltorb' : Voltorb(), 'Electrode' : Electrode(), 'Exeggcute' : Exeggcute(), 'Exeggutor' : Exeggutor(), 'Cubone' : Cubone(), 'Marowak' : Marowak(), 'Hitmonlee' : Hitmonlee(), 'Hitmonchan' : Hitmonchan(), 'Lickitung' : Lickitung(), 'Koffing' : Koffing(), 'Weezing' : Weezing(), 'Rhyhorn' : Rhyhorn(), 'Rhydon' : Rhydon(), 'Chansey' : Chansey(), 'Tangela' : Tangela(), 'Kangaskhan' : Kangaskhan(), 'Horsea' : Horsea(), 'Seadra' : Seadra(), 'Goldeen' : Goldeen(), 'Seaking' : Seaking(), 'Staryu' : Staryu(), 'Starmie' : Starmie(), 'Mr_Mime' : Mr_Mime(), 'Scyther' : Scyther(), 'Jynx' : Jynx(), 'Electabuzz' : Electabuzz(), 'Magmar' : Magmar(), 'Pinsir' : Pinsir(), 'Tauros' : Tauros(), 'Magikarp' : Magikarp(), 'Gyarados' : Gyarados(), 'Lapras' : Lapras(), 'Ditto' : Ditto(), 'Eevee' : Eevee(), 'Vaporeon' : Vaporeon(), 'Jolteon' : Jolteon(), 'Flareon' : Flareon(), 'Porygon' : Porygon(), 'Omanyte' : Omanyte(), 'Omastar' : Omastar(), 'Kabuto' : Kabuto(), 'Kabutops' : Kabutops(), 'Aerodactyl' : Aerodactyl(), 'Snorlax' : Snorlax(), 'Articuno' : Articuno(), 'Zapdos' : Zapdos(), 'Moltres' : Moltres(), 'Dratini' : Dratini(), 'Dragonair' : Dragonair(), 'Dragonite' : Dragonite(), 'Mewtwo' : Mewtwo(), 'Mew' : Mew(), }
-
+    # Liste des 151 noms de pokemons
     list_pokemons= list(dict_pokemons.keys()) 
-
+    
+    # Dictionnaire associant un identifiant à un pokemon
     ID_pokemons= { '1' : 'Bulbasaur', '2' : 'Ivysaur', '3' : 'Venusaur', '4' : 'Charmander', '5' : 'Charmeleon', '6' : 'Charizard', '7' : 'Squirtle', '8' : 'Wartortle', '9' : 'Blastoise', '10' : 'Caterpie', '11' : 'Metapod', '12' : 'Butterfree', '13' : 'Weedle', '14' : 'Kakuna', '15' : 'Beedrill', '16' : 'Pidgey', '17' : 'Pidgeotto', '18' : 'Pidgeot', '19' : 'Rattata', '20' : 'Raticate', '21' : 'Spearow', '22' : 'Fearow', '23' : 'Ekans', '24' : 'Arbok', '25' : 'Pikachu', '26' : 'Raichu', '27' : 'Sandshrew', '28' : 'Sandslash', '29' : 'Nidoran_male', '30' : 'Nidorina', '31' : 'Nidoqueen', '32' : 'Nidoran_female', '33' : 'Nidorino', '34' : 'Nidoking', '35' : 'Clefairy', '36' : 'Clefable', '37' : 'Vulpix', '38' : 'Ninetales', '39' : 'Jigglypuff', '40' : 'Wigglytuff', '41' : 'Zubat', '42' : 'Golbat', '43' : 'Oddish', '44' : 'Gloom', '45' : 'Vileplume', '46' : 'Paras', '47' : 'Parasect', '48' : 'Venonat', '49' : 'Venomoth', '50' : 'Diglett', '51' : 'Dugtrio', '52' : 'Meowth', '53' : 'Persian', '54' : 'Psyduck', '55' : 'Golduck', '56' : 'Mankey', '57' : 'Primeape', '58' : 'Growlithe', '59' : 'Arcanine', '60' : 'Poliwag', '61' : 'Poliwhirl', '62' : 'Poliwrath', '63' : 'Abra', '64' : 'Kadabra', '65' : 'Alakazam', '66' : 'Machop', '67' : 'Machoke', '68' : 'Machamp', '69' : 'Bellsprout', '70' : 'Weepinbell', '71' : 'Victreebel', '72' : 'Tentacool', '73' : 'Tentacruel', '74' : 'Geodude', '75' : 'Graveler', '76' : 'Golem', '77' : 'Ponyta', '78' : 'Rapidash', '79' : 'Slowpoke', '80' : 'Slowbro', '81' : 'Magnemite', '82' : 'Magneton', '83' : 'Farfetchd', '84' : 'Doduo', '85' : 'Dodrio', '86' : 'Seel', '87' : 'Dewgong', '88' : 'Grimer', '89' : 'Muk', '90' : 'Shellder', '91' : 'Cloyster', '92' : 'Gastly', '93' : 'Haunter', '94' : 'Gengar', '95' : 'Onix', '96' : 'Drowzee', '97' : 'Hypno', '98' : 'Krabby', '99' : 'Kingler', '100' : 'Voltorb', '101' : 'Electrode', '102' : 'Exeggcute', '103' : 'Exeggutor', '104' : 'Cubone', '105' : 'Marowak', '106' : 'Hitmonlee', '107' : 'Hitmonchan', '108' : 'Lickitung', '109' : 'Koffing', '110' : 'Weezing', '111' : 'Rhyhorn', '112' : 'Rhydon', '113' : 'Chansey', '114' : 'Tangela', '115' : 'Kangaskhan', '116' : 'Horsea', '117' : 'Seadra', '118' : 'Goldeen', '119' : 'Seaking', '120' : 'Staryu', '121' : 'Starmie', '122' : 'Mr_Mime', '123' : 'Scyther', '124' : 'Jynx', '125' : 'Electabuzz', '126' : 'Magmar', '127' : 'Pinsir', '128' : 'Tauros', '129' : 'Magikarp', '130' : 'Gyarados', '131' : 'Lapras', '132' : 'Ditto', '133' : 'Eevee', '134' : 'Vaporeon', '135' : 'Jolteon', '136' : 'Flareon', '137' : 'Porygon', '138' : 'Omanyte', '139' : 'Omastar', '140' : 'Kabuto', '141' : 'Kabutops', '142' : 'Aerodactyl', '143' : 'Snorlax', '144' : 'Articuno', '145' : 'Zapdos', '146' : 'Moltres', '147' : 'Dratini', '148' : 'Dragonair', '149' : 'Dragonite', '150' : 'Mewtwo', '151' : 'Mew', }
-
+   
+    # Listes des identifiant des 13 pokemons ayant les plus hauts totaux
     pokemons_13totals_croissants=['150', '149', '151', '144', '145', '146', '59', '130', '143', '131', '6', '9', '3']
         
     
@@ -758,21 +760,34 @@ class Dresseur():
         self.image = QPixmap("../Images/joeur.png")
         if self.genre=='Masculin':
             self.Image='../Images/masculin.png'
-        elif self.genre=='Feminin':
+        elif self.genre=='Feminin':                         #       Caracteristiques du joueur
             self.Image='../Images/feminin.png'
         else:
             self.Image='../Images/none_profil.png'
-
+            
+        # Liste des pokemons du joueur initialise à 0
         self.pokemons_attrapes=[]
+        
+        # Liste des pokemons que le joueur devra attrapes
         self.pokemons_a_trouver=Dresseur.list_pokemons.copy()
+        
         
         for i in range(Dresseur.Pokemons_depart):
             nom_pokemon=rd.choice(self.pokemons_a_trouver)
             Choix=Dresseur.dict_pokemons[nom_pokemon]
+            
+            #  Attribution de 3 pokemons aleatoires au joueur
             self.pokemons_attrapes.append(nom_pokemon)
+            
+            # Mise à jour des  pokemons que le joueur devra attrapes
             self.pokemons_a_trouver.remove(nom_pokemon)
             if Choix.ID in Dresseur.pokemons_13totals_croissants:
+                
+                # Mise à jour des 13 pokemons les plus fors
+                # 13 dans le cas où 3 d'entre eux soient attribues au joueur
                 Dresseur.pokemons_13totals_croissants.remove(str(Choix.ID))
+                
+        # A l'etat initiale les pokemons de l'inventaire sonts les pokemons de combat
         self.pokemons_combats=self.pokemons_attrapes.copy()
                 
 
@@ -783,15 +798,20 @@ class Dresseur():
 ##############################################################
 
     def ajout_pokemon_sauvages(self):
+        """
+        Fonction qui ajoute un pokemon sauvage à la liste des pokemons sauvages
+
+        """
         if len(self.pokemons_hors_map) != 0 :
-            nom_pokemon=rd.choice(self.pokemons_hors_map)
-            self.pokemons_sauvages.append(nom_pokemon)
+            nom_pokemon=rd.choice(self.pokemons_hors_map) # liste des pokemons ne s'affichant pas à la carte
+            self.pokemons_sauvages.append(nom_pokemon)    # Attribution aux pokemons sauvages
+            self.pokemons_hors_map.remove(nom_pokemon)    # Suppresion des pokemons hors de la carte
         
         
     def attrape_pokemon(self,pokemon):
         """
-        Fonction qui ajoute un pokemon battu a l'inventaire du pokemon
-        et le retiredes pokemons a trouver
+        Fonction qui ajoute un pokemon battu a l'inventaire du pokemon,
+        le retire des pokemons a trouver et sauvages ou libres.
 
         Parameters
         ----------
@@ -799,12 +819,12 @@ class Dresseur():
             Pokemon vaincu.
 
         """
-        self.pokemons_attrapes.append(pokemon.nom)
-        self.pokemons_a_trouver.remove(pokemon.nom)
+        self.pokemons_attrapes.append(pokemon.nom)  # nom du pokemon
+        self.pokemons_a_trouver.remove(pokemon.nom) # Suppresion des pokemons à trouver
         if pokemon.nom in self.pokemons_libres:
-            self.pokemons_libres.remove(pokemon.nom)
+            self.pokemons_libres.remove(pokemon.nom) # Suppresion des pokemons libres
         if pokemon.nom in self.pokemons_sauvages:
-            self.pokemons_sauvages.remove(pokemon.nom)
+            self.pokemons_sauvages.remove(pokemon.nom) # Suppresion des pokemons sauvages
     
         
     def pokemons_on_map(self):
@@ -818,22 +838,21 @@ class Dresseur():
         
         self.pokemons_libres=[] # Liste de pokemons libres
         self.pokemons_sauvages=[] # Liste de pokemons sauvages
-        self.pokemons_hors_map = self.pokemons_a_trouver.copy()
+        self.pokemons_hors_map = self.pokemons_a_trouver.copy() # liste des pokemons ne s'affichant pas à la carte
         for numero in range(p_s+p_l):
             
-            # Recupere les dix pokemons a trouver aux plus hauts totaux
+            # Recupere dix pokemons parmi les plus hauts totaux
             if numero <p_l:
-                nom = Dresseur.ID_pokemons[Dresseur.pokemons_13totals_croissants[0]]
+                nom = Dresseur.ID_pokemons[Dresseur.pokemons_13totals_croissants[0]]  # nom du pokemon
                 ID_nom=Dresseur.pokemons_13totals_croissants[0]
-                self.pokemons_libres.append(nom)
-                self.pokemons_hors_map.remove(nom)
-                Dresseur.pokemons_13totals_croissants.remove(ID_nom)
+                self.pokemons_libres.append(nom)      # Attribution aux pokemons libres
+                self.pokemons_hors_map.remove(nom)    # Suppresion des pokemons hors de la carte
+                Dresseur.pokemons_13totals_croissants.remove(ID_nom)   # Suppression de l'identifiant
             else:
-                # Recupere les 20 pokemons a trouver comme pokemons sauvages
-                nom=rd.choice(self.pokemons_hors_map)
-                self.pokemons_sauvages.append(nom)
-                self.pokemons_hors_map.remove(nom)
-        return self.pokemons_sauvages
+                # Recupere 20 pokemons a trouver comme pokemons sauvages
+                nom=rd.choice(self.pokemons_hors_map)     # nom du pokemon
+                self.pokemons_sauvages.append(nom)      # Attribution aux pokemons sauvages
+                self.pokemons_hors_map.remove(nom)      # Suppresion des pokemons hors de la carte
     
     def deplacer(self, direction, step=0.5):
         """
@@ -845,6 +864,9 @@ class Dresseur():
 
     """
         GRID_SIZE = 20  # Taille d'une grille de la carte
+        
+        
+        # Gestion des deplacements
         if direction == "haut" and  self.y > 0:
              self.y -= step
         elif direction == "bas" and self.y < GRID_SIZE - 1:
@@ -862,25 +884,35 @@ class Dresseur():
     # Surcharge len()
     def __len__(self):
         return len(self.pokemons_attrapes)
+    
+    # Surcharge print()
+    def __str__(self):
+        txt=("- - - - - - - - - - - - - - - - - - - - - - - \nNom : "
+             +str(self.nom) +"\nNombre de pokemons : "+str(len(self))
+             +"\nPokemons combattants : "+str(list(self.pokemons_combats)).replace("'","").replace("[","").replace("]","")
+             + "\nPokemons capturés : "+str(self.pokemons_attrapes).replace("'","").replace("[","").replace("]","") + "\n- - - - - - - - - - - - - - - - - - - - - - - ")
+        return txt
         
 if __name__=='__main__':
-   
-##############################################################
-
-               ########## Test ###########
-
-##############################################################                
-    pi=Pikachu()
-    Mewtou=Mew()
-    Drac=Drowzee()
+               
+    pi=Pikachu()        #
+    Mewtou=Mew()        # Objets pokemons
+    Drac=Drowzee()      #
     
-    print(Mewtou.attaque_neutre(pi))
-    Drac=Drowzee()
-    Sacha = Dresseur("Sacha",'Masculin')
-    pokemon_rd = rd.choice(Sacha.pokemons_a_trouver)
-    carte =Sacha.pokemons_on_map()
-    Sacha.attrape_pokemon(Dresseur.dict_pokemons[pokemon_rd])
-    print(Sacha.pokemons_combats)
-    pika=Dresseur.dict_pokemons["Pikachu"]
-    print(Pokemon.Affinites[Pokemon.Types[pika.type1],Pokemon.Types[pika.type1]])
-    print(Sacha)
+    
+    print(Mewtou.attaque_neutre(pi))                 # Attaque sur un pokemon
+    print(Drac.attaque_elementaire(Mewtou,False))    # Attaque sur un pokemon
+    
+    Sacha = Dresseur("Sacha",'Masculin')             # Ojet dresseur
+    
+    pokemon_rd = rd.choice(Sacha.pokemons_a_trouver) # Recuperation d'un pokemon à trouver
+    
+    carte =Sacha.pokemons_on_map()                   # Repartition entre pokemons libres et sauvages
+    
+    Sacha.attrape_pokemon(Dresseur.dict_pokemons[pokemon_rd])  # le joueur attrape un pokemon
+    
+    pika=Dresseur.dict_pokemons["Pikachu"]            # Recuperation d'un pokemon par son nom
+    
+    print(Pokemon.Affinites[Pokemon.Types[pika.type1],Pokemon.Types[pika.type1]]) # Coefficient d'affinite
+    
+    print(Sacha)                                      # Quelques donnees du joueur

@@ -9,11 +9,9 @@ Created on Tue May  7 20:13:38 2024
 
 import sys
 import random as rd
-sys.path.append('../../Gestion_pokemon/')
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QMessageBox, QAction,
                              QDialog, QVBoxLayout, QPushButton, QLabel)
-
 from Capture_pokemon import Ui_Capture_pokemon
 from Combat_perdu import Ui_Combat_perdu
 from Lancement_combat import Ui_Lancement_combat
@@ -24,7 +22,7 @@ from Player_profil import Ui_Player_profil
 from Bienvenue import Ui_Bienvenue
 from Inventaire_Pokemon import Ui_Inventaire_Pokemon
 from Classes_Pokemons import *
-from Navigation_Interface import Carte
+from Carte_pokemon import Carte
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 ####################################################################################################################
@@ -207,7 +205,7 @@ class Window_Carte (Carte):
         self.pokemons_hors_map=  self.joueur.pokemons_hors_map
         self.pokemon_adversaire= None
         self.create_menu()
-        if len(self.joueur.pokemons_a_trouver) == 0:
+        if len(self.joueur) == 151:
             self.fin_de_jeu()
 ###############################################################################################
 
@@ -354,10 +352,10 @@ class Window_Carte (Carte):
         
     def create_menu(self):
         # Création d'une action pour quitter
-        profil_view = QtWidgets.QAction("Voir profil", self)
+        profil_view = QAction("Voir profil", self)
         profil_view.triggered.connect(self.return_profil)
 
-        developpers = QtWidgets.QAction("Voir les developpeurs", self)
+        developpers = QAction("Voir les developpeurs", self)
         developpers.triggered.connect(self.display_developpers)
 
         # Création d'un menu
@@ -727,12 +725,12 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         if self.type_1_etat =="actif":
             Dommage =self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, False)
             self.Degats.setText(Dommage)
-            # self.Degats_attaquant.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type1)+".png"))
+            self.Degats_attaquant.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type1)+".png"))
             self.type_1_etat =False
         if self.type_2_etat =="actif":
             Dommage = self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, True)
             self.Degats.setText(Dommage)
-            # self.Degats_attaquant.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type2)+".png"))
+            self.Degats_attaquant.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type2)+".png"))
             self.type_2_etat=False
         self.info_combat()
         self.affichage_HP()
@@ -752,12 +750,12 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
     def degats_elementaires(self,Dommage,booleen):
         if booleen:
             self.Degats.setText(Dommage)
-            # self.Degats_adversaire.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type2)+".png"))
+            self.Degats_adversaire.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type2)+".png"))
             self.info_combat()
         else:
             
             self.Degats.setText(Dommage)
-            # self.Degats_adversaire.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type1)+".png"))
+            self.Degats_adversaire.setPixmap(QtGui.QPixmap("../Images/Attaques/"+str(self.pokemon_zone_combat.type1)+".png"))
             self.info_combat()
         
     def attaque_adversaire(self):
@@ -770,11 +768,11 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             
         else:
             if self.pokemon_zone_adversaire.type2 == 'null':
-                Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat, False)
+                Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_adversaire, False)
                 self.degats_elementaires(Dommage, False)
             else:
                 elementaire =rd.choice(choix)
-                Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat,elementaire )
+                Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_adversaire,elementaire )
                 self.degats_elementaires(Dommage, elementaire)
         self.info_combat()
         self.timer.stop()
@@ -890,16 +888,16 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
                 if compteur % 2 != 0 :
                     Action =self.Action_utilisateur()
                     if Action:
-                        self.tour_jeu(self.tour_joueur)
+                        # self.tour_jeu(self.tour_joueur)
                         
-                        # self.tour_joueur()
+                        self.tour_joueur()
                         compteur += 1
                         print("Joueur")
                         print(compteur)
                 else:
-                    self.tour_jeu(self.attaque_adversaire)
+                    # self.tour_jeu(self.attaque_adversaire)
                     
-                    # self.attaque_adversaire()
+                    self.attaque_adversaire()
                     compteur += 1
                     print("Joueur2")
                     print(compteur)
@@ -911,9 +909,9 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             while  self.fin_combat== False:
                 if compteur % 2 != 0 :
                     
-                    self.tour_jeu(self.attaque_adversaire)
+                    # self.tour_jeu(self.attaque_adversaire)
                     
-                    # self.attaque_adversaire()
+                    self.attaque_adversaire()
                     compteur += 1
                     print("Joueur2")
                     print(compteur)
@@ -922,7 +920,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
                     if Action:
                         # self.tour_jeu(self.tour_joueur)
                     
-                        # self.tour_joueur()
+                        self.tour_joueur()
                         compteur += 1
                         print("Joueur")
                         print(compteur)
@@ -1035,5 +1033,3 @@ if __name__ == "__main__":
         mainWin.show()
         app.exec_()
     fenetre=run_app()
-    
-    
