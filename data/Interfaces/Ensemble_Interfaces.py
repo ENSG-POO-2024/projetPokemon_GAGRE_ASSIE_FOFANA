@@ -29,6 +29,23 @@ from Carte_pokemon import Carte
 # Import des classes pokemons et dresseur
 from Classes_Pokemons import *
 
+##############################################################
+
+             ########## Music ###########
+
+##############################################################
+class music():
+    
+    def play_music(self):
+        if self.music_url:
+            self.media_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.music_url)))
+            self.media_player.play()
+
+    def stop_music(self):
+        self.media_player.stop()
+        
+        
+
 ####################################################################################################################
 
 ################################               Bienvenue                    ################################
@@ -53,10 +70,11 @@ class Window_Bienvenue (QMainWindow,Ui_Bienvenue):
         self.close()
 
 class Window_Player_profil (QMainWindow,Ui_Player_profil):
-    def __init__(self,Bienvenue, parent=None):
+    def __init__(self, Donnees, parent=None):
         super(Window_Player_profil, self).__init__(parent)
         self.setupUi(self)
-        self.joueur = Bienvenue.joueur
+        self.joueur = Donnees.joueur
+        self.Carte = Donnees
         self.choix_pokemons.clicked.connect(self.afficher_inventaire)
         self.change_pokemon.clicked.connect(self.changement_combattants)
         self.pokemons_combats= self.joueur.pokemons_combats # Liste pour stocker les pokemons choisis
@@ -112,9 +130,7 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
                 else :
                     self.pokemons_combats = []
                 self.joueur.pokemons_combats=self.pokemons_combats
-
-
-
+                
     def changement_combattants(self):
         self.pokemons_combats = [] # Vider la liste de pokemon la liste de pokemon
         self.pokemon_1.setPixmap(QtGui.QPixmap(""))
@@ -130,6 +146,7 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
     def change_window(self):
         self.next_window =  Window_Carte (self)
         self.next_window.show()
+        self.Carte.close()
         self.close()
 
 class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
@@ -172,22 +189,6 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.sortir_button.setStyleSheet("background-color: rgb(255,110,100); color: rgb(0,0,0); font: 75 10pt \"Arial\"")
         self.layout.addWidget(self.sortir_button)
         self.sortir_button.clicked.connect(self.close)
-        
-        
-##############################################################
-
-             ########## Music ###########
-
-##############################################################
-class music():
-    
-    def play_music(self):
-        if self.music_url:
-            self.media_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.music_url)))
-            self.media_player.play()
-
-    def stop_music(self):
-        self.media_player.stop()
         
         
 ##############################################################
@@ -261,7 +262,6 @@ class Window_Carte (Carte):
             pokemon = Dresseur.dict_pokemons[pokemon_nom]
             position= pokemon.Coordonnees
             dist = ((2 *self.joueur.x - position[0])**2 + (self.joueur.y/2 - position[1])**2)**0.5
-            # print(dist)
             # Mise à jour du Pokémon le plus proche si la nouvelle distance est plus petite
             if dist < nearest_distance:
                 nearest_distance = dist
@@ -467,7 +467,7 @@ class Window_Selection_pokemon (QMainWindow,Ui_Selection_pokemon):
         self.Pokemon_1_etat= False
         self.Pokemon_2_etat= False
         self.Pokemon_3_etat= False
-        self.lancement=lancement
+        self.lancement= lancement
         self.Pokemon_1.clicked.connect(self.press_Pokemon_1)
         self.Pokemon_2.clicked.connect(self.press_Pokemon_2)
         self.Pokemon_3.clicked.connect(self.press_Pokemon_3)
@@ -493,20 +493,20 @@ class Window_Selection_pokemon (QMainWindow,Ui_Selection_pokemon):
         elif self.Pokemon_3_etat ==True:
             self.pokemon_zone_combat= Combattants[2]
         self.next_window = Window_Zone_de_bataille(self)
-        self.lancement.close()
         self.next_window.show()
+        self.lancement.close()
         self.close()
         
     def affichage(self):
-        Combattants = self.pokemons_zone_attente
+        
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(Combattants[0].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(self.pokemons_zone_attente[0].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_1.setIcon(icon1)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(Combattants[1].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(self.pokemons_zone_attente[1].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_2.setIcon(icon2)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(Combattants[2].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(self.pokemons_zone_attente[2].Image), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Pokemon_3.setIcon(icon3)
 
 
@@ -668,6 +668,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
                 if icon == image:
                     bouton.setStyleSheet("background-color: transparent")
                     bouton.setEnabled(True) 
+                    
         if self.Pokemon_1_etat :
             self.pokemon_zone_combat= self.pokemons_zone_attente[0]
             self.Pokemon_1_etat =False
@@ -687,6 +688,7 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             self.Type2.setEnabled(True)
         self.Echange.setEnabled(False)
         self.Echange_etat=False
+        print("Echange")
 
     def fuite(self):
        if self.fuir_etat :
@@ -703,7 +705,6 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             self.pokemon_zone_adversaire.HP_combat=self.pokemon_zone_adversaire.HP
             self.next_window=Window_Victoire_combat(self)
             self.fin_combat=True
-            
             self.next_window.show()
             
 
@@ -742,15 +743,15 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.Victoire()
 
     def info_combat(self):
-        self.timer = QtCore.QTimer(self)
-        self.timer.timeout.connect(self.nettoyage)
-        self.timer.start(2000)
+        self.timer_nettoyage = QtCore.QTimer(self)
+        self.timer_nettoyage.timeout.connect(self.nettoyage)
+        self.timer_nettoyage.start(2000)
         
     def nettoyage(self):
         self.Degats_attaquant.clear()
         self.Degats.clear()
         self.Degats_adversaire.clear()
-        self.timer.stop()   
+        self.timer_nettoyage.stop()   
 
     def degats_elementaires(self,Dommage,booleen):
         if booleen:
@@ -779,12 +780,16 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
                 elementaire =rd.choice(choix)
                 Dommage = self.pokemon_zone_adversaire.attaque_elementaire(self.pokemon_zone_combat,elementaire )
                 self.degats_elementaires(Dommage, elementaire)
+        self.Neutre.setEnabled(True)
+        self.Type1.setEnabled(True)
+        self.Type2.setEnabled(True)
+        self.Echange.setEnabled(True)
         self.info_combat()
-        self.timer.stop()
         self.affichage_HP()
         self.pokemon_KO()
         self.Defaite()
-        print("adv")
+        self.timer_adversaire.stop()
+       
             
         
            
@@ -806,7 +811,12 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
                     label.setPixmap(pixmap)
                     self.pokemons_zone_repos.append(pokemon)
             self.KO= True
-         
+            if self.KO==True:
+                self.Neutre.setEnabled(False)
+                self.Type1.setEnabled(False)
+                self.Type2.setEnabled(False)
+                self.Echange.setEnabled(False)
+                
     def  remplacement(self):
         if self.KO==True:
             if self.Pokemon_1_etat :
@@ -839,9 +849,10 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         self.Pokemon_attaquant.setPixmap(QtGui.QPixmap(self.pokemon_zone_combat.Image))
         self.affichage_HP()
         self.KO= False
-
-    
-    
+        self.Neutre.setEnabled(True)
+        self.Type1.setEnabled(True)
+        self.Type2.setEnabled(True)
+        self.Echange.setEnabled(True)
         
     def tour_joueur(self):
         if self.Neutre_etat:
@@ -858,8 +869,6 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             
         elif  self.type_2_etat == "actif":
             self.attaque_elementaire()
-        self.timer.stop()
-        print("utilisate")
         
         
     def Action_utilisateur(self):
@@ -879,91 +888,41 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
         loop.exec_()
         return Action
       
-    def tour_jeu(self, joueur_tour):
-        self.timer = QtCore.QTimer(self)
-        self.timer.timeout.connect(joueur_tour)
-        self.timer.start(3000)
+    def tour_adversaire(self):
+        self.Neutre.setEnabled(False)
+        self.Type1.setEnabled(False)
+        self.Type2.setEnabled(False)
+        self.Echange.setEnabled(False)
+        self.timer_adversaire = QtCore.QTimer(self)
+        self.timer_adversaire.timeout.connect(self.attaque_adversaire)
+        self.timer_adversaire.start(2000)
         
-    # # Long mais marche
+        
     def combat(self):
         compteur =1
         if self.pokemon_zone_combat.Speed >= self.pokemon_zone_adversaire.Speed:
             QMessageBox.information(self,"   POKEMON", "Vous jouer en première position \nBonne chance  !")
-            while  self.fin_combat!= False :
+            while  self.fin_combat == False :
                 if compteur % 2 != 0 :
+                    
                     Action =self.Action_utilisateur()
                     if Action:
-                        # self.tour_jeu(self.tour_joueur)
-                        
                         self.tour_joueur()
                         compteur += 1
-                        print("Joueur")
-                        print(compteur)
                 else:
-                    # self.tour_jeu(self.attaque_adversaire)
-                    
-                    self.attaque_adversaire()
+                    self.tour_adversaire()
                     compteur += 1
-                    print("Joueur2")
-                    print(compteur)
-                    
-                if self.fin_combat:
-                    break
         else:
             QMessageBox.information(self,"   POKEMON", "Votre adversaire joue en première position\nBonne chance  !")
-            while  self.fin_combat== False:
+            while  self.fin_combat == False:
                 if compteur % 2 != 0 :
-                    
-                    # self.tour_jeu(self.attaque_adversaire)
-                    
-                    self.attaque_adversaire()
+                    self.tour_adversaire()
                     compteur += 1
-                    print("Joueur2")
-                    print(compteur)
                 else:
                     Action =self.Action_utilisateur()
                     if Action:
-                        # self.tour_jeu(self.tour_joueur)
-                    
                         self.tour_joueur()
                         compteur += 1
-                        print("Joueur")
-                        print(compteur)
-                        
-                if self.fin_combat:
-                    break
-                
-                    
-                
-        
-                
-    # Court avec bug
-    # def combat(self):
-    #     if self.pokemon_zone_combat.Speed >= self.pokemon_zone_adversaire.Speed:
-    #         print("1")
-    #         while self.fuir_etat != True or self.fin_combat != True:
-    #             self.Action_utilisateur()
-    #             # self.tour_joueur()
-    #             # self.attaque_adversaire()
-    #             self.tour_jeu(self.tour_joueur)
-    #             if self.fin_combat:
-    #                 break
-                
-    #             print(self.fuir_etat)
-    #             print (self.fin_combat)
-    #     else:
-    #         print("2")
-    #         while self.fuir_etat != True or self.fin_combat != True:
-    #             # self.attaque_adversaire()
-    #             self.tour_jeu(self.attaque_adversaire)
-    #             self.Action_utilisateur()
-    #             # self.tour_joueur()
-    #             self.tour_jeu(self.tour_joueur)
-    #             if self.fin_combat:
-    #                 break
-                
-    #             print(self.fuir_etat)
-    #             print (self.fin_combat)
 
 ##############################################################
 
@@ -1026,11 +985,6 @@ class Window_Capture_pokemon(QMainWindow,Ui_Capture_pokemon):
         self.Pokemon_Attrape.setPixmap(QtGui.QPixmap(self.pokemon_adversaire.Image))
         
 if __name__ == "__main__":
-##############################################################
-
-             ########## Jeu ###########
-
-##############################################################
 
     def run_app():
         app = QApplication(sys.argv)
