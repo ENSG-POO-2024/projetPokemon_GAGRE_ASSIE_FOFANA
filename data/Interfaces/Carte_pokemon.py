@@ -1,7 +1,5 @@
 import sys
-import random
-import openpyxl
-import json
+import random as rd
 import math
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPixmap, QPainter,QIcon
@@ -30,7 +28,7 @@ class Carte(QMainWindow):
         self.coord_surete = [(13, 5.25), (13, 9), (4, 7.25),
                         (6, 2), (25, 0.75), (35, 0.75)]
         # Choix aléatoire d'une paire de coordonnées parmi celles définies dans coord_surete
-        self.coord_choice = self.coord_surete[random.randint(0, len(self.coord_surete) - 1)]
+        self.coord_choice = self.coord_surete[rd.randint(0, len(self.coord_surete) - 1)]
         # Les coordonnées sont ajustées avant d'être passées pour positionner le joueur correctement sur la carte
 
 # Programme Principal
