@@ -10,7 +10,7 @@
 
 * Un environnement de développement python
 * Les librairies sys, PyQt5, random as rd
-* Les dossiers Images,Donnees_crees et Codes
+* Les dossiers Images, Donnees_crees et Codes
 
 ### Bienvenue dans notre Univers POKÉMON
 
