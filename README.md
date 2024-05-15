@@ -2,9 +2,9 @@
 
 ## Membres du groupe :
 
-GAGRE Yohan
-ASSIE Marcel
-FOFANA Ibrahima
+* GAGRE Yohan
+* ASSIE Marcel
+* FOFANA Ibrahima
 
 ## Préquis:
 
@@ -24,13 +24,13 @@ Lorsque vous fuyez, vous êtes envoyez dans une zone de sureté à l’abri des 
 
 Lors de ces combats, le pokemon adverse et vous attaquer à tour de rôle. A votre tour, vous aurez 4 possibilités :
 
-*Faire une attaque simple.
+* Faire une attaque simple.
 
-*Faire une attaque élémentaire selon ceux maitrisés par votre pokémon.
+* Faire une attaque élémentaire selon ceux maitrisés par votre pokémon.
 
-*Echanger de pokémon.
+* Echanger de pokémon.
 
-*Fuir.
+* Fuir.
 
 
 Lorsque l’un de vos pokémons perd tous ses points de vie, il est mis en zone de repos. Vous perdez le combat si vos trois pokémons sont hors d’état de combattre ou si vous fuyez.
