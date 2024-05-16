@@ -8,7 +8,7 @@
 
 ## Préquis:
 
-* Un environnement de développement python (spyder de préférence afin d'éviter certain bug)
+* Un environnement de développement python (spyder de préférence afin d'éviter certains bugs)
 * Les librairies sys, PyQt5, random as rd
 * Les dossiers Images, Donnees_crees et Codes
 
