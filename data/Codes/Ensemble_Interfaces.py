@@ -32,23 +32,6 @@ from Classes_Pokemons import *
 # Import de musique
 import pygame
 
-##############################################################
-
-             ########## Music ###########
-
-##############################################################
-class music():
-    
-    def play_music(self):
-        if self.music_url:
-            self.media_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.music_url)))
-            self.media_player.play()
-
-    def stop_music(self):
-        self.media_player.stop()
-        
-        
-
 ####################################################################################################################
 
 ################################               Bienvenue                    ################################
@@ -66,14 +49,20 @@ class Window_Bienvenue (QMainWindow,Ui_Bienvenue):
         pygame.mixer.music.play(-1)                         # Repetition en boucle infinie
 
     def update_pseudo(self):
-        name = self.player_name.text()
-        age_text = self.player_age.text()
-        genre = self.gender_choice.currentText()
+        """
+            Cette fonction permet d'ouvrir l'interface du profil et faire le transfert des informations saisies à
+            l'accueil
+            Returns:
+                None
+        """
+        name = self.player_name.text()  # On récupère le nom du joueur
+        age_text = self.player_age.text() # On récupère le l'âge du joueur
+        genre = self.gender_choice.currentText() # On récupère le genre du joueur
         self.joueur= Dresseur(name,genre)
         self.joueur.age=age_text
         self.joueur.pokemons_on_map()
-        pygame.mixer.music.pause()           #Arrêt de la musique de l'accueil
-        self.player_profil = Window_Player_profil(self)
+        pygame.mixer.music.pause()           # Arrêt de la musique de l'accueil
+        self.player_profil = Window_Player_profil(self) # Ouverture de l'interface du profil
         self.player_profil.show()
         self.player_profil.musique_profil()  # Lancement de la musique du profil
         self.close()
@@ -93,30 +82,46 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
         self.pokemon_2.setPixmap(QtGui.QPixmap(Dresseur.dict_pokemons[self.pokemons_combats[1]].Image).scaled(141,101))
         self.pokemon_3.setPixmap(QtGui.QPixmap(Dresseur.dict_pokemons[self.pokemons_combats[2]].Image).scaled(141,101))
 
+        # On affecte l'image selon que le joueur est un "homme", une "femme" qu'il n'ai rien précisé
         if self.joueur.genre == "Masculin":
             self.profil_photo.setPixmap(QtGui.QPixmap(self.joueur.Image).scaled(200, 140))
         elif self.joueur.genre== "Feminin":
             self.profil_photo.setPixmap(QtGui.QPixmap(self.joueur.Image).scaled(200, 140))
         else:
             self.profil_photo.setPixmap(QtGui.QPixmap(self.joueur.Image).scaled(200, 130))
-        self.pseudo.setText(self.joueur.nom)
-        self.age_input.setText(self.joueur.age)
+        self.pseudo.setText(self.joueur.nom)   # On affecte le nom récupéré
+        self.age_input.setText(self.joueur.age) # On affecte l'âge récupéré
 
     def musique_profil(self):
-        pygame.mixer.music.load("../Musique/profil.mp3")
-        pygame.mixer.music.play(-1)
+        pygame.mixer.music.load("../Musique/profil.mp3")   # Charger la musique du profil du joueur
+        pygame.mixer.music.play(-1)         # Répétition en boucle infinie
 
     def afficher_inventaire(self):
+        """
+            Permet de faire l'ouverture de l'inventaire du joueur.
+
+            Returns:
+                None
+        """
         self.inventaire_window = Window_Inventaire_Pokemon(self) # Ouvrir la fenêtre de l'inventaire des pokemons
-        self.inventaire_window.tableWidget.cellClicked.connect(self.selectionner_pokemon)
-        self.inventaire_window.show()
+        self.inventaire_window.tableWidget.cellClicked.connect(self.selectionner_pokemon)  # On active toutes les cellules de la table de sorte qu'en n'y
+        self.inventaire_window.show()                                                      # cliquant cela fonctionne
 
     def selectionner_pokemon(self, row, col):
-        pokemon_selectionne = self.inventaire_window.tableWidget.cellWidget(row, col).layout().itemAt(3).widget().text()    # Récupérer le nom du pokemon sélectionné dans le tableau
+        """
+            Permet de faire la selection des pokemons de combats.
+
+            Args:
+                ligne et colonne qui représentent les cellules dans lequelles sont les pokemons.
+
+            Returns:
+                None
+        """
+        pokemon_selectionne = self.inventaire_window.tableWidget.cellWidget(row, col).layout().itemAt(3).widget().text()  # Récupérer le nom du pokemon sélectionné dans le tableau
         if len(self.pokemons_combats) < 3 and pokemon_selectionne not in self.pokemons_combats: # Vérifier si le pokemon sélectionné n'est pas déjà dans la liste des pokemons choisis
             self.pokemons_combats.append(pokemon_selectionne) # Ajouter le pokemon sélectionné dans la liste des pokemons choisis
 
-            # Mettre à jour les labels avec les pokemons choisis
+            # Mise à jour des labels avec les pokemons choisis
             if len(self.pokemons_combats) == 1:
                 self.pokemon_1.setPixmap(QtGui.QPixmap("../Images/Pokemon_images/" + pokemon_selectionne.replace("'","")+".png").scaled(141, 101))
             elif len(self.pokemons_combats) == 2:
@@ -124,6 +129,7 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
             elif len(self.pokemons_combats) == 3:
                 self.pokemon_3.setPixmap(QtGui.QPixmap("../Images/Pokemon_images/" + pokemon_selectionne.replace("'","")+".png").scaled(141, 101))
             if len(self.pokemons_combats) == 3:
+                # Petit message de confirmation
                 confirm_box = QMessageBox()
                 confirm_box.setIcon(QMessageBox.Question)
                 confirm_box.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
@@ -133,20 +139,25 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
                 confirm_box.setStyleSheet("QMessageBox {background-color: #fff;}"
                                        "QMessageBox QLabel {color: #000; font-weight: bold;}"
                                        "QMessageBox QPushButton {background-color: #388e3c; color: #fff; padding: 5px 15px; border-radius: 5px; border: 1px solid #388e3c;}"
-                                       "QMessageBox QPushButton:hover {background-color: #43a047;}")
+                                       "QMessageBox QPushButton:hover {background-color: #43a047;}")  # Style choisi pour le QMessageBox()
                 yes_button = confirm_box.button(QMessageBox.Yes)
-                yes_button.setText("Oui")
+                yes_button.setText("Oui")       # Remplacer les "yes" et "no" par les "oui" et "non" pour revenir au français
                 no_button = confirm_box.button(QMessageBox.No)
                 no_button.setText("Non")
                 result = confirm_box.exec_()
                 if result == QMessageBox.Yes:
-                    self.inventaire_window.close()
+                    self.inventaire_window.close() # On ferme la fenêtre si on est d'accord avec les choix
                 else :
-                    self.pokemons_combats = []
-                self.joueur.pokemons_combats=self.pokemons_combats
+                    self.pokemons_combats = []     # Sinon on réinitialise à  la liste des pokemeons choisis et on reprend la selection
+                self.joueur.pokemons_combats=self.pokemons_combats  # Si les choix sont validés, on les affecte aux pokemons du joueur
                 
     def changement_combattants(self):
-        self.pokemons_combats = [] # Vider la liste de pokemon la liste de pokemon
+        """
+            Permet de réinitialiser la liste des combattants.
+            Returns:
+                None
+        """
+        self.pokemons_combats = [] # Vider la liste de pokemon de combats et mettre des texts écrits en lieu et place
         self.pokemon_1.setPixmap(QtGui.QPixmap(""))
         self.pokemon_1.setText("1er choix")
         self.pokemon_1.setStyleSheet("color: rgba(255, 255, 255, 160); font: 75 14pt \"Neue Haas Grotesk Text Pro Blac\";border: 2px solid rgba(255, 255, 255,100); border-radius: 5px;")
@@ -158,10 +169,10 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
         self.pokemon_3.setStyleSheet("color: rgba(255, 255, 255, 160); font: 75 14pt \"Neue Haas Grotesk Text Pro Blac\";border: 2px solid rgba(255, 255, 255,100); border-radius: 5px;")
     
     def change_window(self):
-        
         """
-        Fonction qui permet de retourner à la carte avec les donnees à jour
-
+            Fonction qui permet de retourner à la carte avec les donnees à jour
+            Returns:
+                None
         """
         pygame.mixer.music.pause()                   # Arrêt de la musique du profil
         self.next_window =  Window_Carte (self)      # renvoie les donnees à l'interface suivante
@@ -171,6 +182,7 @@ class Window_Player_profil (QMainWindow,Ui_Player_profil):
         self.close()
 
 class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
+    # Constructeur
     def __init__(self,Profil, parent=None):
         super(Window_Inventaire_Pokemon, self).__init__(parent)
         self.setupUi()
@@ -178,46 +190,49 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.joueur = Profil.joueur
         self.pokemons_attrapes =self.joueur.pokemons_attrapes
         self.pokemons_a_trouver =self.joueur.pokemons_a_trouver
-        self.tableWidget = QtWidgets.QTableWidget()
+        self.tableWidget = QtWidgets.QTableWidget()     # Création de la table (inventaire des pokemons du joueur)
         num_rows = len(Profil.joueur.pokemons_attrapes) // 17 + 1    # Ce calcul de nombre de lignes me pert de créer des cellules en focntion du nombre de pokemon attrapé
         num_cols = len(Profil.joueur.pokemons_attrapes) if len(Profil.joueur.pokemons_attrapes) < 17 else 17 # Pareil comme le nombre de lignes
         self.tableWidget.setRowCount(num_rows)
         self.tableWidget.setColumnCount(num_cols)
-        self.resize(1033, 580)
+        self.resize(1033, 580)          # On choisi des dimensions mais non fixes
+        # ------ Ces lignes permettent de centrer la fenêtre de l'inventaire sur l'ordinateur -------
         window_geometry = self.frameGeometry()
         center_point = QApplication.desktop().availableGeometry().center()
         window_geometry.moveCenter(center_point)
         self.move(window_geometry.topLeft())
-        self.tableWidget.verticalHeader().setVisible(False)
-        self.tableWidget.horizontalHeader().setVisible(False)
-        for i in range(len(self.pokemons_attrapes)):  # Remplir l'inventaire du joueur
+        # ------------------------------------------------------------------------------------------
+        self.tableWidget.verticalHeader().setVisible(False)     # On enlève les numéros de lignes
+        self.tableWidget.horizontalHeader().setVisible(False)   # On enlève les numéros de colonnes
+        for i in range(len(self.pokemons_attrapes)):  # Remplissage de l'inventaire du joueur en tenant compte des pokemons à sa disposition
             row = i // num_cols
             col = i % num_cols
             widget = QtWidgets.QWidget()  # Créer un widget pour contenir l'image et le nom
             layout = QtWidgets.QGridLayout(widget)
-            image_label = QtWidgets.QLabel()
-            type1_label = QtWidgets.QLabel()  # Ajouter l'image
-            type2_label = QtWidgets.QLabel()
+            image_label = QtWidgets.QLabel()    # Création du label de l'image
+            type1_label = QtWidgets.QLabel()    # Création du label du type 1
+            type2_label = QtWidgets.QLabel()    # Création du label du type 2
             pokemon = Dresseur.dict_pokemons[self.pokemons_attrapes[i]]
             image_path = pokemon.Image
             pokemon_type1 = QtGui.QPixmap("../Images/Types/" + pokemon.type1 + ".png")
             pokemon_type2 = QtGui.QPixmap("../Images/Types/" + pokemon.type2 + ".png")
-            pixmap = QtGui.QPixmap(image_path)  # Redimensionner l'image
+            pixmap = QtGui.QPixmap(image_path)  # On rédimentionne l'image
+            # Ajouts des types et de l'image
             type1_label.setPixmap(pokemon_type1)
             type1_label.setScaledContents(True)
             type2_label.setPixmap(pokemon_type2)
             type2_label.setScaledContents(True)
             image_label.setPixmap(pixmap)
             image_label.setScaledContents(True)
-            name_label = QtWidgets.QLabel(self.pokemons_attrapes[i])  # Ajouter le nom de l'image
+            name_label = QtWidgets.QLabel(self.pokemons_attrapes[i])  # Ajout du nom de l'image
             layout.addWidget(image_label, 0, 0, 2, 2)                 # Image de pokemon reparti sur 4 cases
             layout.addWidget(type1_label, 1, 2)                       # Type1 du pokemon sur le côté de l'image
             layout.addWidget(type2_label, 0, 2)                       # Type2 du pokemon sur le côté de l'image
-            layout.addWidget(name_label, 2, 0, 1, 3,alignment=QtCore.Qt.AlignHCenter)  # Ajouter le nom centré sous l'image
-            self.tableWidget.setCellWidget(row, col, widget)                           # Ajout du widget à la cellule du tableau
+            layout.addWidget(name_label, 2, 0, 1, 3,alignment=QtCore.Qt.AlignHCenter)  # Ajout du nom qu'on centre sous l'image
+            self.tableWidget.setCellWidget(row, col, widget)                           # Ajout du widget à la cellule du tableau
         self.layout.addWidget(self.tableWidget)
-        self.tableWidget.horizontalHeader().setDefaultSectionSize(120)  # Augmenter la taille des cellules
-        self.tableWidget.verticalHeader().setDefaultSectionSize(110)
+        self.tableWidget.horizontalHeader().setDefaultSectionSize(120)  # On augmente la taille (horizontale) des cellules pour une bonne visibilité
+        self.tableWidget.verticalHeader().setDefaultSectionSize(110)    # Pareil mais de façon verticale
 
         # Ajout du bouton affinités de la table inventaire
         self.affinites = QtWidgets.QPushButton("Afficher la tableau des affinités")
@@ -247,9 +262,9 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
 
         self.affinites_fenetre.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))   # Import du logo pokemon
         self.affinites_fenetre.setLayout(layout)
-        self.affinites_fenetre.setWindowTitle("Tableau des Affinités")                    # Titre tableau
-        self.affinites_fenetre.setGeometry(100, 100, 600, 400)
-        self.affinites_fenetre.show()                                                     # Affichage de la fenêtre
+        self.affinites_fenetre.setWindowTitle("Tableau des Affinités")    # Titre tableau
+        self.affinites_fenetre.setGeometry(500, 250, 600, 400)      # Positions et dimensions de la fenêtre
+        self.affinites_fenetre.show()   # Affichage de la fenêtre
 
 
         
@@ -287,7 +302,6 @@ class Window_Carte (Carte):
         Returns:
             None
         """
-        
         self.fin = QDialog(self)
         self.fin.setWindowTitle("  ")
         self.fin.setFixedSize(700,300)
@@ -308,12 +322,16 @@ class Window_Carte (Carte):
         pygame.mixer.music.play(-1)                      # Répétition en boucle infinie
             
     def reinitialisation(self):
-        self.relancer=Window_Bienvenue()
+        """
+            Permet d'afficher la fenêtre de l'accueil
+            Returns:
+                None
+        """
+        self.relancer=Window_Bienvenue() # Affichage de la fenêtre d'accueil
         self.relancer.show()
         self.fin.close()
-        self.close()
+        self.close()                # Femeture de l'interface de la carte
 
-###############################################################################################
     def recherche_pokemon(self):
         """
             Met à jour la visibilité du Pokémon le plus proche du joueur.
@@ -323,7 +341,7 @@ class Window_Carte (Carte):
 
             Returns:
                 None
-            """
+        """
         # Initialisation des variables pour le Pokémon le plus proche
         nearest_pokemon = None
         # On donne le seuil de comparaion
@@ -357,15 +375,15 @@ class Window_Carte (Carte):
                                       "QMessageBox QPushButton {background-color: #ff6666; color: #fff; padding: 5px 15px; border-radius: 5px; border: 1px solid #ff6666;}"
                                       "QMessageBox QPushButton:hover {background-color: #ff4747;}")
             # Modifier le texte des boutons
-            confirm_box.button(QMessageBox.StandardButton.Yes).setText("Combattre")
+            confirm_box.button(QMessageBox.StandardButton.Yes).setText("Combattre") # Remplacer les "yes" et "no" par les "combatttre" et "fuir" pour revenir au conetext de la scène
             confirm_box.button(QMessageBox.StandardButton.No).setText("Fuir")
             reponse = confirm_box.exec()
             if reponse == QMessageBox.StandardButton.Yes:
-                self.change_window()
-                walking.stop()
+                self.change_window()      # Direction : la fonction qui pemettra d'afficher le duel
+                walking.stop()            # Fin du son des marches
                 confrontation = pygame.mixer.Sound("../Musique/confrontation.mp3")  # Chargement du son de confrontation
                 confrontation.play()
-                confrontation.set_volume(0.07)
+                confrontation.set_volume(0.07)  # Réglage du volume
             else:
                 walking.stop()
                 pygame.mixer.music.unpause()
@@ -381,22 +399,22 @@ class Window_Carte (Carte):
             Returns:
                 None
         """
-        pygame.mixer.music.pause()
+        pygame.mixer.music.pause()    # Pause sur la musique de la carte de navigation
         dialog = QDialog(self)
         dialog.setFixedSize(300, 150)
         dialog.setWindowTitle("  POKEMON")
         dialog.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
         dialog_layout = QVBoxLayout(dialog)
-        developers_label = QLabel()
-        developers_label.setText("Yohan GAGRE\nIbrahima FOFANA\nMarcel ASSIE")
+        developers_label = QLabel()             # Création du label
+        developers_label.setText("Yohan GAGRE\nIbrahima FOFANA\nMarcel ASSIE")  # Ajout du nom des développeurs au label
         developers_label.setStyleSheet("background-color: rgba(0, 255, 0, 100); color: black; font-size: 16px; font-weight: bold; border-radius: 10px; padding: 10px;")
-        developers_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        developers_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)  # Centrer le texte
         dialog_layout.addWidget(developers_label)
-        sortir = QPushButton("Fermer")
+        sortir = QPushButton("Fermer")     # Création du bouton pour sortir
         sortir.clicked.connect(dialog.close)
-        dialog_layout.addWidget(sortir, alignment= QtCore.Qt.AlignmentFlag.AlignCenter)
+        dialog_layout.addWidget(sortir, alignment= QtCore.Qt.AlignmentFlag.AlignCenter) # Centrer le bouton
         dialog.exec()
-        pygame.mixer.music.unpause()
+        pygame.mixer.music.unpause()    # Remettre la musique de la carte de navigation
 
                     
                
@@ -409,7 +427,7 @@ class Window_Carte (Carte):
 
            Returns:
                   None
-    """
+         """
         # Crée un objet QPainter pour dessiner sur la fenêtre
         painter =QtGui.QPainter(self)
         # Active l'antialiasing pour des dessins plus lisses
@@ -444,20 +462,26 @@ class Window_Carte (Carte):
         
         
     def create_menu(self):
-        # Création d'une action pour quitter
-        voir_profil = QAction("Voir profil", self)
-        voir_profil.triggered.connect(self.retour_profil)
+        """
+        Crée un menu sur l'interface de la carte de navigation.
 
-        developpers = QAction("Voir les developpeurs", self)
-        developpers.triggered.connect(self.display_developpers)
+        Returns:
+            None
+        """
 
-        # Création d'un menu
-        menu = self.menuBar()
-        menu.setStyleSheet("background-color: transparent;")
-        fichier_menu = menu.addMenu(QtGui.QIcon("../Images/menu.png"),"Menu")
+        voir_profil = QAction("Voir profil", self)        # Création d'une action pour voir le profil
+        voir_profil.triggered.connect(self.retour_profil)  # Connection avec la fonction d'affichage
+
+        developpers = QAction("Voir les developpeurs", self) # Création d'une action pour voir les développeurs
+        developpers.triggered.connect(self.display_developpers) # Connection avec la fonction d'affichage
+
+
+        menu = self.menuBar()                                                   # Création d'un menu sur l'interface
+        menu.setStyleSheet("background-color: transparent;")                    # Ajout du style au menu
+        fichier_menu = menu.addMenu(QtGui.QIcon("../Images/menu.png"),"Menu")   # Import d'icone représentant le menu
         fichier_menu.setStyleSheet("background-color: rgb(255,255,255); color : black;")
-        fichier_menu.addAction(voir_profil)
-        fichier_menu.addAction(developpers)
+        fichier_menu.addAction(voir_profil)                                     # Ajout de l'action qui permet de voir le profil
+        fichier_menu.addAction(developpers)                                     # Ajout de l'action qui permet de voir les développeurs
         
         
     def keyPressEvent(self, event):
@@ -466,12 +490,13 @@ class Window_Carte (Carte):
 
             Args:
                 event: L'événement de pression de touche.
-
+            Returns:
+                None
             """
         # Déplace le joueur en fonction de la touche pressée
 
         if event.key() == QtCore.Qt.Key.Key_Up:
-            self.marche()
+            self.marche()   # Active le son des marches à chaque touche
             self.joueur.deplacer("haut")
         elif event.key() == QtCore.Qt.Key.Key_Down:
             self.marche()
@@ -488,20 +513,26 @@ class Window_Carte (Carte):
         self.repaint()
 
     def marche(self):
-        walking = pygame.mixer.Sound("../Musique/deplacement.mp3")  # Chargement ddu son de deplacement
-        walking.play()  # lancement
-        walking.set_volume(1)  # Volume
+        walking = pygame.mixer.Sound("../Musique/deplacement.mp3")  # Chargement du son des marches
+        walking.play()                                              # lancement
+        walking.set_volume(1)                                       # Réglage du volume
 
     def change_window(self):
         """
         Fonction qui permet d'ouvrir l'interface de combat
-
+        Returns:
+            None
         """
         self.next_window = Window_Lancement_combat (self)      # renvoie les donnees à l'interface suivante
         self.next_window.show()
         self.close()
         
     def retour_profil(self):
+        """
+        Cette fonction permet au joueur de retourner, pendant le jeu, sur son profil
+        Returns:
+            None
+        """
         pygame.mixer.music.pause()           # Mis en pause de la musique de carte
         self.back_window = Window_Player_profil(self)
         self.back_window.musique_profil()    # Lancement de la musique du profil
@@ -514,7 +545,6 @@ class Window_Carte (Carte):
 ##############################################################
 
 class Window_Lancement_combat (QMainWindow,Ui_Lancement_combat):
-    
     # Constructeur
     def __init__(self,Carte, parent=None): 
         super(Window_Lancement_combat, self).__init__(parent)
@@ -933,8 +963,8 @@ class Window_Zone_de_bataille (QMainWindow,Ui_Zone_de_bataille):
             self.fin_combat=True
             self.next_window.show()
             victoire = pygame.mixer.Sound("../Musique/victoire.mp3") # Mise en pause de la musique de combat
-            victoire.play()                                         # Son de la victoire
-            victoire.set_volume(0.3)                                # Réglage du volume
+            victoire.play()                                          # Son de la victoire
+            victoire.set_volume(0.3)                                 # Réglage du volume
 
             
 
