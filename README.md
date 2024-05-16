@@ -33,7 +33,7 @@ Lors de ces combats, le pokemon adverse et vous attaquer à tour de rôle. A vot
 * Fuir.
 
 
-Lorsque l’un de vos pokémons perd tous ses points de vie, il est mis en zone de repos. Vous devrez donc choisir le prochain pokemon en cliquant sur lui. Vous perdez le combat si vos trois pokémons sont hors d’état de combattre ou si vous fuyez. Dans le cas où vous voudrez échanger de pokemon, cliquer sur votre choix puis utiliser le bouton échange. Gagnez le combat en réduisant les points de vie de votre adversaire à 0.
+Lorsque l’un de vos pokémons perd tous ses points de vie, il est mis en zone de repos. Vous devrez donc choisir le prochain pokemon à combattre en cliquant sur lui. Vous perdez le combat si vos trois pokémons sont hors d’état de combattre ou si vous fuyez. Dans le cas où vous voudrez échanger de pokemon, cliquer sur votre choix puis utiliser le bouton échange. Gagnez le combat en réduisant les points de vie de votre adversaire à 0.
 
 En cas de victoire, vous capturez le pokemon adverse et pourrez le retrouver dans votre inventaire et même décider de l’utiliser.
 Lorsque vous aurez attrapé les 151 pokémons vous aurez un message de fin et vous serez redirigez vers l’interface d’accueil.
