@@ -8,7 +8,7 @@
 
 ## Préquis:
 
-* Un environnement de développement python
+* Un environnement de développement python (spyder de préférence afin d'éviter certains bugs)
 * Les librairies sys, PyQt5, random as rd
 * Les dossiers Images, Donnees_crees et Codes
 
@@ -22,22 +22,22 @@ Une fois sur la carte, vous pourrez rencontrer des pokémons à combattre. Vous 
 
 Lorsque vous fuyez, vous êtes envoyez dans une zone de sureté à l’abri des pokémons aux alentours. Lorsque vous choisissez de combattre, il vous est demandez de choisir le pokemon avec lequel vous voulez commencez l’offensive. Le pokemon le plus rapide attaque le premier.
 
-Lors de ces combats, le pokemon adverse et vous attaquer à tour de rôle. A votre tour, vous aurez 4 possibilités :
+Lors de ces combats, le pokemon adverse et vous joueur à tour de rôle. A votre tour, vous aurez 4 possibilités :
 
 * Faire une attaque simple.
 
-* Faire une attaque élémentaire selon ceux maitrisés par votre pokémon.
+* Faire une attaque élémentaire selon la famille de votre pokémon.
 
 * Echanger de pokémon.
 
 * Fuir.
 
 
-Lorsque l’un de vos pokémons perd tous ses points de vie, il est mis en zone de repos. Vous perdez le combat si vos trois pokémons sont hors d’état de combattre ou si vous fuyez.
+Lorsque l’un de vos pokémons perd tous ses points de vie, il est mis en zone de repos. Vous devrez donc choisir le prochain pokemon à combattre en cliquant sur lui. Vous perdez le combat si vos trois pokémons sont hors d’état de combattre ou si vous fuyez. Dans le cas où vous voudrez échanger de pokemon, cliquer sur votre choix puis utiliser le bouton échange. Gagnez le combat en réduisant les points de vie de votre adversaire à 0.
 
 En cas de victoire, vous capturez le pokemon adverse et pourrez le retrouver dans votre inventaire et même décider de l’utiliser.
 Lorsque vous aurez attrapé les 151 pokémons vous aurez un message de fin et vous serez redirigez vers l’interface d’accueil.
 
-
+Nous vous souhaitons de passer un bon moment sur notre jeu POKEMON.
 
 

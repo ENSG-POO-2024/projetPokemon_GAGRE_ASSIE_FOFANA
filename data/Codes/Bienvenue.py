@@ -71,7 +71,7 @@ class Ui_Bienvenue(object):
        self.player_age.setPlaceholderText(_translate("Bienvenue", "Votre age"))
        self.player_genre.setText(_translate("Bienvenue", "Genre "))
        self.play.setText(_translate("Bienvenue", "JOUER"))
-       self.cancel.setText(_translate("Bienvenue", "ANNULER"))
+       self.cancel.setText(_translate("Bienvenue", "SORTIR"))
        self.editors.setText(_translate("Bienvenue", "By @yohan @marcel @ibrahima"))
        
 
