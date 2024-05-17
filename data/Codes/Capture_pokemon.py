@@ -74,7 +74,7 @@ class Ui_Capture_pokemon(object):
         self.Pokemon_Capture.setScaledContents(True)
         self.Pokemon_Capture.setObjectName("Pokemon_Capture")
         self.Affichage = QtWidgets.QLabel(self.Ensemble_Capture)
-        self.Affichage.setGeometry(QtCore.QRect(0, 370, 1031, 41))
+        self.Affichage.setGeometry(QtCore.QRect(0, 370, 1031, 61))
         self.Affichage.setAlignment(QtCore.Qt.AlignCenter)
         font = QtGui.QFont()
         font.setFamily("Rockwell Extra Bold")

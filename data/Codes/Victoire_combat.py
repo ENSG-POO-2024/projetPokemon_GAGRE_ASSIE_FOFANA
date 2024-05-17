@@ -20,7 +20,7 @@ class Ui_Victoire_combat(object):
         self.Ensemble_Victoire.setTitle("")
         self.Ensemble_Victoire.setObjectName("Ensemble_Victoire")
         self.label = QtWidgets.QLabel(self.Ensemble_Victoire)
-        self.label.setGeometry(QtCore.QRect(200, 110, 251, 101))
+        self.label.setGeometry(QtCore.QRect(0, 110, 591, 101))
         font = QtGui.QFont()
         font.setFamily("Rockwell Extra Bold")
         font.setPointSize(28)
