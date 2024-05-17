@@ -93,15 +93,15 @@ if __name__=='__main__':
     pokemons_13totals_croissants=["150","149","151","144","145","146","59","130","143","131","6","9","3"]
     
     # Notre fichier de départ avec tous les pokemons et leurs attributs
-    fichier="../data/Donnees_crees/fichier_pokemon.csv"
+    fichier="../data/Donnees_creees/fichier_pokemon.csv"
     
-    Affinites = str(np.genfromtxt ('../data/Donnees_crees/Affinites.csv', delimiter =';',skip_header=1,usecols=range(1,19)).tolist())
+    Affinites = str(np.genfromtxt ('../data/Donnees_creees/Affinites.csv', delimiter =';',skip_header=1,usecols=range(1,19)).tolist())
     
     # Recuperation de nos conteneurs
     Pokemons,dict_pokemons,ID_pokemons=generateur_pokemon(fichier)
     
     #Création du fichier python d'ecriture
-    Fichier_Classes_Pokemons = open("Pokemons.py", "w")
+    Fichier_Classes_Pokemons = open("Pokemons2.py", "w")
     
     #Import des bibliotheques et creation de la classe mere en chaîne de caractère
     Classe_mere=("from abc import ABCMeta \nimport numpy as np \nimport random as rd\n\n"

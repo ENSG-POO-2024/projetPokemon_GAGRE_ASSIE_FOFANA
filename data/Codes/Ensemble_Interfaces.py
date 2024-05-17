@@ -267,7 +267,7 @@ class Window_Inventaire_Pokemon(QMainWindow, Ui_Inventaire_Pokemon):
     def tableau_affinites(self):
         layout = QtWidgets.QVBoxLayout()  # Création du layout vertical
         affinites = QtWidgets.QLabel()  # Création du QLabel pour afficher le tableau des affinités
-        affinites.setPixmap(QtGui.QPixmap("../Donnees_crees/tableau_affinites.png"))  # Import de la table d'affinité
+        affinites.setPixmap(QtGui.QPixmap("../Images/tableau_affinites.png"))  # Import de la table d'affinité
         layout.addWidget(affinites)  # Ajout de l'image
 
         fermer = QtWidgets.QPushButton("Fermer")
@@ -284,11 +284,11 @@ class Window_Inventaire_Pokemon(QMainWindow, Ui_Inventaire_Pokemon):
         self.affinites_fenetre.show()  # Affichage de la fenêtre
 
 
-##############################################################
+####################################################################################################################
 
-########## Carte ###########
+################################               Carte                          ################################
 
-##############################################################
+####################################################################################################################
 
 
 class Window_Carte(Carte):
@@ -314,9 +314,6 @@ class Window_Carte(Carte):
     def fin_de_jeu(self):
         """
         Vérifier si le jeu est fini.
-
-        Returns:
-            None
         """
         self.fin = QDialog(self)
         self.fin.setWindowTitle("  ")
@@ -360,7 +357,7 @@ class Window_Carte(Carte):
         """
         # Initialisation des variables pour le Pokémon le plus proche
         pokemon_proche = None
-        # On donne le seuil de comparaion
+        # On donne le seuil de comparaion:on a pris 1 comme seuil
         distance_proche = 1
 
         pokemons = self.pokemons_sauvages + self.pokemons_libres
@@ -489,6 +486,9 @@ class Window_Carte(Carte):
 
         developpers = QAction("Voir les developpeurs", self)  # Création d'une action pour voir les développeurs
         developpers.triggered.connect(self.afficher_developpeurs)  # Connection avec la fonction d'affichage
+        
+        sortir = QAction("Quitter le jeu", self)  # Création d'une action pour quitter le jeu
+        sortir.triggered.connect(self.quitter_jeu)   # Connection avec la fonction de sortir
 
         menu = self.menuBar()  # Création d'un menu sur l'interface
         menu.setStyleSheet("background-color: transparent;")  # Ajout du style au menu
@@ -496,6 +496,7 @@ class Window_Carte(Carte):
         fichier_menu.setStyleSheet("background-color: rgb(255,255,255); color : black;")
         fichier_menu.addAction(voir_profil)  # Ajout de l'action qui permet de voir le profil
         fichier_menu.addAction(developpers)  # Ajout de l'action qui permet de voir les développeurs
+        fichier_menu.addAction(sortir)       # Ajout de l'action qui permet de quitter le jeu tout en arrêtant la musique
 
     def keyPressEvent(self, event):
         """
@@ -524,6 +525,13 @@ class Window_Carte(Carte):
         self.recherche_pokemon()
         # Actualise l'affichage de la carte
         self.repaint()
+        
+    def quitter_jeu(self):
+        """
+        Fonction permettant de quitter le jeu tout en arrêtant la musique
+        """
+        pygame.mixer.music.pause()
+        self.close()
 
     def marche(self):
         marche = pygame.mixer.Sound("../Musique/deplacement.mp3")  # Chargement du son des marches
@@ -551,12 +559,11 @@ class Window_Carte(Carte):
         self.back_window.musique_profil()  # Lancement de la musique du profil
         self.back_window.show()
 
+####################################################################################################################
 
-##############################################################
+################################           Lancement du combat                  ####################################
 
-########## Lancement ###########
-
-##############################################################
+####################################################################################################################
 
 class Window_Lancement_combat(QMainWindow, Ui_Lancement_combat):
     # Constructeur
@@ -626,11 +633,12 @@ class Window_Lancement_combat(QMainWindow, Ui_Lancement_combat):
         self.Type_2.setPixmap(QtGui.QPixmap("../Images/Types/" + self.pokemon_adversaire.type2 + ".png"))
 
 
-##############################################################
 
-########## Selection ###########
+####################################################################################################################
 
-##############################################################
+################################            Selection de pokemon                    ################################
+
+####################################################################################################################
 
 class Window_Selection_pokemon(QMainWindow, Ui_Selection_pokemon):
     # Constructeur
@@ -711,11 +719,12 @@ class Window_Selection_pokemon(QMainWindow, Ui_Selection_pokemon):
         self.Pokemon_3.setIcon(icon3)
 
 
-##############################################################
 
-########## Combat ###########
+####################################################################################################################
 
-##############################################################
+################################                   Combat                            ################################
+
+####################################################################################################################
 
 class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
 
@@ -777,7 +786,6 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
         self.Neutre.clicked.connect(self.attaque_neutre)
         self.Type1.clicked.connect(self.attaque_elementaire)
         self.Type2.clicked.connect(self.attaque_elementaire)
-        self.Fuir.clicked.connect(self.fuite)
 
         self.lance_echange_pokemon()
         self.combat()
@@ -825,17 +833,16 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
 
         # Ecriture numérique de la bar de vie
         self.Nom_attaquant.setText(self.pokemon_zone_combat.nom)
-        self.PV_adversaire.setText(
-            str(self.pokemon_zone_adversaire.HP_combat) + " / " + str(self.pokemon_zone_adversaire.HP))
+        self.PV_adversaire.setText(str(self.pokemon_zone_adversaire.HP_combat) + " / " + str(self.pokemon_zone_adversaire.HP))
         self.PV_attaquant.setText(str(self.pokemon_zone_combat.HP_combat) + " / " + str(self.pokemon_zone_combat.HP))
 
         #  Niveau de vie max et niveau de vie actuelle de l'attaquant
         self.progress_bar_attaquant.setMaximum(self.pokemon_zone_combat.HP)
-        self.progress_bar_attaquant.setValue(self.pokemon_zone_combat.HP_combat)
+        self.progress_bar_attaquant.setValue(int(self.pokemon_zone_combat.HP_combat))
 
         #  Niveau de vie max et niveau de vie actuelle de l'adversaire
         self.progress_bar_adversaire.setMaximum(self.pokemon_zone_adversaire.HP)
-        self.progress_bar_adversaire.setValue(self.pokemon_zone_adversaire.HP_combat)
+        self.progress_bar_adversaire.setValue(int(self.pokemon_zone_adversaire.HP_combat))
 
     def press_Pokemon_1(self):
         """
@@ -942,13 +949,6 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
             self.Echange.setEnabled(False)
             self.Echange_etat = False
 
-    def fuite(self):
-        """
-        Fonction qui provoque une defaite immediate
-        """
-        if self.fuir_etat:
-            self.Defaite()
-
     def restaure_HP(self):
         """
         Fonction restaurant les HP detous les pokemons
@@ -979,26 +979,27 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
         Fonction qui affiche la fenêtre de defaite
 
         """
-        # Verifie si tous les pokemons du joueur son KO
-        if len(self.pokemons_zone_repos) == 3 or self.fuir_etat:
-            self.restaure_HP()
-            self.next_window = Window_Combat_perdu(self)
-            self.next_window.show()
-            defaite = pygame.mixer.Sound("../Musique/defaite.mp3")  # Mise en pause de la musique de combat
-            defaite.play()
-            defaite.set_volume(0.3)
-            self.fin_combat = True
+        
+        # Restauration des HP de tous les pokemons
+        self.restaure_HP()
+        self.next_window = Window_Combat_perdu(self)
+        self.next_window.show()
+        defaite = pygame.mixer.Sound("../Musique/defaite.mp3")  # Mise en pause de la musique de combat
+        defaite.play()
+        defaite.set_volume(0.3)
+        # Indique que le combat est fini et affiche la fenetre victoire
+        self.fin_combat = True
 
     def attaque_neutre(self):
         """
         Fonction qui lance une attaque sans type
 
         """
-        if self.Neutre_etat:
-            Dommage = self.pokemon_zone_combat.attaque_neutre(self.pokemon_zone_adversaire)
-            self.Degats.setText(Dommage)
-            self.Degats_attaquant.setPixmap(QtGui.QPixmap("../Images/Explosion.png"))
-            self.Neutre_etat = False
+        Dommage = self.pokemon_zone_combat.attaque_neutre(self.pokemon_zone_adversaire)
+        self.Degats.setText(Dommage)
+        self.Degats_attaquant.setPixmap(QtGui.QPixmap("../Images/Attaques/Explosion.png"))
+        self.Neutre_etat = False
+        self.musique_coup()
 
     def attaque_elementaire(self):
         """
@@ -1011,12 +1012,14 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
             self.Degats_attaquant.setPixmap(
                 QtGui.QPixmap("../Images/Attaques/" + str(self.pokemon_zone_combat.type1) + ".png"))
             self.type_1_etat = False
+            
         if self.type_2_etat == "actif":
             Dommage = self.pokemon_zone_combat.attaque_elementaire(self.pokemon_zone_adversaire, True)
             self.Degats.setText(Dommage)
             self.Degats_attaquant.setPixmap(
                 QtGui.QPixmap("../Images/Attaques/" + str(self.pokemon_zone_combat.type2) + ".png"))
             self.type_2_etat = False
+        self.musique_coup()
 
     def info_combat(self):
         """
@@ -1101,23 +1104,25 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
         Fonction qui regroupe les differentes actions possibles du joueur
 
         """
-        if self.Neutre_etat:
+        # Verifie si tous les pokemons du joueur son KO ou s'il decide de fuir
+        if self.fuir_etat :
+            self.Defaite()
+            
+        elif self.Neutre_etat:
             self.attaque_neutre()
-
-        elif self.fuir_etat:
-            self.fuite()
 
         elif self.Echange_etat:
             self.echange_pokemon()
-
+            
         elif self.type_1_etat == "actif":
             self.attaque_elementaire()
 
         elif self.type_2_etat == "actif":
             self.attaque_elementaire()
+            
         self.info_combat()
         self.affichage_HP()
-        self.Victoire()
+        
 
     def Action_utilisateur(self):
         """
@@ -1190,7 +1195,7 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
             Dommage = self.pokemon_zone_adversaire.attaque_neutre(self.pokemon_zone_combat)
             # Afichage des infos des attaques et suppression
             self.Degats.setText(Dommage)
-            self.Degats_adversaire.setPixmap(QtGui.QPixmap("../Images/Explosion.png"))
+            self.Degats_adversaire.setPixmap(QtGui.QPixmap("../Images/Attaques/Explosion.png"))
             self.info_combat()
 
         else:  # Sinon attaque elementaire
@@ -1210,10 +1215,11 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
         self.activation_boutons()
 
         # Actualisation des HP et verifications des etats du combat
+        self.musique_coup()
         self.affichage_HP()
         self.pokemon_KO()
-        self.Defaite()
-
+        if len(self.pokemons_zone_repos) == 3:
+            self.Defaite()
         # Arret du chrono
         self.timer_adversaire.stop()
 
@@ -1263,11 +1269,12 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
 
             # Boucle jusqu'à la victoire ou la defaite du joueur
             while self.fin_combat == False:
+                
                 Action = self.Action_utilisateur()  #Attente de la reponse de l'utilisateur
                 if Action:
                     self.tour_joueur()  # Tour du joueur
-                    self.musique_coup()
                 self.tour_adversaire()  # Tour de l'adversaire
+                self.Victoire()
         else:
             # Message  pour le joueur
             QMessageBox.information(self, "   POKEMON", "Votre adversaire joue en première position\nBonne chance  !")
@@ -1277,19 +1284,24 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
                 Action = self.Action_utilisateur()  #Attente de la reponse de l'utilisateur
                 if Action:
                     self.tour_joueur()  # Tour du joueur
-                    self.musique_coup()
+                self.Victoire()
 
     def musique_coup(self):
+        """
+        Fonction qui lance le son lors que des attaques
+
+        """
         coups = pygame.mixer.Sound("../Musique/coups.mp3")  # Chargement du son des coups
         coups.play()
         coups.set_volume(0.5)
 
 
-##############################################################
 
-########## Resultat ###########
+####################################################################################################################
 
-##############################################################
+################################                  Résultat                          ################################
+
+####################################################################################################################
 
 class Window_Combat_perdu(QMainWindow, Ui_Combat_perdu):
     # Constructeur
@@ -1334,11 +1346,11 @@ class Window_Victoire_combat(QMainWindow, Ui_Victoire_combat):
         self.close()
 
 
-#############################################################
+####################################################################################################################
 
-######### Capture ###########
+################################               Capture de pokemon                   ################################
 
-#############################################################
+####################################################################################################################
 
 
 class Window_Capture_pokemon(QMainWindow, Ui_Capture_pokemon):

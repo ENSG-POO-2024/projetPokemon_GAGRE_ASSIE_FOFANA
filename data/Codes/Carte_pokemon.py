@@ -24,8 +24,8 @@ class Carte(QMainWindow):
         # Création du joueur
 
         # Définition des coordonnées sûres où le joueur peut apparaître initialement
-        self.coord_surete = [(13, 5.25), (13, 9), (4, 7.25),
-                        (6, 2), (25, 0.75), (35, 0.75)]
+        self.coord_surete = [(30, 3.5), (19, 4), (27, 7.75),
+                        (3, 3.75), (12, 9.5), (38, 0)]
         # Choix aléatoire d'une paire de coordonnées parmi celles définies dans coord_surete
         self.coord_choice = self.coord_surete[rd.randint(0, len(self.coord_surete) - 1)]
         # Les coordonnées sont ajustées avant d'être passées pour positionner le joueur correctement sur la carte
