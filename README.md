@@ -18,6 +18,8 @@
 * La taille des fenêtres de notre jeu peut varier selon les ordinateurs utilisés. Nous avons testé sur 3 différents ordinateurs pour régler le souci. Cependant, il se peut que cela se produise sur votre ordinateur.
 * Nous vous invitons à quitter le jeu en utilisant le bouton qui lui est dédier dans le menu en haut à gauche.
 * Vous pourrez accéder aussi au profil et à la liste des développeurs via ce menu.
+* Les différents deplacements du joueur sur la carte se font avec les directions gauche, droite, haut et bas du clavier de l'ordinateur
+* Le combat et les autres actions dans le jeu se font avec la souris.
 
 ### Bienvenue dans notre Univers POKÉMON
 
