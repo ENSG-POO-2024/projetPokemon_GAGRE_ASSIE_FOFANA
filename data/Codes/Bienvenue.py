@@ -66,7 +66,7 @@ class Ui_Bienvenue(object):
        _translate = QtCore.QCoreApplication.translate
        Bienvenue.setWindowTitle(_translate("Bienvenue", "  POKEMON"))
        Bienvenue.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
-       self.welcome_message.setText(_translate("Bienvenue", "BIENVENUE DANS L'UNIVERS POKEMON"))
+       self.welcome_message.setText(_translate("Bienvenue", ""))
        self.player_name.setPlaceholderText(_translate("Bienvenue", "Votre pseudo"))
        self.player_age.setPlaceholderText(_translate("Bienvenue", "Votre age"))
        self.player_genre.setText(_translate("Bienvenue", "Genre "))
