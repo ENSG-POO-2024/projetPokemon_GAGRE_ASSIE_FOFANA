@@ -6,7 +6,7 @@ Created on Wed May 15 14:33:17 2024
 """
 
 # Import des interfaces
-from Ensemble_Interfaces import *
+from Ensemble_Interfaces import*
 
 if __name__ == "__main__":
     

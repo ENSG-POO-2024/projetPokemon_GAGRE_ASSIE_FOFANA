@@ -245,7 +245,6 @@ class Window_Inventaire_Pokemon (QMainWindow,Ui_Inventaire_Pokemon):
         self.layout.addWidget(self.sortir_bouton)  # Ajout du bouton à la table
         self.sortir_bouton.clicked.connect(self.close) # Action : fermer la table
 
-
     def tableau_affinites(self):
 
         layout = QtWidgets.QVBoxLayout()    # Création du layout vertical
@@ -287,7 +286,7 @@ class Window_Carte (Carte):
         self.pokemons_sauvages= self.joueur.pokemons_sauvages
         self.pokemons_hors_map=  self.joueur.pokemons_hors_map
         self.pokemon_adversaire= None
-        self.create_menu()
+        self.menu_carte()
         if len(self.joueur) == 151:
             self.fin_de_jeu()
 ###############################################################################################
@@ -312,7 +311,7 @@ class Window_Carte (Carte):
         fin_label.setPixmap(QtGui.QPixmap("../Images/Fin_Jeu.jpg").scaled(781, 661))
         fin_label.setScaledContents(True)
         dialog_layout.addWidget(fin_label)
-        self.sortir = QPushButton("Acceuil")
+        self.sortir = QPushButton("Retour à l'accueil")
         self.sortir.clicked.connect(self.reinitialisation)
         dialog_layout.addWidget(self.sortir, alignment= QtCore.Qt.AlignmentFlag.AlignCenter)
         self.fin.exec()
@@ -343,9 +342,9 @@ class Window_Carte (Carte):
                 None
         """
         # Initialisation des variables pour le Pokémon le plus proche
-        nearest_pokemon = None
+        pokemon_proche = None
         # On donne le seuil de comparaion
-        nearest_distance = 1
+        distance_proche = 1
         
         pokemons = self.pokemons_sauvages+self.pokemons_libres
         for pokemon_nom in pokemons:
@@ -353,16 +352,16 @@ class Window_Carte (Carte):
             position= pokemon.Coordonnees
             dist = ((2 *self.joueur.x - position[0])**2 + (self.joueur.y/2 - position[1])**2)**0.5
             # Mise à jour du Pokémon le plus proche si la nouvelle distance est plus petite
-            if dist < nearest_distance:
-                nearest_distance = dist
-                nearest_pokemon = pokemon
+            if dist < distance_proche:
+                distance_proche = dist
+                pokemon_proche = pokemon
 
-        if nearest_pokemon != None:
+        if pokemon_proche != None:
             pygame.mixer.music.pause()                              # Mis en pause de la musique de la carte
-            walking = pygame.mixer.Sound("../Musique/danger.mp3")   # Chargement du son de deplacement
-            walking.play()                                          # lancement
-            walking.set_volume(0.01)                                # Réglage de Volume
-            self.pokemon_adversaire = nearest_pokemon
+            marches = pygame.mixer.Sound("../Musique/danger.mp3")   # Chargement du son de deplacement
+            marches.play()                                          # lancement
+            marches.set_volume(0.01)                                # Réglage de Volume
+            self.pokemon_adversaire = pokemon_proche
             nearest_pokemon = None
             confirm_box = QMessageBox()
             confirm_box.setIcon(QMessageBox.Icon.Question)
@@ -379,20 +378,20 @@ class Window_Carte (Carte):
             confirm_box.button(QMessageBox.StandardButton.No).setText("Fuir")
             reponse = confirm_box.exec()
             if reponse == QMessageBox.StandardButton.Yes:
-                self.change_window()      # Direction : la fonction qui pemettra d'afficher le duel
-                walking.stop()            # Fin du son des marches
+                self.change_window()      # Si il accepte de se battre, direction : la fonction qui pemettra d'afficher le duel
+                marches.stop()            # Fin du son des marches
                 confrontation = pygame.mixer.Sound("../Musique/confrontation.mp3")  # Chargement du son de confrontation
                 confrontation.play()
                 confrontation.set_volume(0.07)  # Réglage du volume
             else:
-                walking.stop()
+                marches.stop()              # Si il réfuse de se battre : il reapparait dans une zone de sécurité
                 pygame.mixer.music.unpause()
                 self.pokemon_adversaire=None
-                player_position = rd.sample(self.coord_surete, k=1)[0]
+                player_position = rd.sample(self.coord_surete, k=1)[0] # Selection de coordonnées de sureté
                 self.joueur.x, self.joueur.y= int(player_position[0] /2), 2* int(player_position[1] )
-                self.update()
+                self.update()      # Mise à jour de sa position
 
-    def display_developpers(self):
+    def afficher_developpeurs(self):
         """
             Afficher un label contenant les développeurs du jeu.
 
@@ -461,7 +460,7 @@ class Window_Carte (Carte):
             painter.drawPixmap(X, Y, 30, 30, QtGui.QPixmap(self.pokemon_adversaire.Image))
         
         
-    def create_menu(self):
+    def menu_carte(self):
         """
         Crée un menu sur l'interface de la carte de navigation.
 
@@ -473,7 +472,7 @@ class Window_Carte (Carte):
         voir_profil.triggered.connect(self.retour_profil)  # Connection avec la fonction d'affichage
 
         developpers = QAction("Voir les developpeurs", self) # Création d'une action pour voir les développeurs
-        developpers.triggered.connect(self.display_developpers) # Connection avec la fonction d'affichage
+        developpers.triggered.connect(self.afficher_developpeurs) # Connection avec la fonction d'affichage
 
 
         menu = self.menuBar()                                                   # Création d'un menu sur l'interface
@@ -576,6 +575,7 @@ class Window_Lancement_combat (QMainWindow,Ui_Lancement_combat):
         """
         self.next_window = Window_Selection_pokemon (self)      # renvoie les donnees à l'interface suivante
         self.next_window.show()
+        self.close()
 
     def acteur_combat(self):
         """
@@ -606,7 +606,7 @@ class Window_Lancement_combat (QMainWindow,Ui_Lancement_combat):
         self.Type_8.setPixmap(QtGui.QPixmap("../Images/Types/"+pokemons[2].type1+".png"))
         self.Type_7.setPixmap(QtGui.QPixmap("../Images/Types/"+pokemons[2].type2+".png"))
         
-        # Info sur le pokemon rencontre
+        # Info sur le pokemon rencontré
         self.Nom_adversaire.setText(self.pokemon_adversaire.nom)
         self.Adversaire.setPixmap(QtGui.QPixmap(self.pokemon_adversaire.Image))
         self.Type_1.setPixmap(QtGui.QPixmap("../Images/Types/"+self.pokemon_adversaire.type1+".png"))
@@ -669,18 +669,21 @@ class Window_Selection_pokemon (QMainWindow,Ui_Selection_pokemon):
         # Recherche du pokemon choisi
         if self.Pokemon_1_etat ==True:
             self.pokemon_zone_combat= Combattants[0]
+            self.close()  # Fermeture de la fenêtre
         elif self.Pokemon_2_etat ==True:
             self.pokemon_zone_combat= Combattants[1]
+            self.close()
         elif self.Pokemon_3_etat ==True:
             self.pokemon_zone_combat= Combattants[2]
+            self.close()
             
         # Creation de la fenetre decombat et transfert des donnees
         self.next_window = Window_Zone_de_bataille(self)
         self.next_window.show()
         
-        # Fermeture des fenetres selection et lancement
-        self.lancement.close()
-        self.close()
+
+
+
         
     def affichage(self):
         """
