@@ -9,7 +9,7 @@
 ## Préquis:
 
 * Un environnement de développement python (spyder de préférence afin d'éviter certains bugs)
-* Les librairies sys, PyQt5, random as rd
+* Les librairies sys, PyQt5, random
 * Les dossiers Images, Donnees_crees et Codes
 * Le jeu sera lancé à partir du fichier python Application_POKEMON
 
