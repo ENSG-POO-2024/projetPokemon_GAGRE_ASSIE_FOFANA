@@ -1265,7 +1265,7 @@ class Window_Zone_de_bataille(QMainWindow, Ui_Zone_de_bataille):
         if self.pokemon_zone_combat.Speed >= self.pokemon_zone_adversaire.Speed:
 
             # Message  pour le joueur 
-            QMessageBox.information(self, "   POKEMON", "Vous jouer en première position \nBonne chance  !")
+            QMessageBox.information(self, "   POKEMON", "Vous jouez en première position \nBonne chance  !")
 
             # Boucle jusqu'à la victoire ou la defaite du joueur
             while self.fin_combat == False:

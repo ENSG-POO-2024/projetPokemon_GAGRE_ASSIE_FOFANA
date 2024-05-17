@@ -28,7 +28,7 @@ class Ui_Bienvenue(object):
         self.player_name.setFont(font)
         self.player_name.setStyleSheet("background-color: rgba(0, 0, 0, 0);border-bottom: 2px solid rgba(200, 200, 200, 180);color: rgba(255, 255, 255,180);border-top: 0;border-left: 0;border-right: 0;padding-bottom: 7px;")
         self.player_name.setObjectName("player_name")
-        self.player_name.setMaxLength(12)
+        self.player_name.setMaxLength(12)   # Fixer le nombre de caractères à 12
         self.player_age = QtWidgets.QLineEdit(Bienvenue)
         self.player_age.setGeometry(QtCore.QRect(570, 130, 151, 61))
         font = QtGui.QFont()
@@ -36,7 +36,7 @@ class Ui_Bienvenue(object):
         self.player_age.setFont(font)
         self.player_age.setStyleSheet("background-color: rgba(0, 0, 0, 0);border-bottom: 2px solid rgba(200, 200, 200, 180);color: rgba(255, 255, 255,180);border-top: 0;border-left: 0;border-right: 0;padding-bottom: 7px;")
         self.player_age.setObjectName("player_age")
-        self.player_age.setMaxLength(2)
+        self.player_age.setMaxLength(2)    # Fixer le nombre de caractères à 2
         self.player_genre = QtWidgets.QLabel(Bienvenue)
         self.player_genre.setGeometry(QtCore.QRect(330, 280, 111, 31))
         self.player_genre.setStyleSheet("color: rgba(255, 255, 255,180);font: 15pt \"MS Shell Dlg 2\";")
