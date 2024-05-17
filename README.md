@@ -13,6 +13,9 @@
 * Les dossiers Images, Donnees_crees et Codes
 * Le jeu sera lancé à partir du fichier python Application_POKEMON
 
+##  Informations
+* La taille des fenêtres de notre jeu peut varier selon les ordinateurs utilisés. Nous avons testé sur 3 différents ordinateurs pour régler le soucis. Cependant, il se peut que cela se produise sur votre ordinateur. 
+
 ### Bienvenue dans notre Univers POKÉMON
 
 Dans cet univers, le but est d’attraper les 151 pokémons existants. Soit les pokémons dans toutes leurs étapes d’évolution.

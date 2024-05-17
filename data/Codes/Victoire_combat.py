@@ -14,9 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Victoire_combat(object):
     def setupUi(self, Victoire_combat):
         Victoire_combat.setObjectName("Victoire_combat")
-        Victoire_combat.resize(586, 367)
-        Victoire_combat.setMinimumSize(QtCore.QSize(586, 367))
-        Victoire_combat.setMaximumSize(QtCore.QSize(586, 367))
+        Victoire_combat.setFixedSize(586, 367)
         self.Ensemble_Victoire = QtWidgets.QGroupBox(Victoire_combat)
         self.Ensemble_Victoire.setGeometry(QtCore.QRect(-11, -1, 601, 381))
         self.Ensemble_Victoire.setTitle("")
@@ -30,6 +28,7 @@ class Ui_Victoire_combat(object):
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName("label")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.Arriere = QtWidgets.QLabel(self.Ensemble_Victoire)
         self.Arriere.setGeometry(QtCore.QRect(10, -10, 591, 381))
         self.Arriere.setText("")

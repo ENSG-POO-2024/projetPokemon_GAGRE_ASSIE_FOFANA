@@ -14,9 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Selection_pokemon(object):
     def setupUi(self, Selection_pokemon):
         Selection_pokemon.setObjectName("Selection_pokemon")
-        Selection_pokemon.resize(586, 367)
-        Selection_pokemon.setMinimumSize(QtCore.QSize(586, 367))
-        Selection_pokemon.setMaximumSize(QtCore.QSize(586, 367))
+        Selection_pokemon.setFixedSize(586, 367)
         self.Ensemble_Selection = QtWidgets.QGroupBox(Selection_pokemon)
         self.Ensemble_Selection.setGeometry(QtCore.QRect(-11, -1, 601, 381))
         self.Ensemble_Selection.setTitle("")
@@ -25,11 +23,12 @@ class Ui_Selection_pokemon(object):
         self.label.setGeometry(QtCore.QRect(30, 0, 571, 101))
         font = QtGui.QFont()
         font.setFamily("Rockwell Extra Bold")
-        font.setPointSize(24)
+        font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName("label")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.Arriere = QtWidgets.QLabel(self.Ensemble_Selection)
         self.Arriere.setGeometry(QtCore.QRect(10, -10, 591, 381))
         self.Arriere.setText("")
@@ -104,4 +103,4 @@ class Ui_Selection_pokemon(object):
         _translate = QtCore.QCoreApplication.translate
         Selection_pokemon.setWindowTitle(_translate("Selection_pokemon", "  POKEMON"))
         Selection_pokemon.setWindowIcon(QtGui.QIcon("../Images/Pokemon_logo.png"))
-        self.label.setText(_translate("Selection_pokemon", "Choississez votre pokemon :"))
+        self.label.setText(_translate("Selection_pokemon", "Choississez votre pokemon"))
